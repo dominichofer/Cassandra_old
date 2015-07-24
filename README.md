@@ -1,0 +1,2 @@
+# Cassandra
+Towards solving reversi
