@@ -1,0 +1,84 @@
+﻿Build started 29.07.2015 00:43:55.
+     1>Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\ProbCutStats\ProbCutStats\ProbCutStats.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\probcutstats.cpp
+         probcutstats.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(208): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\probcutstats.cpp(48): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(48): warning C4244: 'argument' : conversion from 'double' to 'int8_t', possible loss of data
+     1>..\..\src\probcutstats.cpp(49): warning C4244: 'argument' : conversion from 'double' to 'int8_t', possible loss of data
+     1>..\..\src\probcutstats.cpp(49): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(50): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(50): warning C4244: 'argument' : conversion from 'double' to 'int8_t', possible loss of data
+     1>..\..\src\probcutstats.cpp(51): warning C4244: 'argument' : conversion from 'double' to 'int8_t', possible loss of data
+     1>..\..\src\probcutstats.cpp(51): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(133): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(134): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(135): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(136): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(139): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(140): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(141): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(142): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(157): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(158): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(159): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(160): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(163): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(164): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(165): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(166): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(174): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(174): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(243): warning C4267: 'initializing' : conversion from 'size_t' to 'uint32_t', possible loss of data
+     1>..\..\src\probcutstats.cpp(246): warning C4267: 'initializing' : conversion from 'size_t' to 'uint32_t', possible loss of data
+     1>..\..\src\probcutstats.cpp(247): warning C4018: '<' : signed/unsigned mismatch
+     1>..\..\src\probcutstats.cpp(249): warning C4018: '<' : signed/unsigned mismatch
+     1>..\..\src\probcutstats.cpp(260): warning C4267: 'initializing' : conversion from 'size_t' to 'uint32_t', possible loss of data
+     1>..\..\src\probcutstats.cpp(264): warning C4267: 'initializing' : conversion from 'size_t' to 'uint32_t', possible loss of data
+     1>..\..\src\probcutstats.cpp(393): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\src\probcutstats.cpp(406): warning C4267: 'initializing' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>..\..\src\probcutstats.cpp(480): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+     1>..\..\src\probcutstats.cpp(556): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>..\..\src\probcutstats.cpp(578): warning C4244: 'initializing' : conversion from 'long double' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(579): warning C4244: 'initializing' : conversion from 'long double' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(580): warning C4244: 'argument' : conversion from 'size_t' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(580): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(590): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(618): warning C4244: 'initializing' : conversion from 'long double' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(619): warning C4244: 'initializing' : conversion from 'long double' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(623): warning C4244: 'argument' : conversion from 'size_t' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(623): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>..\..\src\probcutstats.cpp(633): warning C4309: 'argument' : truncation of constant value
+     1>..\..\src\probcutstats.cpp(634): warning C4309: 'argument' : truncation of constant value
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\datamanipulation.h(94): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+                 ..\..\src\probcutstats.cpp(555) : see reference to function template instantiation 'std::vector<CDataset_Position_FullScore,std::allocator<_Ty>> read_vector<CDataset_Position_FullScore>(const std::string &,size_t)' being compiled
+                 with
+                 [
+                     _Ty=CDataset_Position_FullScore
+                 ]
+     1>..\..\src\probcutstats.cpp(118): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+                 ..\..\src\probcutstats.cpp(594) : see reference to function template instantiation 'void CBitmap::DrawNumber<int>(const char *,T,int,int,int8_t,int8_t,int8_t)' being compiled
+                 with
+                 [
+                     T=int
+                 ]
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\ProbCutStats\x64\Debug\ProbCutStats.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\ProbCutStats\x64\Debug\ProbCutStats.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\ProbCutStats\x64\Debug\ProbCutStats.lib" /MACHINE:X64 x64\Debug\datamanipulation.obj
+         x64\Debug\flip_fast.obj
+         x64\Debug\position.obj
+         x64\Debug\possiblemoves.obj
+         x64\Debug\possiblemoves_avx2.obj
+         x64\Debug\possiblemoves_avx512.obj
+         x64\Debug\possiblemoves_sse2.obj
+         x64\Debug\probcutstats.obj
+         x64\Debug\utility.obj
+         ProbCutStats.vcxproj -> C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\ProbCutStats\x64\Debug\ProbCutStats.exe
+     1>Done Building Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\ProbCutStats\ProbCutStats\ProbCutStats.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.90

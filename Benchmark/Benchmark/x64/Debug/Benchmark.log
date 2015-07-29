@@ -1,0 +1,38 @@
+﻿Build started 08.06.2015 16:27:06.
+     1>Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Benchmark\Benchmark\Benchmark.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\benchmark.cpp
+         benchmark.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(256): warning C4244: 'argument' : conversion from 'const uint64_t' to 'unsigned int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(341): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(343): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(344): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(345): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(346): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(347): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(348): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(349): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(360): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(363): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(369): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(371): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(372): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(373): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(374): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(375): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(376): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(377): warning C4172: returning address of local variable or temporary
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Benchmark\x64\Debug\Benchmark.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Benchmark\x64\Debug\Benchmark.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Benchmark\x64\Debug\Benchmark.lib" /MACHINE:X64 x64\Debug\benchmark.obj
+         x64\Debug\flip_fast.obj
+         x64\Debug\possiblemoves.obj
+         x64\Debug\possiblemoves_avx2.obj
+         x64\Debug\possiblemoves_avx512.obj
+         x64\Debug\possiblemoves_sse2.obj
+         x64\Debug\utility.obj
+         Benchmark.vcxproj -> C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Benchmark\x64\Debug\Benchmark.exe
+     1>Done Building Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Benchmark\Benchmark\Benchmark.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.64

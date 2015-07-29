@@ -1,0 +1,1104 @@
+#include "game.h"
+
+const int A = 8;
+
+bool MPC(uint64_t P, uint64_t O, uint64_t& NodeCounter, int alpha, int selectivity, int depth, int empties, int & value)
+{
+	if (selectivity == 0 || empties < 7) return false;
+
+	const int beta = alpha + 1;
+	double t = SelectivityTable[selectivity].T;
+
+	if ((depth == 4) && (empties >= 14) && (empties <= 19))
+	{
+		static const float sigma[] = { 3.30, 3.20, 3.10, 3.16, 3.08, 3.00 };
+		NodeCounter++;
+		int zero_eval = EvaluateFeatures(P, O);
+		int probcut_beta = RoundInt(beta + t * sigma[empties-14]);
+		int probcut_alpha = probcut_beta - 1;
+
+		if (zero_eval > beta && probcut_beta <= 64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 2, empties);
+			if (score >= probcut_beta) { value = beta; return true; }
+		}
+
+		probcut_alpha = RoundInt(alpha - t * sigma[empties-14]);
+		if (zero_eval < alpha && probcut_alpha >= -64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 2, empties);
+			if (score <= probcut_alpha) { value = alpha; return true; }
+		}
+	}
+
+	if ((depth == 5) && (empties >= 15) && (empties <= 19))
+	{
+		static const float sigma[] = { 2.93, 2.80, 2.74, 2.80, 2.69 };
+		NodeCounter++;
+		int zero_eval = EvaluateFeatures(P, O);
+		int probcut_beta = RoundInt(beta + t * sigma[empties-15]);
+		int probcut_alpha = probcut_beta - 1;
+
+		if (zero_eval > beta && probcut_beta <= 64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 3, empties);
+			if (score >= probcut_beta) { value = beta; return true; }
+		}
+
+		probcut_alpha = RoundInt(alpha - t * sigma[empties-15]);
+		if (zero_eval < alpha && probcut_alpha >= -64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 3, empties);
+			if (score <= probcut_alpha) { value = alpha; return true; }
+		}
+	}
+
+	//if ((depth == 10) && (empties == 10))
+	//{
+	//	NodeCounter++;
+	//	int zero_eval = EvaluateFeatures(P, O);
+	//	if (zero_eval >= RoundInt(beta + t * 7.15)) { value = beta; return true; }
+	//	if (zero_eval <= RoundInt(alpha - t * 7.15)) { value = alpha; return true; }
+	//}
+
+	if ((depth == 12) && (empties == 12))
+	{
+		NodeCounter++;
+		int zero_eval = EvaluateFeatures(P, O);
+		int probcut_beta = RoundInt(beta + t * 5.89);
+		int probcut_alpha = probcut_beta - 1;
+
+		if (zero_eval > beta && probcut_beta <= 64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 2, empties);
+			if (score >= probcut_beta) { value = beta; return true; }
+		}
+
+		probcut_alpha = RoundInt(alpha - t * 5.89);
+		if (zero_eval < alpha && probcut_alpha >= -64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 2, empties);
+			if (score <= probcut_alpha) { value = alpha; return true; }
+		}
+	}
+
+	if ((depth == 13) && (empties == 13))
+	{
+		NodeCounter++;
+		int zero_eval = EvaluateFeatures(P, O);
+		int probcut_beta = RoundInt(beta + t * 5.29);
+		int probcut_alpha = probcut_beta - 1;
+
+		if (zero_eval > beta && probcut_beta <= 64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 3, empties);
+			if (score >= probcut_beta) { value = beta; return true; }
+		}
+
+		probcut_alpha = RoundInt(alpha - t * 5.29);
+		if (zero_eval < alpha && probcut_alpha >= -64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 3, empties);
+			if (score <= probcut_alpha) { value = alpha; return true; }
+		}
+	}
+
+	if ((depth == 14) && (empties == 14))
+	{
+		NodeCounter++;
+		int zero_eval = EvaluateFeatures(P, O);
+		int probcut_beta = RoundInt(beta + t * 5.14);
+		int probcut_alpha = probcut_beta - 1;
+
+		if (zero_eval > beta && probcut_beta <= 64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 4, empties);
+			if (score >= probcut_beta) { value = beta; return true; }
+		}
+
+		probcut_alpha = RoundInt(alpha - t * 5.14);
+		if (zero_eval < alpha && probcut_alpha >= -64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 4, empties);
+			if (score <= probcut_alpha) { value = alpha; return true; }
+		}
+	}
+
+	if ((depth == 15) && (empties == 15))
+	{
+		NodeCounter++;
+		int zero_eval = EvaluateFeatures(P, O);
+
+		//int probcut_beta = RoundInt(beta + t * 6.54);
+		//int probcut_alpha = probcut_beta - 1;
+
+		//if (zero_eval > beta && probcut_beta <= 64)
+		//{
+		//	int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 1, empties);
+		//	if (score >= probcut_beta) { value = beta; return true; }
+		//}
+
+		//probcut_alpha = RoundInt(alpha - t * 6.54);
+		//if (zero_eval < alpha && probcut_alpha >= -64)
+		//{
+		//	int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 1, empties);
+		//	if (score <= probcut_alpha) { value = alpha; return true; }
+		//}
+
+		int probcut_beta = RoundInt(beta + t * 5.51);
+		int probcut_alpha = probcut_beta - 1;
+
+		if (zero_eval > beta && probcut_beta <= 64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 3, empties);
+			if (score >= probcut_beta) { value = beta; return true; }
+		}
+
+		probcut_alpha = RoundInt(alpha - t * 5.51);
+		if (zero_eval < alpha && probcut_alpha >= -64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 3, empties);
+			if (score <= probcut_alpha) { value = alpha; return true; }
+		}
+
+		probcut_beta = RoundInt(beta + t * 4.70);
+		probcut_alpha = probcut_beta - 1;
+
+		if (zero_eval > beta && probcut_beta <= 64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 5, empties);
+			if (score >= probcut_beta) { value = beta; return true; }
+		}
+
+		probcut_alpha = RoundInt(alpha - t * 4.70);
+		if (zero_eval < alpha && probcut_alpha >= -64)
+		{
+			int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 5, empties);
+			if (score <= probcut_alpha) { value = alpha; return true; }
+		}
+	}
+
+	//if (empties == 7)
+	//{
+	//	if (zero_eval >= RoundInt(beta + t * 6.78)){
+	//		value = beta;
+	//		return true;
+	//	}
+	//	if (zero_eval <= RoundInt(alpha - t * 6.78)){
+	//		value = alpha;
+	//		return true;
+	//	}
+	//}
+	//else if (empties == 10)
+	//{
+	//	int probcut_beta = RoundInt(beta + t * 5.88);
+	//	int probcut_alpha = probcut_beta - 1;
+
+	//	if (zero_eval > beta && probcut_beta <= 64)
+	//	{
+	//		int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 2, empties);
+	//		if (score >= probcut_beta){
+	//			value = beta;
+	//			return true;
+	//		}
+	//	}
+
+	//	probcut_alpha = RoundInt(alpha - t * 5.88);
+	//	if (zero_eval < alpha && probcut_alpha >= -64)
+	//	{
+	//		int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 2, empties);
+	//		if (score <= probcut_alpha){
+	//			value = alpha;
+	//			return true;
+	//		}
+	//	}
+	//}
+	//else if (empties == 12)
+	//{
+	//	int probcut_beta = RoundInt(beta + t * 5.89);
+	//	int probcut_alpha = probcut_beta - 1;
+
+	//	if (zero_eval > beta && probcut_beta <= 64)
+	//	{
+	//		int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 2, empties);
+	//		if (score >= probcut_beta){
+	//			value = beta;
+	//			return true;
+	//		}
+	//	}
+
+	//	probcut_alpha = RoundInt(alpha - t * 5.89);
+	//	if (zero_eval < alpha && probcut_alpha >= -64)
+	//	{
+	//		int score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, 2, empties);
+	//		if (score <= probcut_alpha){
+	//			value = alpha;
+	//			return true;
+	//		}
+	//	}
+	//}
+}
+
+int ZWS  (const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int selectivity, const int depth, const int empties)
+{
+	if ((empties == A) && (depth == empties)) return Endgame::ZWS_A(P, O, NodeCounter, alpha, empties);
+	if (depth == 3)                           return Midgame::ZWS_3(P, O, NodeCounter, alpha);
+
+	int score;
+	uint64_t flipped;
+	uint64_t BitBoardPossible = PossibleMoves(P, O);
+	unsigned long Move;
+	NodeCounter++;
+
+	if (!BitBoardPossible){
+		if (HasMoves(O, P))
+			return -ZWS(O, P, NodeCounter, -alpha-1, selectivity, depth, empties);
+		else //Game is over
+			return (EvalGameOver(P, empties) > alpha) ? alpha+1 : alpha; // Fail-Hard
+	}
+
+	if (StabilityCutoff_ZWS(P, O, alpha)) return alpha;
+	//if (MPC(P, O, NodeCounter, alpha, selectivity, depth, empties, score)) return score;
+
+	uint64_t LocalNodeCounter = NodeCounter;
+	CHashTableValueType ttValue;
+	if (TT.LookUp(P, O, ttValue))
+	{
+		if (UseTTValue(ttValue, alpha, alpha+1, depth, selectivity, score)) return score;
+    }
+    //else if ((depth > 6) && (empties > 14)) // IID
+    //{
+    //    Eval(P, O, NodeCounter, alpha, alpha+1, selectivity, depth == empties ? empties-12 : depth-4, empties);
+    //    if (TT.LookUp(P, O, ttValue))
+    //        if (UseTTValue(ttValue, alpha, alpha+1, depth, selectivity, score))
+    //            return score;
+    //}
+
+	CMoveList mvList(P, O, NodeCounter, BitBoardPossible, depth, ttValue, false);
+	for (const auto& mv : mvList)
+	{
+//        uint64_t InternalNodeCounter = NodeCounter;
+		score = -ZWS(mv.P, mv.O, NodeCounter, -alpha-1, selectivity, depth-1, empties-1);
+		if (score > alpha)
+		{
+//            UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha+1, 64, depth, selectivity, mv.move, 64);
+            if (mv.move == mvList.BestMove())
+                UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha+1, 64, depth, selectivity, mvList.BestMove(), mvList.NextBestMove());
+            else
+                UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha+1, 64, depth, selectivity, mv.move, mvList.BestMove());
+			return alpha + 1;
+		}
+//		mv.Value = NodeCounter-InternalNodeCounter;
+	}
+
+	UpdateTT(P, O, NodeCounter-LocalNodeCounter, -64, alpha, depth, selectivity, mvList.BestMove(), mvList.NextBestMove());
+	return alpha;
+}
+
+int PVS  (const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, const int beta, const int selectivity, const int depth, const int empties, CLine* pline)
+{
+	if ((empties == A) && (depth == empties)) return Endgame::PVS_A(P, O, NodeCounter, alpha, beta, empties, pline);
+	if (depth == 3)                           return Midgame::PVS_3(P, O, NodeCounter, alpha, beta, pline);
+
+	bool SearchPV = true;
+	int score;
+	uint8_t BestMove = 64;
+	uint64_t flipped;
+	uint64_t BitBoardPossible = PossibleMoves(P, O);
+	unsigned long Move;
+	NodeCounter++;
+
+	if (!BitBoardPossible){
+		if (HasMoves(O, P))
+			return -PVS(O, P, NodeCounter, -beta, -alpha, selectivity, depth, empties, pline);
+		else { //Game is over
+			if (pline) pline->NoMoves();
+			return BIND(EvalGameOver(P, empties), alpha, beta); // Fail-Hard
+		}
+	}
+
+	if (StabilityCutoff_PVS(P, O, alpha, beta)) return alpha;
+
+	uint64_t LocalNodeCounter = NodeCounter;
+	CHashTableValueType ttValue;
+	if (TT.LookUp(P, O, ttValue))
+	{
+		if (!pline)
+			if (UseTTValue(ttValue, alpha, beta, depth, selectivity, score))
+				return score;
+	}
+	else if ((depth >= 5) && (empties >= 13)) // IID
+	{
+		Eval(P, O, NodeCounter, alpha, beta, selectivity, depth == empties ? empties-10 : depth-2, empties);
+		if (TT.LookUp(P, O, ttValue))
+			if (!pline)
+				if (UseTTValue(ttValue, alpha, beta, depth, selectivity, score))
+					return score;
+	}
+
+	CLine * line = nullptr;
+	if (pline && pline->size) line = new CLine(pline->size-1);
+	CMoveList mvList(P, O, NodeCounter, BitBoardPossible, depth, ttValue, true);
+	for (const auto& mv : mvList)
+	{
+		if (SearchPV)
+			score = -PVS(mv.P, mv.O, NodeCounter, -beta, -alpha, selectivity, depth-1, empties-1, line);
+		else
+		{
+			score = -ZWS(mv.P, mv.O, NodeCounter, -alpha-1, selectivity, depth-1, empties-1);
+			if (score > alpha)
+				score = -PVS(mv.P, mv.O, NodeCounter, -beta, -alpha, selectivity, depth-1, empties-1, line);
+		}
+		if (score >= beta)
+		{
+			if (line) pline->NewPV(mv.move, line);
+			if (mv.move == mvList.BestMove())
+                UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, depth, selectivity, mvList.BestMove(), mvList.NextBestMove());
+            else if (BestMove != 64)
+                UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, depth, selectivity, mv.move, BestMove);
+			else
+                UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, depth, selectivity, mv.move, mvList.BestMove());
+			delete line;
+			return beta;
+		}
+		if (score > alpha)
+		{
+			if (line) pline->NewPV(mv.move, line);
+			BestMove = mv.move;
+			alpha = score;
+			SearchPV = false;
+		}
+	}
+
+	if (SearchPV)
+		UpdateTT(P, O, NodeCounter-LocalNodeCounter, -64, alpha, depth, selectivity, BestMove, mvList.BestMove() == BestMove ? mvList.NextBestMove() : mvList.BestMove());
+	else
+		UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha, alpha, depth, selectivity, BestMove, mvList.BestMove() == BestMove ? mvList.NextBestMove() : mvList.BestMove());
+
+	delete line;
+	return alpha;
+}
+
+int Eval(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta, const int selectivity, const int depth, const int empties, CLine* pline)
+{
+	if (empties <= A)
+	{
+		     if (empties == 0) return Endgame::PVS_0(P, O, NodeCounter);
+		else if (empties == 1) return Endgame::PVS_1(P, O, NodeCounter, alpha, pline);
+		else                   return Endgame::PVS_A(P, O, NodeCounter, alpha, beta, empties, pline);
+	}
+	else if (depth <= 3)
+	{
+		     if (depth == 0) return Midgame::PVS_0(P, O, NodeCounter, alpha, beta);
+		else if (depth == 1) return Midgame::PVS_1(P, O, NodeCounter, alpha, beta, pline);
+		else if (depth == 2) return Midgame::PVS_2(P, O, NodeCounter, alpha, beta, pline);
+		else                 return Midgame::PVS_3(P, O, NodeCounter, alpha, beta, pline);
+	}
+	else
+        return PVS(P, O, NodeCounter, alpha, beta, selectivity, depth, empties, pline);
+}
+
+namespace Midgame
+{
+	int ZWS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
+	{
+		NodeCounter++;
+		return (EvaluateFeatures(P, O) > alpha) ? alpha+1 : alpha;
+	}
+	int ZWS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
+	{
+		unsigned long Move;
+		uint64_t flipped;
+		uint64_t BitBoardPossible = PossibleMoves(P, O);
+		NodeCounter++;
+
+		if (!BitBoardPossible) {
+			if (HasMoves(O, P))
+				return -ZWS_1(O, P, NodeCounter, -alpha-1);
+			else //Game is over
+				return (EvalGameOver(P, Empties(P, O)) > alpha) ? alpha+1 : alpha;
+		}
+
+		while (BitBoardPossible)
+		{
+			Move = BitScanLSB(BitBoardPossible);
+			RemoveLSB(BitBoardPossible);
+			flipped = flip(P, O, Move);
+			NodeCounter++;
+			if (-EvaluateFeatures(O ^ flipped, P ^ (1ULL << Move) ^ flipped) > alpha)
+				return alpha+1;
+		}
+
+		return alpha;
+	}
+	int ZWS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
+	{
+		unsigned long Move;
+		uint64_t flipped;
+		uint64_t BitBoardPossible = PossibleMoves(P, O);
+		NodeCounter++;
+
+		if (!BitBoardPossible) {
+			if (HasMoves(O, P))
+				return -ZWS_2(O, P, NodeCounter, -alpha-1);
+			else //Game is over
+				return (EvalGameOver(P, Empties(P, O)) > alpha) ? alpha+1 : alpha;
+		}
+
+		while (BitBoardPossible)
+		{
+			Move = BitScanLSB(BitBoardPossible);
+			RemoveLSB(BitBoardPossible);
+			flipped = flip(P, O, Move);
+			if (-ZWS_1(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1) > alpha)
+				return alpha+1;
+		}
+		return alpha;
+	}
+	int ZWS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
+	{
+		unsigned long Move;
+		uint64_t flipped;
+		uint64_t BitBoardPossible = PossibleMoves(P, O);
+		NodeCounter++;
+
+		if (!BitBoardPossible) {
+			if (HasMoves(O, P))
+				return -ZWS_3(O, P, NodeCounter, -alpha-1);
+			else //Game is over
+				return (EvalGameOver(P, Empties(P, O)) > alpha) ? alpha+1 : alpha;
+		}
+		
+		if (StabilityCutoff_ZWS(P, O, alpha)) return alpha;
+
+		// #.####.#
+		// ........
+		// #.####.#
+		// #.#..#.#
+		// #.#..#.#
+		// #.####.#
+		// ........
+		// #.####.#
+		const unsigned long long PATTERN_FIRST = 0xBD00BDA5A5BD00BDULL;
+		const uint64_t BBParity = quadrant[Parity(P, O)];
+		uint64_t BBTmp;
+
+		BBTmp = BitBoardPossible &  BBParity &  PATTERN_FIRST;
+		while (BBTmp)
+		{
+			Move = BitScanLSB(BBTmp);
+			RemoveLSB(BBTmp);
+			flipped = flip(P, O, Move);
+			if (-ZWS_2(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1) > alpha)
+				return alpha+1;
+		}
+		BBTmp = BitBoardPossible &  BBParity & ~PATTERN_FIRST;
+		while (BBTmp)
+		{
+			Move = BitScanLSB(BBTmp);
+			RemoveLSB(BBTmp);
+			flipped = flip(P, O, Move);
+			if (-ZWS_2(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1) > alpha)
+				return alpha+1;
+		}
+		BBTmp = BitBoardPossible & ~BBParity;
+		while (BBTmp)
+		{
+			Move = BitScanLSB(BBTmp);
+			RemoveLSB(BBTmp);
+			flipped = flip(P, O, Move);
+			if (-ZWS_2(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1) > alpha)
+				return alpha+1;
+		}
+		return alpha;
+	}
+
+	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta)
+	{
+		NodeCounter++;
+		return BIND(EvaluateFeatures(P, O), alpha, beta); // Fail-Hard
+	}
+	int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, const int beta, CLine* pline)
+	{
+		uint64_t flipped;
+		uint64_t BitBoardPossible = PossibleMoves(P, O);
+		unsigned long Move;
+		int score = -64;
+		NodeCounter++;
+
+		if (!BitBoardPossible) {
+			if (HasMoves(O, P))
+				return -PVS_1(O, P, NodeCounter, -alpha, -beta, pline);
+			else{ //Game is over
+				if (pline) pline->NoMoves();
+				return BIND(EvalGameOver(P, O), alpha, beta); // Fail-Hard
+			}
+		}
+
+		CLine * line = nullptr;
+		if (pline && pline->size) line = new CLine(pline->size-1);
+		while (BitBoardPossible)
+		{
+			Move = BitScanLSB(BitBoardPossible);
+			RemoveLSB(BitBoardPossible);
+			flipped = flip(P, O, Move);
+			NodeCounter++;
+			score = -EvaluateFeatures(O ^ flipped, P ^ (1ULL << Move) ^ flipped);
+			if (score >= beta) {
+				if (line) pline->NewPV(Move, line);
+				delete line;
+				return beta;
+			}
+			if (score > alpha) {
+				if (line) pline->NewPV(Move, line);
+				alpha = score;
+			}
+		}
+
+		delete line;
+		return alpha;
+	}
+	int PVS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, const int beta, CLine* pline)
+	{
+		bool SearchPV = true;
+		int score;
+		uint8_t BestMove = 64;
+		uint64_t flipped;
+		uint64_t BitBoardPossible = PossibleMoves(P, O);
+		NodeCounter++;
+
+		if (!BitBoardPossible) {
+			if (HasMoves(O, P))
+				return -PVS_2(O, P, NodeCounter, -alpha, -beta, pline);
+			else { //Game is over
+				if (pline) pline->NoMoves();
+				return BIND(EvalGameOver(P, O), alpha, beta); // Fail-Hard
+			}
+		}
+		
+		uint64_t LocalNodeCounter = NodeCounter;
+		CLine * line = nullptr;
+		if (pline && pline->size) line = new CLine(pline->size-1);
+		CMoveListLight mvList(P, O, BitBoardPossible);
+		for (const auto& mv : mvList)
+		{
+			flipped = flip(P, O, mv);
+			if (SearchPV)
+				score = -PVS_1(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, line);
+			else
+			{
+				score = -ZWS_1(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1);
+				if (score > alpha)
+					score = -PVS_1(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, line);
+			}
+			if (score >= beta)
+			{
+				if (line) pline->NewPV(mv, line);
+				if (mv == mvList.BestMove())
+                UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 2, NO_SELECTIVITY, mvList.BestMove(), mvList.NextBestMove());
+				else if (BestMove != 64)
+					UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 2, NO_SELECTIVITY, mv, BestMove);
+				else
+					UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 2, NO_SELECTIVITY, mv, mvList.BestMove());
+				delete line;
+				return beta;
+			}
+			if (score > alpha)
+			{
+				if (line) pline->NewPV(mv, line);
+				BestMove = mv;
+				alpha = score;
+				SearchPV = false;
+			}
+		}
+
+		if (SearchPV)
+			UpdateTT(P, O, NodeCounter-LocalNodeCounter, -64, alpha, 2, NO_SELECTIVITY, BestMove, mvList.BestMove() == BestMove ? mvList.NextBestMove() : mvList.BestMove());
+		else
+			UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha, alpha, 2, NO_SELECTIVITY, BestMove, mvList.BestMove() == BestMove ? mvList.NextBestMove() : mvList.BestMove());
+
+		delete line;
+		return alpha;
+	}
+	int PVS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, const int beta, CLine* pline)
+	{
+		bool SearchPV = true;
+		int score;
+		uint8_t BestMove = 64;
+		uint64_t flipped;
+		uint64_t BitBoardPossible = PossibleMoves(P, O);
+		NodeCounter++;
+
+		if (!BitBoardPossible) {
+			if (HasMoves(O, P))
+				return -PVS_3(O, P, NodeCounter, -alpha, -beta, pline);
+			else { //Game is over
+				if (pline) pline->NoMoves();
+				return BIND(EvalGameOver(P, O), alpha, beta); // Fail-Hard
+			}
+		}
+		
+		uint64_t LocalNodeCounter = NodeCounter;
+		CLine * line = nullptr;
+		if (pline && pline->size) line = new CLine(pline->size-1);
+		CMoveListLight mvList(P, O, BitBoardPossible);
+		for (const auto& mv : mvList)
+		{
+			flipped = flip(P, O, mv);
+			if (SearchPV)
+				score = -PVS_2(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, line);
+			else
+			{
+				score = -ZWS_2(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1);
+				if (score > alpha)
+					score = -PVS_2(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, line);
+			}
+			if (score >= beta)
+			{
+				if (line) pline->NewPV(mv, line);
+				if (mv == mvList.BestMove())
+                UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 3, NO_SELECTIVITY, mvList.BestMove(), mvList.NextBestMove());
+				else if (BestMove != 64)
+					UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 3, NO_SELECTIVITY, mv, BestMove);
+				else
+					UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 3, NO_SELECTIVITY, mv, mvList.BestMove());
+				delete line;
+				return beta;
+			}
+			if (score > alpha)
+			{
+				if (line) pline->NewPV(mv, line);
+				BestMove = mv;
+				alpha = score;
+				SearchPV = false;
+			}
+		}
+
+		if (SearchPV)
+			UpdateTT(P, O, NodeCounter-LocalNodeCounter, -64, alpha, 3, NO_SELECTIVITY, BestMove, mvList.BestMove() == BestMove ? mvList.NextBestMove() : mvList.BestMove());
+		else
+			UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha, alpha, 3, NO_SELECTIVITY, BestMove, mvList.BestMove() == BestMove ? mvList.NextBestMove() : mvList.BestMove());
+
+		delete line;
+		return alpha;
+	}
+}
+
+namespace Endgame
+{
+	int ZWS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x)
+	{
+		int Score, DiffCount;
+		Score = (PopCount(P) << 1) - 63; // == PopCount(P) - PopCount(O)
+
+		NodeCounter++;
+		if (DiffCount = count_last_flip(P, x))
+		{
+			NodeCounter++;
+			return Score + DiffCount + 1;
+		}
+		else
+		{
+			if (Score < alpha)
+				return alpha;
+			else if (DiffCount = count_last_flip(O, x))
+			{
+				NodeCounter += 2; // One for passing, one for playing
+				return Score - DiffCount - 1;
+			}
+			else
+				return (Score > 0) ? Score + 1 : Score - 1;
+		}
+	}
+	int ZWS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x1, const unsigned int x2)
+	{
+		uint64_t flipped;
+		bool played = false;
+		NodeCounter++;
+
+		//Play on x1
+		if ((O & neighbour[x1]) && (flipped = flip(P, O, x1)))
+		{
+			if (-ZWS_1(O ^ flipped, P ^ (1ULL << x1) ^ flipped, NodeCounter, -alpha-1, x2) > alpha)
+				return alpha + 1;
+			played = true;
+		}
+
+		//Play on x2
+		if ((O & neighbour[x2]) && (flipped = flip(P, O, x2)))
+			return -ZWS_1(O ^ flipped, P ^ (1ULL << x2) ^ flipped, NodeCounter, -alpha-1, x1);
+
+		if (played) return alpha;
+
+		NodeCounter++;
+
+		//Play on x1
+		if ((P & neighbour[x1]) && (flipped = flip(O, P, x1)))
+		{
+			if (ZWS_1(P ^ flipped, O ^ (1ULL << x1) ^ flipped, NodeCounter, alpha, x2) <= alpha)
+				return alpha;
+			played = true;
+		}
+
+		//Play on x2
+		if ((P & neighbour[x2]) && (flipped = flip(O, P, x2)))
+			return ZWS_1(P ^ flipped, O ^ (1ULL << x2) ^ flipped, NodeCounter, alpha, x1);
+
+		if (played)
+			return alpha + 1;
+		else
+			return EvalGameOver<2>(P);
+	}
+	int ZWS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x1, const unsigned int x2, const unsigned int x3)
+	{
+		//if (QUADRANT_ID(x1) == QUADRANT_ID(x2)) //Play x3 first
+		//	std::swap(x1,x3);
+		//else if (QUADRANT_ID(x1) == QUADRANT_ID(x3)) //Play x2 first
+		//	std::swap(x1,x2);
+
+		uint64_t flipped;
+		bool played = false;
+		NodeCounter++;
+
+		//Play on x1
+		if ((O & neighbour[x1]) && (flipped = flip(P, O, x1)))
+		{
+			if (-ZWS_2(O ^ flipped, P ^ (1ULL << x1) ^ flipped, NodeCounter, -alpha-1, x2, x3) > alpha)
+				return alpha+1;
+			played = true;
+		}
+
+		//Play on x2
+		if ((O & neighbour[x2]) && (flipped = flip(P, O, x2)))
+		{
+			if (-ZWS_2(O ^ flipped, P ^ (1ULL << x2) ^ flipped, NodeCounter, -alpha-1, x1, x3) > alpha)
+				return alpha+1;
+			played = true;
+		}
+
+		//Play on x3
+		if ((O & neighbour[x3]) && (flipped = flip(P, O, x3)))
+			return -ZWS_2(O ^ flipped, P ^ (1ULL << x3) ^ flipped, NodeCounter, -alpha-1, x1, x2);
+
+		if (played)
+			return alpha;
+
+		NodeCounter++;
+
+		//Play on x1
+		if ((P & neighbour[x1]) && (flipped = flip(O, P, x1)))
+		{
+			if (ZWS_2(P ^ flipped, O ^ (1ULL << x1) ^ flipped, NodeCounter, alpha, x2, x3) <= alpha)
+				return alpha;
+			played = true;
+		}
+
+		//Play on x2
+		if ((P & neighbour[x2]) && (flipped = flip(O, P, x2)))
+		{
+			if (ZWS_2(P ^ flipped, O ^ (1ULL << x2) ^ flipped, NodeCounter, alpha, x1, x3) <= alpha)
+				return alpha;
+			played = true;
+		}
+
+		//Play on x3
+		if ((P & neighbour[x3]) && (flipped = flip(O, P, x3)))
+			return ZWS_2(P ^ flipped, O ^ (1ULL << x3) ^ flipped, NodeCounter, alpha, x1, x2);
+
+		if (played)
+			return alpha+1;
+		else
+			return EvalGameOver(P, 3);
+	}
+	int ZWS_4(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x1, const unsigned int x2, const unsigned int x3, const unsigned int x4)
+	{
+		uint64_t flipped;
+		bool played = false;
+		++NodeCounter;
+
+		//Play on x1
+		if ((O & neighbour[x1]) && (flipped = flip(P, O, x1)))
+		{
+			if (-ZWS_3(O ^ flipped, P ^ (1ULL << x1) ^ flipped, NodeCounter, -alpha-1, x2, x3, x4) > alpha)
+				return alpha+1;
+			played = true;
+		}
+
+		//Play on x2
+		if ((O & neighbour[x2]) && (flipped = flip(P, O, x2)))
+		{
+			if (-ZWS_3(O ^ flipped, P ^ (1ULL << x2) ^ flipped, NodeCounter, -alpha-1, x1, x3, x4) > alpha)
+				return alpha+1;
+			played = true;
+		}
+
+		//Play on x3
+		if ((O & neighbour[x3]) && (flipped = flip(P, O, x3)))
+		{
+			if (-ZWS_3(O ^ flipped, P ^ (1ULL << x3) ^ flipped, NodeCounter, -alpha-1, x1, x2, x4) > alpha)
+				return alpha+1;
+			played = true;
+		}
+
+		//Play on x4
+		if ((O & neighbour[x4]) && (flipped = flip(P, O, x4)))
+			return -ZWS_3(O ^ flipped, P ^ (1ULL << x4) ^ flipped, NodeCounter, -alpha-1, x1, x2, x3);
+
+		if (played)
+			return alpha;
+
+		++NodeCounter;
+
+		//Play on x1
+		if ((P & neighbour[x1]) && (flipped = flip(O, P, x1)))
+		{
+			if (ZWS_3(P ^ flipped, O ^ (1ULL << x1) ^ flipped, NodeCounter, alpha, x2, x3, x4) <= alpha)
+				return alpha;
+			played = true;
+		}
+
+		//Play on x2
+		if ((P & neighbour[x2]) && (flipped = flip(O, P, x2)))
+		{
+			if (ZWS_3(P ^ flipped, O ^ (1ULL << x2) ^ flipped, NodeCounter, alpha, x1, x3, x4) <= alpha)
+				return alpha;
+			played = true;
+		}
+
+		//Play on x3
+		if ((P & neighbour[x3]) && (flipped = flip(O, P, x3)))
+		{
+			if (ZWS_3(P ^ flipped, O ^ (1ULL << x3) ^ flipped, NodeCounter, alpha, x1, x2, x4) <= alpha)
+				return alpha;
+			played = true;
+		}
+
+		//Play on x4
+		if ((P & neighbour[x4]) && (flipped = flip(O, P, x4)))
+			return ZWS_3(P ^ flipped, O ^ (1ULL << x4) ^ flipped, NodeCounter, alpha, x1, x2, x3);
+
+		if (played)
+			return alpha+1;
+		else
+			return EvalGameOver(P, 4);
+	}
+	int ZWS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
+	{
+		uint64_t BBEmpties = ~(P | O);
+		uint8_t x1 = BitScanLSB(BBEmpties);
+		return ZWS_1(P, O, NodeCounter, alpha, x1);
+	}
+	int ZWS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
+	{
+		uint64_t BBEmpties = ~(P | O);
+		uint8_t x1 = BitScanLSB(BBEmpties); RemoveLSB(BBEmpties);
+		uint8_t x2 = BitScanLSB(BBEmpties);
+		return ZWS_2(P, O, NodeCounter, alpha, x1, x2);
+	}
+	int ZWS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
+	{
+		uint64_t BBEmpties = ~(P | O);
+		uint8_t x1 = BitScanLSB(BBEmpties); RemoveLSB(BBEmpties);
+		uint8_t x2 = BitScanLSB(BBEmpties); RemoveLSB(BBEmpties);
+		uint8_t x3 = BitScanLSB(BBEmpties);
+		return ZWS_3(P, O, NodeCounter, alpha, x1, x2, x3);
+	}
+	int ZWS_4(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
+	{
+		uint64_t BBEmpties = ~(P | O);
+		//uint64_t parity = Parity(BBEmpties);
+		unsigned int x1 = BitScanLSB(BBEmpties); RemoveLSB(BBEmpties);
+		unsigned int x2 = BitScanLSB(BBEmpties); RemoveLSB(BBEmpties);
+		unsigned int x3 = BitScanLSB(BBEmpties); RemoveLSB(BBEmpties);
+		unsigned int x4 = BitScanLSB(BBEmpties);
+
+		//if (parity & quadrant_id_4_bit[x1]){ // Either 1 or 3 empties in x1's quadrant
+		//	if (parity & quadrant_id_4_bit[x2]){ // Either 1 or 3 empties in x2's quadrant
+		//		if (parity & quadrant_id_4_bit[x3]){ // Either 1 or 3 empties in x3's quadrant
+		//			if ((quadrant_id_4_bit[x1] == quadrant_id_4_bit[x3]) && (quadrant_id_4_bit[x1] == quadrant_id_4_bit[x4]))
+		//				std::swap(x1,x2);
+		//			else if ((quadrant_id_4_bit[x1] == quadrant_id_4_bit[x2]) && (quadrant_id_4_bit[x1] == quadrant_id_4_bit[x4]))
+		//				std::swap(x1,x3);
+		//			else if ((quadrant_id_4_bit[x1] == quadrant_id_4_bit[x2]) && (quadrant_id_4_bit[x1] == quadrant_id_4_bit[x3]))
+		//				std::swap(x1,x4);
+		//		}
+		//	}
+		//	else{ // (x1) (..) (x2 ..)
+		//		if (parity & quadrant_id_4_bit[x3]) // (x1) (x3) (x2 x4)
+		//			std::swap(x2,x3); // Now playing x1, x3, x2, x4
+		//		else // (x1) (x4) (x2 x3)
+		//			std::swap(x2,x4); // Now playing x1, x4, x3, x2
+		//	}
+		//}
+		//else { // Either 2 or 4 in x1's quadrant
+		//	if (parity & quadrant_id_4_bit[x2]){ // (x2) (..) (x1 ..)
+		//		if (parity & quadrant_id_4_bit[x3]) // (x2) (x3) (x1 x4)
+		//			std::swap(x1,x3); // Now playing x3, x2, x1, x4
+		//		else // (x2) (x4) (x1 x3)
+		//			std::swap(x1,x4); // Now playing x4, x2, x3, x1
+		//	}
+		//	else if (parity & quadrant_id_4_bit[x3]){ // (x3) (x4) (x1 x2)
+		//		std::swap(x1,x3);
+		//		std::swap(x2,x4); // Now playing x3, x4, x1, x2
+		//	}
+		//}
+
+		return ZWS_4(P, O, NodeCounter, alpha, x1, x2, x3, x4);
+	}
+	int ZWS_A(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int empties)
+	{
+		if (empties == 4) return ZWS_4(P, O, NodeCounter, alpha);
+
+		int score;
+		uint64_t flipped;
+		uint64_t BitBoardPossible = PossibleMoves(P, O);
+		unsigned long Move;
+		NodeCounter++;
+
+		if (!BitBoardPossible){
+			if (HasMoves(O, P))
+				return -ZWS_A(O, P, NodeCounter, -alpha-1, empties);
+			else //Game is over
+				return (EvalGameOver(P, empties) > alpha) ? alpha+1 : alpha; // Fail-Hard
+		}
+
+		//if (StabilityCutoff_ZWS(P, O, alpha)) return alpha;
+		
+		// #......#
+		// ........
+		// ..####..
+		// ..#..#..
+		// ..#..#..
+		// ..####..
+		// ........
+		// #......#
+		const uint64_t PATTERN_FIRST = 0x81003C24243C0081ULL;
+		const uint64_t BBParity = quadrant[Parity(P, O)];
+		uint64_t BBTmp;
+
+		BBTmp = BitBoardPossible &  BBParity &  PATTERN_FIRST;
+		while (BBTmp)
+		{
+			Move = BitScanLSB(BBTmp);
+			RemoveLSB(BBTmp);
+			flipped = flip(P, O, Move);
+			score = -ZWS_A(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1, empties-1);
+			if (score > alpha)
+				return alpha + 1;
+		}
+
+		BBTmp = BitBoardPossible &  BBParity & ~PATTERN_FIRST;
+		while (BBTmp)
+		{
+			Move = BitScanLSB(BBTmp);
+			RemoveLSB(BBTmp);
+			flipped = flip(P, O, Move);
+			score = -ZWS_A(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1, empties-1);
+			if (score > alpha)
+				return alpha + 1;
+		}
+
+		BBTmp = BitBoardPossible & ~BBParity;
+		while (BBTmp)
+		{
+			Move = BitScanLSB(BBTmp);
+			RemoveLSB(BBTmp);
+			flipped = flip(P, O, Move);
+			score = -ZWS_A(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1, empties-1);
+			if (score > alpha)
+				return alpha + 1;
+		}
+		return alpha;
+	}
+
+	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter)
+	{
+		NodeCounter++;
+		return EvalGameOver<0>(P);
+	}
+	int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x, CLine* pline)
+	{
+		int Score, DiffCount;
+		Score = (PopCount(P) << 1) - 63; // == PopCount(P) - PopCount(O)
+
+		NodeCounter++;
+		if (DiffCount = count_last_flip(P, x))
+		{
+			NodeCounter++;
+			if (pline) pline->line[0] = x;
+			return Score + DiffCount + 1;
+		}
+		else
+		{
+			if (!pline && (Score < alpha))
+				return alpha;
+			else if (DiffCount = count_last_flip(O, x))
+			{
+				NodeCounter += 2; // One for passing, one for playing
+				if (pline) pline->line[0] = x;
+				return Score - DiffCount - 1;
+			}
+			else
+			{
+				if (pline) pline->line[0] = 64;
+				return (Score > 0) ? Score + 1 : Score - 1;
+			}
+		}
+	}
+	int PVS_A(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, const int beta, const int empties, CLine* pline)
+	{
+		if (empties == 1)
+			return PVS_1(P, O, NodeCounter, alpha, pline);
+
+		bool SearchPV = true;
+		uint64_t flipped;
+		uint64_t BitBoardPossible = PossibleMoves(P, O);
+		unsigned long Move;
+		int score = -64;
+		NodeCounter++;
+
+		if (!BitBoardPossible){
+			if (HasMoves(O, P))
+				return -PVS_A(O, P, NodeCounter, -beta, -alpha, empties, pline);
+			else { //Game is over
+				if (pline) pline->NoMoves();
+				return BIND(EvalGameOver(P, Empties(P, O)), alpha, beta);
+			}
+		}
+
+		CLine * line = nullptr;
+		if (pline && pline->size) line = new CLine(pline->size-1);
+
+		CMoveListLight mvList(P, O, BitBoardPossible);
+		for (const auto& mv : mvList)
+		{
+			flipped = flip(P, O, mv);
+			if (SearchPV)
+				score = -PVS_A(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, empties-1, line);
+			else
+			{
+				     if (empties == 2) score = -ZWS_1(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1);
+				else if (empties == 3) score = -ZWS_2(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1);
+				else if (empties == 4) score = -ZWS_3(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1);
+				else if (empties == 5) score = -ZWS_4(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1);
+				else                   score = -ZWS_A(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1, empties-1);
+
+				if (score > alpha)
+					score = -PVS_A(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, empties-1, line);
+			}
+			if (score >= beta) {
+				if (line) pline->NewPV(mv, line);
+				delete line;
+				return beta;
+			}
+			if (score > alpha) {
+				if (line) pline->NewPV(mv, line);
+				alpha = score;
+				SearchPV = false;
+			}
+		}
+
+		delete line;
+		return alpha;
+	}
+}

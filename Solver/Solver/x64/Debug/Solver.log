@@ -1,0 +1,110 @@
+﻿Build started 22.07.2015 21:48:50.
+     1>Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Solver\Solver\Solver.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\game.cpp
+         game.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(208): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\hashtable.h(23): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\features.h(898): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\selectivity.h(37): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\selectivity.h(45): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(49): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(68): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(77): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(100): warning C4244: 'return' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>..\..\src\game.cpp(20): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>..\..\src\game.cpp(41): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>..\..\src\game.cpp(62): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>..\..\src\game.cpp(83): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>..\..\src\game.cpp(154): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(156): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(156): warning C4244: 'argument' : conversion from 'const unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(118): warning C4101: 'flipped' : unreferenced local variable
+     1>..\..\src\game.cpp(120): warning C4101: 'Move' : unreferenced local variable
+     1>..\..\src\game.cpp(222): warning C4244: 'argument' : conversion from 'const unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(230): warning C4244: 'argument' : conversion from 'const unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(236): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(238): warning C4244: 'argument' : conversion from 'const unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(240): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(240): warning C4244: 'argument' : conversion from 'const unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(246): warning C4244: '=' : conversion from 'const unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(255): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(181): warning C4101: 'flipped' : unreferenced local variable
+     1>..\..\src\game.cpp(183): warning C4101: 'Move' : unreferenced local variable
+     1>..\..\src\game.cpp(312): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(319): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(340): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(347): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(367): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(389): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(398): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(407): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(443): warning C4244: 'argument' : conversion from 'const uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(453): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(457): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(465): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(501): warning C4244: 'argument' : conversion from 'const uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(572): warning C4244: 'argument' : conversion from 'const uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(636): warning C4244: '=' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>..\..\src\game.cpp(853): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(859): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(860): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(866): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(867): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(868): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(953): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(964): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(975): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(999): warning C4244: '=' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>..\..\src\game.cpp(1047): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(1038): warning C4101: 'Move' : unreferenced local variable
+     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2297): warning C4996: 'std::_Copy_n': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2278) : see declaration of 'std::_Copy_n'
+                 c:\users\dohof_000\dropbox\my legacy\cassandra\src\line.h(13) : see reference to function template instantiation '_OutIt std::copy_n<uint8_t*,uint8_t,uint8_t*>(_InIt,_Diff,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=uint8_t *
+         ,            _InIt=uint8_t *
+         ,            _Diff=uint8_t
+                 ]
+     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2715): warning C4996: 'std::_Fill_n': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2701) : see declaration of 'std::_Fill_n'
+                 c:\users\dohof_000\dropbox\my legacy\cassandra\src\line.h(14) : see reference to function template instantiation '_OutIt std::fill_n<uint8_t*,uint8_t,int>(_OutIt,_Diff,const _Ty &)' being compiled
+                 with
+                 [
+                     _OutIt=uint8_t *
+         ,            _Diff=uint8_t
+         ,            _Ty=int
+                 ]
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(88): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+                 ..\..\src\game.cpp(700) : see reference to function template instantiation 'int EvalGameOver<2>(const uint64_t)' being compiled
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(95): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Solver\x64\Debug\Solver.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Solver\x64\Debug\Solver.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Solver\x64\Debug\Solver.lib" /MACHINE:X64 x64\Debug\configfile.obj
+         x64\Debug\count_last_flip.obj
+         x64\Debug\datamanipulation.obj
+         x64\Debug\endgame_negamax.obj
+         x64\Debug\features.obj
+         x64\Debug\flip_fast.obj
+         x64\Debug\game.obj
+         x64\Debug\generatepositions.obj
+         x64\Debug\hashtable.obj
+         x64\Debug\move.obj
+         x64\Debug\perft_basic.obj
+         x64\Debug\position.obj
+         x64\Debug\possiblemoves.obj
+         x64\Debug\possiblemoves_avx2.obj
+         x64\Debug\possiblemoves_avx512.obj
+         x64\Debug\possiblemoves_sse2.obj
+         x64\Debug\screen.obj
+         x64\Debug\search.obj
+         x64\Debug\solver.obj
+         x64\Debug\utility.obj
+         Solver.vcxproj -> C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Solver\x64\Debug\Solver.exe
+     1>Done Building Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Solver\Solver\Solver.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.06

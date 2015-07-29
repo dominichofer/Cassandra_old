@@ -1,0 +1,247 @@
+﻿Build started 09.06.2015 17:12:49.
+     1>Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Test\Test\Test.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /GT /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\flip_fast.cpp ..\..\src\perft_basic.cpp ..\..\src\possiblemoves.cpp ..\..\src\possiblemoves_avx2.cpp ..\..\src\possiblemoves_avx512.cpp ..\..\src\possiblemoves_sse2.cpp ..\..\src\test.cpp ..\..\src\utility.cpp
+         flip_fast.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(256): warning C4244: 'argument' : conversion from 'const uint64_t' to 'unsigned int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(341): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(343): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(344): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(345): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(346): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(347): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(348): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(349): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(360): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(363): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(369): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(371): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(372): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(373): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(374): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(375): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(376): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(377): warning C4172: returning address of local variable or temporary
+     1>..\..\src\flip_fast.cpp(803): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(827): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(855): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(961): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(988): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1017): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1492): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1502): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1516): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1526): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1541): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1566): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1591): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1616): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1641): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1651): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1666): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1680): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1694): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1704): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1718): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1728): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1743): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1768): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1793): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1818): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1843): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1853): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1868): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>..\..\src\flip_fast.cpp(1882): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+         perft_basic.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(256): warning C4244: 'argument' : conversion from 'const uint64_t' to 'unsigned int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(341): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(343): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(344): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(345): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(346): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(347): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(348): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(349): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(360): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(363): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(369): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(371): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(372): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(373): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(374): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(375): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(376): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(377): warning C4172: returning address of local variable or temporary
+     1>..\..\src\perft_basic.cpp(11): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\perft_basic.cpp(47): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\perft_basic.cpp(63): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\perft_basic.cpp(95): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\perft_basic.cpp(126): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+         possiblemoves.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(256): warning C4244: 'argument' : conversion from 'const uint64_t' to 'unsigned int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(341): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(343): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(344): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(345): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(346): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(347): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(348): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(349): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(360): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(363): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(369): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(371): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(372): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(373): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(374): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(375): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(376): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(377): warning C4172: returning address of local variable or temporary
+         possiblemoves_avx2.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(256): warning C4244: 'argument' : conversion from 'const uint64_t' to 'unsigned int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(341): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(343): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(344): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(345): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(346): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(347): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(348): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(349): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(360): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(363): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(369): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(371): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(372): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(373): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(374): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(375): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(376): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(377): warning C4172: returning address of local variable or temporary
+         possiblemoves_avx512.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(256): warning C4244: 'argument' : conversion from 'const uint64_t' to 'unsigned int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(341): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(343): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(344): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(345): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(346): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(347): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(348): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(349): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(360): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(363): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(369): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(371): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(372): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(373): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(374): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(375): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(376): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(377): warning C4172: returning address of local variable or temporary
+         possiblemoves_sse2.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(256): warning C4244: 'argument' : conversion from 'const uint64_t' to 'unsigned int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(341): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(343): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(344): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(345): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(346): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(347): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(348): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(349): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(360): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(363): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(369): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(371): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(372): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(373): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(374): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(375): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(376): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(377): warning C4172: returning address of local variable or temporary
+         test.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(256): warning C4244: 'argument' : conversion from 'const uint64_t' to 'unsigned int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(341): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(343): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(344): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(345): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(346): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(347): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(348): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(349): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(360): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(363): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(369): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(371): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(372): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(373): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(374): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(375): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(376): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(377): warning C4172: returning address of local variable or temporary
+         utility.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(256): warning C4244: 'argument' : conversion from 'const uint64_t' to 'unsigned int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(341): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(343): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(344): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(345): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(346): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(347): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(348): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(349): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(360): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(363): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(369): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(371): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(372): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(373): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(374): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(375): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(376): warning C4172: returning address of local variable or temporary
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\macros_hell.h(377): warning C4172: returning address of local variable or temporary
+     1>..\..\src\utility.cpp(110): warning C4244: '=' : conversion from '__int64' to 'char', possible loss of data
+     1>..\..\src\utility.cpp(112): warning C4244: '=' : conversion from '__int64' to 'char', possible loss of data
+     1>..\..\src\utility.cpp(113): warning C4244: '=' : conversion from '__int64' to 'char', possible loss of data
+     1>..\..\src\utility.cpp(114): warning C4244: '=' : conversion from '__int64' to 'char', possible loss of data
+     1>..\..\src\utility.cpp(115): warning C4244: '=' : conversion from '__int64' to 'char', possible loss of data
+     1>..\..\src\utility.cpp(129): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(130): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(131): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(133): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(134): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(135): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(136): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(137): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(138): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(140): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>..\..\src\utility.cpp(157): warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\time.inl(86) : see declaration of 'ctime'
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Test\x64\Release\Test.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Test\x64\Release\Test.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Test\x64\Release\Test.lib" /MACHINE:X64 x64\Release\flip_fast.obj
+         x64\Release\flip_loop.obj
+         x64\Release\perft_basic.obj
+         x64\Release\possiblemoves.obj
+         x64\Release\possiblemoves_avx2.obj
+         x64\Release\possiblemoves_avx512.obj
+         x64\Release\possiblemoves_sse2.obj
+         x64\Release\test.obj
+         x64\Release\utility.obj
+         Generating code
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\possiblemoves_avx2.cpp(88): warning C4752: found Intel(R) Advanced Vector Extensions; consider using /arch:AVX
+         Finished generating code
+         Test.vcxproj -> C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Test\x64\Release\Test.exe
+     1>Done Building Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Test\Test\Test.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.79

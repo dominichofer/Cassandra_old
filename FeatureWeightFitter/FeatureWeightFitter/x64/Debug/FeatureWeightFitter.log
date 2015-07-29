@@ -1,0 +1,65 @@
+﻿Build started 19.06.2015 01:59:23.
+     1>Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\FeatureWeightFitter\FeatureWeightFitter.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\featureweightfitter.cpp
+         featureweightfitter.cpp
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\features.h(896): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\featureweightfitter.cpp(37): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
+     1>..\..\src\featureweightfitter.cpp(66): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
+     1>..\..\src\featureweightfitter.cpp(67): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
+     1>..\..\src\featureweightfitter.cpp(98): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
+     1>..\..\src\featureweightfitter.cpp(99): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\featureweightfitter.h(65): warning C4267: 'argument' : conversion from 'size_t' to 'unsigned int', possible loss of data
+                 c:\users\dohof_000\dropbox\my legacy\cassandra\src\featureweightfitter.h(64) : while compiling class template member function 'void CMatrix_CSR<uint8_t,unsigned int>::endRow(void)'
+                 ..\..\src\featureweightfitter.cpp(57) : see reference to function template instantiation 'void CMatrix_CSR<uint8_t,unsigned int>::endRow(void)' being compiled
+                 ..\..\src\featureweightfitter.cpp(42) : see reference to class template instantiation 'CMatrix_CSR<uint8_t,unsigned int>' being compiled
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\featureweightfitter.h(115): warning C4018: '<' : signed/unsigned mismatch
+                 ..\..\src\featureweightfitter.cpp(71) : see reference to function template instantiation 'std::vector<size_t,std::allocator<_Ty>> CMatrix_CSR<uint8_t,unsigned int>::ATx<size_t>(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
+                 with
+                 [
+                     _Ty=size_t
+                 ]
+                 ..\..\src\featureweightfitter.cpp(71) : see reference to function template instantiation 'std::vector<size_t,std::allocator<_Ty>> CMatrix_CSR<uint8_t,unsigned int>::ATx<size_t>(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
+                 with
+                 [
+                     _Ty=size_t
+                 ]
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\featureweightfitter.h(96): warning C4018: '<' : signed/unsigned mismatch
+                 ..\..\src\featureweightfitter.cpp(135) : see reference to function template instantiation 'std::vector<double,std::allocator<_Ty>> CMatrix_CSR<uint8_t,unsigned int>::operator *<double>(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
+                 with
+                 [
+                     _Ty=double
+                 ]
+                 ..\..\src\featureweightfitter.cpp(135) : see reference to function template instantiation 'std::vector<double,std::allocator<_Ty>> CMatrix_CSR<uint8_t,unsigned int>::operator *<double>(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
+                 with
+                 [
+                     _Ty=double
+                 ]
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\featureweightfitter.h(142): warning C4018: '<' : signed/unsigned mismatch
+                 ..\..\src\featureweightfitter.cpp(207) : see reference to function template instantiation 'std::vector<double,std::allocator<_Ty>> CMatrix_CSR<uint8_t,unsigned int>::ATAx<double>(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
+                 with
+                 [
+                     _Ty=double
+                 ]
+                 ..\..\src\featureweightfitter.cpp(207) : see reference to function template instantiation 'std::vector<double,std::allocator<_Ty>> CMatrix_CSR<uint8_t,unsigned int>::ATAx<double>(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
+                 with
+                 [
+                     _Ty=double
+                 ]
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\x64\Debug\FeatureWeightFitter.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\x64\Debug\FeatureWeightFitter.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\x64\Debug\FeatureWeightFitter.lib" /MACHINE:X64 x64\Debug\datamanipulation.obj
+         x64\Debug\features.obj
+         x64\Debug\featureweightfitter.obj
+         x64\Debug\flip_fast.obj
+         x64\Debug\position.obj
+         x64\Debug\possiblemoves.obj
+         x64\Debug\possiblemoves_avx2.obj
+         x64\Debug\possiblemoves_avx512.obj
+         x64\Debug\possiblemoves_sse2.obj
+         x64\Debug\utility.obj
+         FeatureWeightFitter.vcxproj -> C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\x64\Debug\FeatureWeightFitter.exe
+     1>Done Building Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\FeatureWeightFitter\FeatureWeightFitter.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.16

@@ -1,0 +1,9 @@
+﻿Build started 18.06.2015 17:24:01.
+     1>Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Benchmark\Benchmark\Benchmark.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         Benchmark.vcxproj -> C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Benchmark\x64\Release\Benchmark.exe
+     1>Done Building Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Benchmark\Benchmark\Benchmark.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.04
