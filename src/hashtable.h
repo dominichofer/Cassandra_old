@@ -91,3 +91,4 @@ private:
 };
 
 extern CHashTable TT;
+extern CHashTable TTPV;

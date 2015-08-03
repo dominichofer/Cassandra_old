@@ -1,4 +1,4 @@
-﻿Build started 29.07.2015 12:37:04.
+﻿Build started 03.08.2015 20:30:23.
      1>Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\Solver\Solver\Solver.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(364,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
      1>ClCompile:
@@ -10,40 +10,40 @@
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
      1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\selectivity.h(45): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(49): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(68): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(76): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(99): warning C4244: 'return' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(77): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(100): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(112): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\game.h(135): warning C4244: 'return' : conversion from 'uint64_t' to 'int', possible loss of data
      1>..\..\src\solver.cpp(59): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(96): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(102): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(119): warning C4018: '<' : signed/unsigned mismatch
-     1>..\..\src\solver.cpp(237): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(247): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(253): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(269): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(279): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(283): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(299): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(309): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(315): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(121): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(127): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(144): warning C4018: '<' : signed/unsigned mismatch
+     1>..\..\src\solver.cpp(270): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\src\solver.cpp(280): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(286): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(302): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\src\solver.cpp(312): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(316): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(332): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\src\solver.cpp(342): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(348): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
      1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\worker.h(63): warning C4309: 'initializing' : truncation of constant value
                  c:\users\dohof_000\dropbox\my legacy\cassandra\src\worker.h(61) : while compiling class template member function 'int CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>::ConnectSock(void)'
                  c:\users\dohof_000\dropbox\my legacy\cassandra\src\worker.h(133) : see reference to function template instantiation 'int CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>::ConnectSock(void)' being compiled
-                 ..\..\src\solver.cpp(93) : see reference to class template instantiation 'CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>' being compiled
+                 ..\..\src\solver.cpp(118) : see reference to class template instantiation 'CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>' being compiled
      1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\worker.h(64): warning C4244: '=' : conversion from 'SOCKET' to 'int', possible loss of data
      1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\worker.h(68): warning C4309: 'return' : truncation of constant value
      1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\worker.h(80): warning C4309: 'return' : truncation of constant value
      1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\datamanipulation.h(94): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-                 ..\..\src\solver.cpp(233) : see reference to function template instantiation 'std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> read_vector<CDataset_Position_Score_PV>(const std::string &,size_t)' being compiled
+                 ..\..\src\solver.cpp(266) : see reference to function template instantiation 'std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> read_vector<CDataset_Position_Score_PV>(const std::string &,size_t)' being compiled
                  with
                  [
                      _Ty=CDataset_Position_Score_PV
                  ]
      1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\datamanipulation.h(119): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-                 ..\..\src\solver.cpp(258) : see reference to function template instantiation 'void write_to_file<CDataset_Position_Score_PV>(const std::string &,const std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> &)' being compiled
+                 ..\..\src\solver.cpp(291) : see reference to function template instantiation 'void write_to_file<CDataset_Position_Score_PV>(const std::string &,const std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> &)' being compiled
                  with
                  [
                      _Ty=CDataset_Position_Score_PV
@@ -78,4 +78,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:07.21
+Time Elapsed 00:00:07.26
