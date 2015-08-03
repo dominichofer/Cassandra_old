@@ -24,31 +24,31 @@ void signalHandler(int signum) { user_wants_to_quit.store(true, std::memory_orde
 void TTUsePV(uint64_t P, uint64_t O, int depth, const int selectivity, const int score, const uint8_t PV1, const uint8_t PV2, const uint8_t PV3, const uint8_t PV4, const uint8_t PV5)
 {
 	if (PV1 == 64) return;
-	UpdateTT(P, O, 0, depth, selectivity, score, score, PV1, 64);
+	UpdateTT(P, O, 0, score, score, score, depth, selectivity, PV1, 64, 64);
 	if (!HasMoves(P, O)) std::swap(P, O);
 	PlayStone(P, O, PV1); depth--;
 
 	if (PV2 == 64) return;
-	UpdateTT(P, O, 0, depth, selectivity, score, score, PV2, 64);
+	UpdateTT(P, O, 0, score, score, score, depth, selectivity, PV2, 64, 64);
 	if (!HasMoves(P, O)) std::swap(P, O);
 	PlayStone(P, O, PV2); depth--;
 
 	if (PV3 == 64) return;
-	UpdateTT(P, O, 0, depth, selectivity, score, score, PV3, 64);
+	UpdateTT(P, O, 0, score, score, score, depth, selectivity, PV3, 64, 64);
 	if (!HasMoves(P, O)) std::swap(P, O);
 	PlayStone(P, O, PV3); depth--;
 
 	if (PV4 == 64) return;
-	UpdateTT(P, O, 0, depth, selectivity, score, score, PV4, 64);
+	UpdateTT(P, O, 0, score, score, score, depth, selectivity, PV4, 64, 64);
 	if (!HasMoves(P, O)) std::swap(P, O);
 	PlayStone(P, O, PV4); depth--;
 
 	if (PV5 == 64) return;
-	UpdateTT(P, O, 0, depth, selectivity, score, score, PV5, 64);
+	UpdateTT(P, O, 0, score, score, score, depth, selectivity, PV5, 64, 64);
 	if (!HasMoves(P, O)) std::swap(P, O);
 	PlayStone(P, O, PV5); depth--;
-
-	UpdateTT(P, O, 0, depth, selectivity, score, score, 64, 64);
+	
+	UpdateTT(P, O, 0, score, score, score, depth, selectivity, 64, 64, 64);
 }
 
 void FForum_Benchmark(const std::string & filename)
@@ -78,10 +78,35 @@ void FForum()
 	CountLastFlip::Initialize();
 	Features::Initialize();
 	TT = CHashTable(1024 * 1024 * 1024 / sizeof(CHashTable::NodeType));
+	//TTPV = CHashTable(1024 * 1024 * 1024 / 16 / sizeof(CHashTable::NodeType));
 	omp_set_num_threads(1);
 	FForum_Benchmark("C:\\Cassandra\\pos\\fforum-1-19.obf");
 	FForum_Benchmark("C:\\Cassandra\\pos\\fforum-20-39.obf");
 	FForum_Benchmark("C:\\Cassandra\\pos\\fforum-40-59.obf");
+	FForum_Benchmark("C:\\Cassandra\\pos\\fforum-60-79.obf");
+	TT.print_stats();
+	//TTPV.print_stats();
+}
+
+void SolveStartPosition()
+{
+	verbose = 3;
+	ConfigFile::Initialize("C:\\Cassandra\\solver.exe", "config.ini");
+	CountLastFlip::Initialize();
+	Features::Initialize();
+	TT = CHashTable(1024 * 1024 * 1024 / sizeof(CHashTable::NodeType));
+	omp_set_num_threads(1);
+
+	Screen.Initialize(0, 0);
+	Screen.printHead();
+	CSearch search(0x0000241838240000ULL, 0x006E5A26445A6E00ULL);
+	//PlayStone(search.P, search.O, BitScanLSB(PossibleMoves(search.P, search.O)));
+	Screen.printPosition(0, search.P, search.O);
+	search.Evaluate();
+	search.print_result();
+	Screen.printTail();
+	Screen.printSummary(search.NodeCounter);
+
 	TT.print_stats();
 }
 
@@ -160,7 +185,14 @@ void print_help()
 
 int main(int argc, char* argv[])
 {
-	FForum(); return 0;
+	//int tmp = 4;
+	//printf("Preheating CPU");
+	//for (unsigned int i = 0; i < 100000000; i++)
+	//	tmp = (static_cast<int>(std::exp(std::sin(tmp))) * 123456789 + 987) / 101 + 13;
+	//printf(" to %dC.\n", tmp % 100);
+
+	//SolveStartPosition(); return 0;
+	//FForum(); return 0;
 
 	uint64_t NodeCounter = 0;
 	unsigned int index = 0;
@@ -205,6 +237,7 @@ int main(int argc, char* argv[])
 	Features::Initialize();
 	CountLastFlip::Initialize();
 	TT = CHashTable(ram / sizeof(CHashTable::NodeType));
+	TTPV = CHashTable(ram / 8 / sizeof(CHashTable::NodeType));
 	omp_set_num_threads(t);
 
 	if (port != 0) // Distributed computing mode

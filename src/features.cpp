@@ -139,7 +139,7 @@ int EvaluateFeatures(const uint64_t P, const uint64_t O)
 	if (PATTERN_C3p2 ) sum += Features::PatVecC3p2 [BoxIndex].score(P, O);
 	if (PATTERN_Q0   ) sum += Features::PatVecQ0   [BoxIndex].score(P, O);
 	if (PATTERN_B5   ) sum += Features::PatVecB5   [BoxIndex].score(P, O);
-	return RoundInt(sum);
+	return BIND(RoundInt(sum), -64, 64);
 }
 int EvaluateFeatures(const uint64_t P, const uint64_t O, std::vector<float>& scores)
 {

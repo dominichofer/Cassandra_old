@@ -1,6 +1,7 @@
 #include "hashtable.h"
 
 CHashTable TT;
+CHashTable TTPV;
 
 CTwoNode& CTwoNode::operator=(const CTwoNode& other)
 {

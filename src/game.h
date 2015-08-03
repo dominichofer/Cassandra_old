@@ -20,20 +20,48 @@ inline bool UseTTValue(const CHashTableValueType& ttValue, const int alpha, cons
 {
 	if ((ttValue.depth >= depth) && (ttValue.selectivity <= selectivity))
 	{
-		if (ttValue.alpha >= beta)         { score = beta;          return true; }
-		if (ttValue.beta <= alpha)         { score = alpha;         return true; }
+		if (ttValue.alpha >= beta)         { score = ttValue.alpha; return true; }
+		if (ttValue.beta <= alpha)         { score = ttValue.beta;  return true; }
 		if (ttValue.alpha == ttValue.beta) { score = ttValue.alpha; return true; }
 	}
 	return false;
 }
 
 // Update Transposition Table
-inline void UpdateTT(const uint64_t P, const uint64_t O, const uint64_t NodeCounter, const int alpha, const int beta, const int depth, const int selectivity, const uint8_t PV, const uint8_t AV)
+inline void UpdateTT(const uint64_t P, const uint64_t O, const uint64_t NodeCounter, const int alpha, const int beta, const int score, const int depth, const int selectivity, const uint8_t BestMove, const uint8_t PV, const uint8_t AV)
 { 
-	TT.Update(P, O, CHashTableValueType(NodeCounter, depth, selectivity, alpha, beta, PV, AV));
+	if (score >= beta)
+		TT.Update(P, O, CHashTableValueType(NodeCounter, depth, selectivity, score, +64, BestMove, BestMove == PV ? AV : PV));
+	else if (score <= alpha)
+		TT.Update(P, O, CHashTableValueType(NodeCounter, depth, selectivity, -64, score, BestMove, BestMove == PV ? AV : PV));
+	else
+		TT.Update(P, O, CHashTableValueType(NodeCounter, depth, selectivity, score, score, BestMove, BestMove == PV ? AV : PV));
 }
 
-inline bool StabilityCutoff_ZWS(const uint64_t P, const uint64_t O, const int alpha)
+// Update Transposition Table
+inline void UpdateTTPV(const uint64_t P, const uint64_t O, const uint64_t NodeCounter, const int alpha, const int beta, const int score, const int depth, const int selectivity, const uint8_t BestMove, const uint8_t PV, const uint8_t AV)
+{ 
+	if (score >= beta)
+		TTPV.Update(P, O, CHashTableValueType(NodeCounter, depth, selectivity, score, +64, BestMove, BestMove == PV ? AV : PV));
+	else if (score <= alpha)
+		TTPV.Update(P, O, CHashTableValueType(NodeCounter, depth, selectivity, -64, score, BestMove, BestMove == PV ? AV : PV));
+	else
+		TTPV.Update(P, O, CHashTableValueType(NodeCounter, depth, selectivity, score, score, BestMove, BestMove == PV ? AV : PV));
+}
+
+// Look Up Transposition Table
+inline bool LookUpTT(const uint64_t P, const uint64_t O, CHashTableValueType& ttValue)
+{ 
+	return TT.LookUp(P, O, ttValue);
+}
+
+// Look Up Transposition Table
+inline bool LookUpTTPV(const uint64_t P, const uint64_t O, CHashTableValueType& ttValue)
+{ 
+	return TTPV.LookUp(P, O, ttValue);
+}
+
+inline bool StabilityCutoff_ZWS(const uint64_t P, const uint64_t O, const int alpha, int& score)
 {
 	static const char stability_cutoff_limits[64] = {
 		 99, 99, 99, 99,  6,  8, 10, 12,
@@ -46,13 +74,17 @@ inline bool StabilityCutoff_ZWS(const uint64_t P, const uint64_t O, const int al
 	};
 	if (alpha >= stability_cutoff_limits[Empties(P, O)]) //Worth checking stability
 	{
-		int score = 64 - 2 * PopCount(StableStones(P, O));
-		return score <= alpha;
+		int value = 64 - 2 * PopCount(StableStones(P, O));
+		if (value <= alpha)
+		{
+			score = value;
+			return true;
+		}
 	}
 	return false;
 }
 
-inline bool StabilityCutoff_PVS(const uint64_t P, const uint64_t O, const int alpha, const int beta)
+inline bool StabilityCutoff_PVS(const uint64_t P, const uint64_t O, const int alpha, int& score)
 {
 	static const char stability_cutoff_limits[64] = {
 		 99, 99, 99, 99, -2,  0,  2,  4,
@@ -63,10 +95,14 @@ inline bool StabilityCutoff_PVS(const uint64_t P, const uint64_t O, const int al
 		 56, 56, 58, 58, 60, 60, 62, 62,
 		 99, 99, 99, 99, 99, 99, 99, 99,
 	};
-	if (beta >= stability_cutoff_limits[Empties(P, O)]) //Worth checking stability
+	if (alpha >= stability_cutoff_limits[Empties(P, O)]) //Worth checking stability
 	{
-		int score = 64 - 2 * PopCount(StableStones(P, O));
-		return score <= alpha;
+		int value = 64 - 2 * PopCount(StableStones(P, O));
+		if (value <= alpha)
+		{
+			score = value;
+			return true;
+		}
 	}
 	return false;
 }
@@ -100,12 +136,12 @@ template <> inline int EvalGameOver<0>(const uint64_t P) { return (PopCount(P) <
 
 namespace Midgame
 {
-	int ZWS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
+	int ZWS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter);
 	int ZWS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	int ZWS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	int ZWS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	
-	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta);
+	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter);
 	int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter,       int alpha, const int beta, CLine* pline = nullptr);
 	int PVS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter,       int alpha, const int beta, CLine* pline = nullptr);
 	int PVS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter,       int alpha, const int beta, CLine* pline = nullptr);
@@ -123,10 +159,10 @@ namespace Endgame
 	int ZWS_4(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	int ZWS_A(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int empties);
 
-	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta);
-	int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta, const unsigned int x, CLine* pline = nullptr);
+	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter);
+	int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x, CLine* pline = nullptr);
 	int PVS_A(const uint64_t P, const uint64_t O, uint64_t& NodeCounter,       int alpha, const int beta, const int empties, CLine* pline = nullptr);
 	
-	inline int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta, CLine* pline = nullptr) 
-	{ return PVS_1(P, O, NodeCounter, alpha, beta, BitScanLSB(~(P | O)), pline); }
+	inline int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, CLine* pline = nullptr) 
+	{ return PVS_1(P, O, NodeCounter, alpha, BitScanLSB(~(P | O)), pline); }
 }

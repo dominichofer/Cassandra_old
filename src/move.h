@@ -19,6 +19,7 @@ public:
 		int Value;
 	};
 
+	CMoveList() {}
 	CMoveList(uint64_t P, uint64_t O, uint64_t& NodeCounter, uint64_t BitBoardPossible, int depth, const CHashTableValueType & ttValue, const bool PVS);
 	CMoveList(uint64_t P, uint64_t O, uint64_t BitBoardPossible, const bool PVS);
 
@@ -28,7 +29,7 @@ public:
 	inline std::vector<CMove>::const_iterator   cend() const { return m_Moves.cend(); }
 	inline std::size_t size() const { return m_Moves.size(); }
 
-	inline unsigned long BestMove() { return m_Moves[0].move; }
+	inline unsigned long BestMove() { return size() ? m_Moves[0].move : 64; }
 	inline unsigned long NextBestMove() { return size() > 1 ? m_Moves[1].move : 64; }
 
 	inline void sort() { std::sort(m_Moves.begin(), m_Moves.end(), [](const CMove& Move1, const CMove& Move2){ return Move1.Value > Move2.Value; }); }

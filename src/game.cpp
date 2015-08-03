@@ -101,58 +101,55 @@ int ZWS  (const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int a
 	if (depth == 3)                           return Midgame::ZWS_3(P, O, NodeCounter, alpha);
 
 	int score;
+	int bestscore = -64;
+	uint8_t BestMove = 64;
 	uint64_t BitBoardPossible = PossibleMoves(P, O);
+	uint64_t LocalNodeCounter = NodeCounter;
+	CHashTableValueType ttValue;
 	NodeCounter++;
 
 	if (!BitBoardPossible){
 		if (HasMoves(O, P))
-			return -ZWS(O, P, NodeCounter, -alpha-1, selectivity, depth, empties);
-		else //Game is over
-			return (EvalGameOver(P, empties) > alpha) ? alpha+1 : alpha; // Fail-Hard
+			return -ZWS(O, P, NodeCounter, -alpha - 1, selectivity, depth, empties);
+		else
+			return EvalGameOver(P, empties);
 	}
 
-	if (StabilityCutoff_ZWS(P, O, alpha)) return alpha;
+	if (StabilityCutoff_ZWS(P, O, alpha, score)) return score;
+	if (LookUpTT(P, O, ttValue) && UseTTValue(ttValue, alpha, alpha+1, depth, selectivity, score)) return score;
 	if (MPC(P, O, NodeCounter, alpha, selectivity, depth, empties, score)) return score;
-	
-	CHashTableValueType ttValue;
-	if (TT.LookUp(P, O, ttValue) && UseTTValue(ttValue, alpha, alpha+1, depth, selectivity, score)) return score;
+
     //else if ((depth > 6) && (empties > 14)) // IID
     //{
     //    Eval(P, O, NodeCounter, alpha, alpha+1, selectivity, depth == empties ? empties-12 : depth-4, empties);
-    //    if (TT.LookUp(P, O, ttValue))
+    //    if (LookUpTT(P, O, ttValue))
     //        if (UseTTValue(ttValue, alpha, alpha+1, depth, selectivity, score))
     //            return score;
     //}
 	
-	uint64_t LocalNodeCounter = NodeCounter;
 	CMoveList mvList(P, O, NodeCounter, BitBoardPossible, depth, ttValue, false);
-	for (const auto& mv : mvList)
+	for (const auto& mv : mvList) // ETC
 	{
-		if (StabilityCutoff_ZWS(mv.P, mv.O, -alpha-1)) return alpha+1;
-		if (TT.LookUp(mv.P, mv.O, ttValue) && UseTTValue(ttValue, -alpha - 1, -alpha, depth - 1, selectivity, score) && (-score > alpha))
+		if (StabilityCutoff_ZWS(mv.P, mv.O, -alpha-1, score)) return -score;
+		if (LookUpTT(mv.P, mv.O, ttValue) && UseTTValue(ttValue, -alpha - 1, -alpha, depth - 1, selectivity, score) && (-score > alpha))
 		{
-            if (mv.move == mvList.BestMove())
-                UpdateTT(P, O, 0, alpha+1, 64, depth, selectivity, mvList.BestMove(), mvList.NextBestMove());
-            else
-                UpdateTT(P, O, 0, alpha+1, 64, depth, selectivity, mv.move, mvList.BestMove());
-			return alpha + 1;
+			UpdateTT(P, O, 0, alpha, alpha+1, -score, depth, selectivity, mv.move, mvList.BestMove(), mvList.NextBestMove());
+			return -score;
 		}
 	}
 	for (const auto& mv : mvList)
 	{
 		score = -ZWS(mv.P, mv.O, NodeCounter, -alpha-1, selectivity, depth-1, empties-1);
-		if (score > alpha)
+		if (score > bestscore)
 		{
-            if (mv.move == mvList.BestMove())
-                UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha+1, 64, depth, selectivity, mvList.BestMove(), mvList.NextBestMove());
-            else
-                UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha+1, 64, depth, selectivity, mv.move, mvList.BestMove());
-			return alpha + 1;
+			bestscore = score;
+			BestMove = mv.move;
+			if (score > alpha) break;
 		}
 	}
-
-	UpdateTT(P, O, NodeCounter-LocalNodeCounter, -64, alpha, depth, selectivity, 64, 64);
-	return alpha;
+	
+	UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha, alpha+1, bestscore, depth, selectivity, BestMove, mvList.BestMove(), mvList.NextBestMove());
+	return bestscore;
 }
 
 int PVS  (const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, const int beta, const int selectivity, const int depth, const int empties, CLine* pline)
@@ -168,26 +165,26 @@ int PVS  (const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, 
 	if ((empties == A) && (depth == empties)) return Endgame::PVS_A(P, O, NodeCounter, alpha, beta, empties, pline);
 	if (depth == 3)                           return Midgame::PVS_3(P, O, NodeCounter, alpha, beta, pline);
 
-	bool SearchPV = true;
+	const int original_alpha = alpha;
 	int score;
+	int bestscore = -65;
 	uint8_t BestMove = 64;
 	uint64_t BitBoardPossible = PossibleMoves(P, O);
+	uint64_t LocalNodeCounter = NodeCounter;
+	CHashTableValueType ttValue;
 	NodeCounter++;
 
 	if (!BitBoardPossible){
 		if (HasMoves(O, P))
 			return -PVS(O, P, NodeCounter, -beta, -alpha, selectivity, depth, empties, pline);
-		else { //Game is over
+		else {
 			if (pline) pline->NoMoves();
-			return BIND(EvalGameOver(P, empties), alpha, beta); // Fail-Hard
+			return EvalGameOver(P, empties);
 		}
 	}
 
-	if (StabilityCutoff_PVS(P, O, alpha, beta)) return alpha;
-	
-	uint64_t LocalNodeCounter = NodeCounter;
-	CHashTableValueType ttValue;
-	if (TT.LookUp(P, O, ttValue))
+	if (StabilityCutoff_PVS(P, O, alpha, score)) return score;
+	if (LookUpTT(P, O, ttValue))
 	{
 		if (!pline)
 			if (UseTTValue(ttValue, alpha, beta, depth, selectivity, score))
@@ -196,7 +193,7 @@ int PVS  (const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, 
 	else if ((depth >= 5) && (empties >= 12)) // IID
 	{
 		Eval(P, O, NodeCounter, alpha, beta, selectivity, depth == empties ? empties-10 : depth-2, empties);
-		if (TT.LookUp(P, O, ttValue))
+		if (LookUpTT(P, O, ttValue))
 			if (!pline)
 				if (UseTTValue(ttValue, alpha, beta, depth, selectivity, score))
 					return score;
@@ -207,46 +204,27 @@ int PVS  (const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, 
 	CMoveList mvList(P, O, NodeCounter, BitBoardPossible, depth, ttValue, true);
 	for (const auto& mv : mvList)
 	{
-		if (SearchPV)
-		{
+		if (bestscore == -65)
 			score = -PVS(mv.P, mv.O, NodeCounter, -beta, -alpha, selectivity, depth-1, empties-1, line);
-			if (line) pline->NewPV(mv.move, line);
-		}
 		else
 		{
 			score = -ZWS(mv.P, mv.O, NodeCounter, -alpha-1, selectivity, depth-1, empties-1);
-			if (score > alpha)
-			{
+			if (score > alpha && score < beta)
 				score = -PVS(mv.P, mv.O, NodeCounter, -beta, -alpha, selectivity, depth-1, empties-1, line);
-				if (line) pline->NewPV(mv.move, line);
-			}
 		}
-		if (score >= beta)
+		if (score > bestscore)
 		{
-			if (mv.move == mvList.BestMove())
-                UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, depth, selectivity, mvList.BestMove(), mvList.NextBestMove());
-            else if (BestMove != 64)
-                UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, depth, selectivity, mv.move, BestMove);
-			else
-                UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, depth, selectivity, mv.move, mvList.BestMove());
-			delete line;
-			return beta;
-		}
-		if (score > alpha)
-		{
+			bestscore = score;
 			BestMove = mv.move;
-			alpha = score;
-			SearchPV = false;
+			if (line) pline->NewPV(mv.move, line);
+			if (score >= beta) break;
+			if (score > alpha) alpha = score;
 		}
 	}
 	
-	if (SearchPV)
-		UpdateTT(P, O, NodeCounter-LocalNodeCounter, -64, alpha, depth, selectivity, 64, 64);
-	else
-		UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha, alpha, depth, selectivity, BestMove, mvList.BestMove() == BestMove ? mvList.NextBestMove() : mvList.BestMove());
-
+	UpdateTT(P, O, NodeCounter-LocalNodeCounter, original_alpha, beta, bestscore, depth, selectivity, BestMove, mvList.BestMove(), mvList.NextBestMove());
 	delete line;
-	return alpha;
+	return bestscore;
 }
 
 int Eval(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta, const int selectivity, const int depth, const int empties, CLine* pline)
@@ -261,13 +239,13 @@ int Eval(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int al
 
 	if (empties <= A)
 	{
-		     if (empties == 0) return Endgame::PVS_0(P, O, NodeCounter, alpha, beta);
-		else if (empties == 1) return Endgame::PVS_1(P, O, NodeCounter, alpha, beta, pline);
+		     if (empties == 0) return Endgame::PVS_0(P, O, NodeCounter);
+		else if (empties == 1) return Endgame::PVS_1(P, O, NodeCounter, alpha, pline);
 		else                   return Endgame::PVS_A(P, O, NodeCounter, alpha, beta, empties, pline);
 	}
 	else if (depth <= 3)
 	{
-		     if (depth == 0) return Midgame::PVS_0(P, O, NodeCounter, alpha, beta);
+		     if (depth == 0) return Midgame::PVS_0(P, O, NodeCounter);
 		else if (depth == 1) return Midgame::PVS_1(P, O, NodeCounter, alpha, beta, pline);
 		else if (depth == 2) return Midgame::PVS_2(P, O, NodeCounter, alpha, beta, pline);
 		else                 return Midgame::PVS_3(P, O, NodeCounter, alpha, beta, pline);
@@ -278,19 +256,20 @@ int Eval(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int al
 
 namespace Midgame
 {
-	int ZWS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
+	int ZWS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter)
 	{
 		assert((P & O) == 0);
-		assert(-64 <= alpha); assert(alpha <= 64);
 
 		NodeCounter++;
-		return (EvaluateFeatures(P, O) > alpha) ? alpha+1 : alpha;
+		return EvaluateFeatures(P, O);
 	}
 	int ZWS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
 	{
 		assert((P & O) == 0);
 		assert(-64 <= alpha); assert(alpha <= 64);
 
+		int score;
+		int bestscore = -64;
 		unsigned long Move;
 		uint64_t flipped;
 		uint64_t BitBoardPossible = PossibleMoves(P, O);
@@ -299,8 +278,8 @@ namespace Midgame
 		if (!BitBoardPossible) {
 			if (HasMoves(O, P))
 				return -ZWS_1(O, P, NodeCounter, -alpha-1);
-			else //Game is over
-				return (EvalGameOver(P, Empties(P, O)) > alpha) ? alpha+1 : alpha;
+			else
+				return EvalGameOver(P, Empties(P, O));
 		}
 
 		while (BitBoardPossible)
@@ -308,17 +287,20 @@ namespace Midgame
 			Move = BitScanLSB(BitBoardPossible);
 			RemoveLSB(BitBoardPossible);
 			flipped = flip(P, O, Move);
-			if (-ZWS_0(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1) > alpha)
-				return alpha+1;
+			score = -ZWS_0(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 
-		return alpha;
+		return bestscore;
 	}
 	int ZWS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
 	{
 		assert((P & O) == 0);
 		assert(-64 <= alpha); assert(alpha <= 64);
 
+		int score;
+		int bestscore = -64;
 		unsigned long Move;
 		uint64_t flipped;
 		uint64_t BitBoardPossible = PossibleMoves(P, O);
@@ -327,8 +309,8 @@ namespace Midgame
 		if (!BitBoardPossible) {
 			if (HasMoves(O, P))
 				return -ZWS_2(O, P, NodeCounter, -alpha-1);
-			else //Game is over
-				return (EvalGameOver(P, Empties(P, O)) > alpha) ? alpha+1 : alpha;
+			else
+				return EvalGameOver(P, Empties(P, O));
 		}
 
 		while (BitBoardPossible)
@@ -336,16 +318,19 @@ namespace Midgame
 			Move = BitScanLSB(BitBoardPossible);
 			RemoveLSB(BitBoardPossible);
 			flipped = flip(P, O, Move);
-			if (-ZWS_1(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1) > alpha)
-				return alpha+1;
+			score = -ZWS_1(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha - 1);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
-		return alpha;
+		return bestscore;
 	}
 	int ZWS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
 	{
 		assert((P & O) == 0);
 		assert(-64 <= alpha); assert(alpha <= 64);
 
+		int score;
+		int bestscore = -64;
 		unsigned long Move;
 		uint64_t flipped;
 		uint64_t BitBoardPossible = PossibleMoves(P, O);
@@ -354,11 +339,11 @@ namespace Midgame
 		if (!BitBoardPossible) {
 			if (HasMoves(O, P))
 				return -ZWS_3(O, P, NodeCounter, -alpha-1);
-			else //Game is over
-				return (EvalGameOver(P, Empties(P, O)) > alpha) ? alpha+1 : alpha;
+			else
+				return EvalGameOver(P, Empties(P, O));
 		}
 		
-		if (StabilityCutoff_ZWS(P, O, alpha)) return alpha;
+		if (StabilityCutoff_ZWS(P, O, alpha, score)) return score;
 
 		// #.####.#
 		// ........
@@ -378,8 +363,9 @@ namespace Midgame
 			Move = BitScanLSB(BBTmp);
 			RemoveLSB(BBTmp);
 			flipped = flip(P, O, Move);
-			if (-ZWS_2(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1) > alpha)
-				return alpha+1;
+			score = -ZWS_2(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha - 1);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 		BBTmp = BitBoardPossible &  BBParity & ~PATTERN_FIRST;
 		while (BBTmp)
@@ -387,8 +373,9 @@ namespace Midgame
 			Move = BitScanLSB(BBTmp);
 			RemoveLSB(BBTmp);
 			flipped = flip(P, O, Move);
-			if (-ZWS_2(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1) > alpha)
-				return alpha+1;
+			score = -ZWS_2(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha - 1);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 		BBTmp = BitBoardPossible & ~BBParity;
 		while (BBTmp)
@@ -396,21 +383,19 @@ namespace Midgame
 			Move = BitScanLSB(BBTmp);
 			RemoveLSB(BBTmp);
 			flipped = flip(P, O, Move);
-			if (-ZWS_2(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1) > alpha)
-				return alpha+1;
+			score = -ZWS_2(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha - 1);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
-		return alpha;
+		return bestscore;
 	}
 
-	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta)
+	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter)
 	{
 		assert((P & O) == 0);
-		assert(-64 <= alpha); assert(alpha <= 64);
-		assert(-64 <= beta ); assert(beta  <= 64);
-		assert(alpha <= beta);
 
 		NodeCounter++;
-		return BIND(EvaluateFeatures(P, O), alpha, beta); // Fail-Hard
+		return EvaluateFeatures(P, O);
 	}
 	int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, const int beta, CLine* pline)
 	{
@@ -419,19 +404,19 @@ namespace Midgame
 		assert(-64 <= beta ); assert(beta  <= 64);
 		assert(alpha <= beta);
 
-		bool SearchPV = true;
+		int score;
+		int bestscore = -65;
 		uint64_t flipped;
 		uint64_t BitBoardPossible = PossibleMoves(P, O);
 		unsigned long Move;
-		int score = -64;
 		NodeCounter++;
 
 		if (!BitBoardPossible) {
 			if (HasMoves(O, P))
 				return -PVS_1(O, P, NodeCounter, -beta, -alpha, pline);
-			else{ //Game is over
+			else {
 				if (pline) pline->NoMoves();
-				return BIND(EvalGameOver(P, O), alpha, beta); // Fail-Hard
+				return EvalGameOver(P, O);
 			}
 		}
 
@@ -442,33 +427,25 @@ namespace Midgame
 			Move = BitScanLSB(BitBoardPossible);
 			RemoveLSB(BitBoardPossible);
 			flipped = flip(P, O, Move);
-			if (SearchPV)
-			{
-				score = -PVS_0(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -beta, -alpha);
-				if (line) pline->NewPV(Move, line);
-			}
+			if (bestscore == -65)
+				score = -PVS_0(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter);
 			else
 			{
-				score = -ZWS_0(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1);
-				if (score > alpha)
-				{
-					score = -PVS_0(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -beta, -alpha);
-					if (line) pline->NewPV(Move, line);
-				}
+				score = -ZWS_0(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter);
+				if (score > alpha && score < beta)
+					score = -PVS_0(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter);
 			}
-			if (score >= beta) {
-				delete line;
-				return beta;
-			}
-			if (score > alpha)
+			if (score > bestscore)
 			{
-				alpha = score;
-				SearchPV = false;
+				bestscore = score;
+				if (line) pline->NewPV(Move, line);
+				if (score >= beta) break;
+				if (score > alpha) alpha = score;
 			}
 		}
 
 		delete line;
-		return alpha;
+		return bestscore;
 	}
 	int PVS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, const int beta, CLine* pline)
 	{
@@ -477,8 +454,9 @@ namespace Midgame
 		assert(-64 <= beta ); assert(beta  <= 64);
 		assert(alpha <= beta);
 
-		bool SearchPV = true;
+		const int original_alpha = alpha;
 		int score;
+		int bestscore = -65;
 		uint8_t BestMove = 64;
 		uint64_t flipped;
 		uint64_t BitBoardPossible = PossibleMoves(P, O);
@@ -487,9 +465,9 @@ namespace Midgame
 		if (!BitBoardPossible) {
 			if (HasMoves(O, P))
 				return -PVS_2(O, P, NodeCounter, -beta, -alpha, pline);
-			else { //Game is over
+			else {
 				if (pline) pline->NoMoves();
-				return BIND(EvalGameOver(P, O), alpha, beta); // Fail-Hard
+				return EvalGameOver(P, O);
 			}
 		}
 		
@@ -500,46 +478,27 @@ namespace Midgame
 		for (const auto& mv : mvList)
 		{
 			flipped = flip(P, O, mv);
-			if (SearchPV)
-			{
+			if (bestscore == -65)
 				score = -PVS_1(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, line);
-				if (line) pline->NewPV(mv, line);
-			}
 			else
 			{
 				score = -ZWS_1(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1);
-				if (score > alpha)
-				{
+				if (score > alpha && score < beta)
 					score = -PVS_1(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, line);
-					if (line) pline->NewPV(mv, line);
-				}
 			}
-			if (score >= beta)
+			if (score > bestscore)
 			{
-				if (mv == mvList.BestMove())
-					UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 2, NO_SELECTIVITY, mvList.BestMove(), mvList.NextBestMove());
-				else if (BestMove != 64)
-					UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 2, NO_SELECTIVITY, mv, BestMove);
-				else
-					UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 2, NO_SELECTIVITY, mv, mvList.BestMove());
-				delete line;
-				return beta;
-			}
-			if (score > alpha)
-			{
+				bestscore = score;
 				BestMove = mv;
-				alpha = score;
-				SearchPV = false;
+				if (line) pline->NewPV(mv, line);
+				if (score >= beta) break;
+				if (score > alpha) alpha = score;
 			}
 		}
 
-		if (SearchPV)
-			UpdateTT(P, O, NodeCounter-LocalNodeCounter, -64, alpha, 2, NO_SELECTIVITY, 64, 64);
-		else
-			UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha, alpha, 2, NO_SELECTIVITY, BestMove, mvList.BestMove() == BestMove ? mvList.NextBestMove() : mvList.BestMove());
-
+		UpdateTT(P, O, NodeCounter-LocalNodeCounter, original_alpha, beta, bestscore, 2, NO_SELECTIVITY, BestMove, mvList.BestMove(), mvList.NextBestMove());
 		delete line;
-		return alpha;
+		return bestscore;
 	}
 	int PVS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, const int beta, CLine* pline)
 	{
@@ -548,8 +507,9 @@ namespace Midgame
 		assert(-64 <= beta ); assert(beta  <= 64);
 		assert(alpha <= beta);
 
-		bool SearchPV = true;
+		const int original_alpha = alpha;
 		int score;
+		int bestscore = -65;
 		uint8_t BestMove = 64;
 		uint64_t flipped;
 		uint64_t BitBoardPossible = PossibleMoves(P, O);
@@ -558,9 +518,9 @@ namespace Midgame
 		if (!BitBoardPossible) {
 			if (HasMoves(O, P))
 				return -PVS_3(O, P, NodeCounter, -beta, -alpha, pline);
-			else { //Game is over
+			else {
 				if (pline) pline->NoMoves();
-				return BIND(EvalGameOver(P, O), alpha, beta); // Fail-Hard
+				return EvalGameOver(P, O);
 			}
 		}
 		
@@ -571,46 +531,27 @@ namespace Midgame
 		for (const auto& mv : mvList)
 		{
 			flipped = flip(P, O, mv);
-			if (SearchPV)
-			{
+			if (bestscore == -65)
 				score = -PVS_2(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, line);
-				if (line) pline->NewPV(mv, line);
-			}
 			else
 			{
 				score = -ZWS_2(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1);
-				if (score > alpha)
-				{
+				if (score > alpha && score < beta)
 					score = -PVS_2(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, line);
-					if (line) pline->NewPV(mv, line);
-				}
 			}
-			if (score >= beta)
+			if (score > bestscore)
 			{
-				if (mv == mvList.BestMove())
-					UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 3, NO_SELECTIVITY, mvList.BestMove(), mvList.NextBestMove());
-				else if (BestMove != 64)
-					UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 3, NO_SELECTIVITY, mv, BestMove);
-				else
-					UpdateTT(P, O, NodeCounter-LocalNodeCounter, beta, 64, 3, NO_SELECTIVITY, mv, mvList.BestMove());
-				delete line;
-				return beta;
-			}
-			if (score > alpha)
-			{
+				bestscore = score;
 				BestMove = mv;
-				alpha = score;
-				SearchPV = false;
+				if (line) pline->NewPV(mv, line);
+				if (score >= beta) break;
+				if (score > alpha) alpha = score;
 			}
 		}
 
-		if (SearchPV)
-			UpdateTT(P, O, NodeCounter-LocalNodeCounter, -64, alpha, 3, NO_SELECTIVITY, 64, 64);
-		else
-			UpdateTT(P, O, NodeCounter-LocalNodeCounter, alpha, alpha, 3, NO_SELECTIVITY, BestMove, mvList.BestMove() == BestMove ? mvList.NextBestMove() : mvList.BestMove());
-
+		UpdateTT(P, O, NodeCounter-LocalNodeCounter, original_alpha, beta, bestscore, 3, NO_SELECTIVITY, BestMove, mvList.BestMove(), mvList.NextBestMove());
 		delete line;
-		return alpha;
+		return bestscore;
 	}
 }
 
@@ -623,26 +564,51 @@ namespace Endgame
 		assert(-64 <= alpha); assert(alpha <= 64);
 		assert(x < 64);
 
-		int Score, DiffCount;
-		Score = (PopCount(P) << 1) - 63; // == PopCount(P) - PopCount(O)
-
+		int score = (PopCount(P) << 1) - 63; // == PopCount(P) - PopCount(O)
+		int diff;
 		NodeCounter++;
-		if (DiffCount = count_last_flip(P, x))
+
+		if (diff = count_last_flip(P, x))
 		{
 			NodeCounter++;
-			return Score + DiffCount + 1;
+			return score + diff + 1;
 		}
 		else
 		{
-			if (Score < alpha)
-				return alpha;
-			else if (DiffCount = count_last_flip(O, x))
+			//if (score + 1 < alpha) return score + 1;
+
+			//if (diff = count_last_flip(O, x))
+			//{
+			//	NodeCounter += 2; // One for passing, one for playing
+			//	return score - diff - 1;
+			//}
+			//else
+			//	return score > 0 ? score + 1: score - 1;
+
+			if (score > 0)
 			{
-				NodeCounter += 2; // One for passing, one for playing
-				return Score - DiffCount - 1;
+				if (score + 1 < alpha) return score + 1;
+
+				if (diff = count_last_flip(O, x))
+				{
+					NodeCounter += 2; // One for passing, one for playing
+					return score - diff - 1;
+				}
+				else
+					return score + 1;
 			}
 			else
-				return (Score > 0) ? Score + 1 : Score - 1;
+			{
+				if (score - 1 < alpha) return score - 1;
+
+				if (diff = count_last_flip(O, x))
+				{
+					NodeCounter += 2; // One for passing, one for playing
+					return score - diff - 1;
+				}
+				else
+					return score - 1;
+			}
 		}
 	}
 	int ZWS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x1, const unsigned int x2)
@@ -653,40 +619,49 @@ namespace Endgame
 		assert(x1 < 64);
 		assert(x2 < 64);
 
+		int score;
+		int bestscore = -65;
 		uint64_t flipped;
-		bool played = false;
 		NodeCounter++;
 
 		//Play on x1
 		if ((O & neighbour[x1]) && (flipped = flip(P, O, x1)))
 		{
-			if (-ZWS_1(O ^ flipped, P ^ (1ULL << x1) ^ flipped, NodeCounter, -alpha-1, x2) > alpha)
-				return alpha + 1;
-			played = true;
+			score = -ZWS_1(O ^ flipped, P ^ (1ULL << x1) ^ flipped, NodeCounter, -alpha - 1, x2);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 
 		//Play on x2
 		if ((O & neighbour[x2]) && (flipped = flip(P, O, x2)))
-			return -ZWS_1(O ^ flipped, P ^ (1ULL << x2) ^ flipped, NodeCounter, -alpha-1, x1);
+		{
+			score = -ZWS_1(O ^ flipped, P ^ (1ULL << x2) ^ flipped, NodeCounter, -alpha - 1, x1);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
+		}
 
-		if (played) return alpha;
-
+		if (bestscore != -65) return bestscore;
+		bestscore = 65;
 		NodeCounter++;
 
 		//Play on x1
 		if ((P & neighbour[x1]) && (flipped = flip(O, P, x1)))
 		{
-			if (ZWS_1(P ^ flipped, O ^ (1ULL << x1) ^ flipped, NodeCounter, alpha, x2) <= alpha)
-				return alpha;
-			played = true;
+			score = ZWS_1(P ^ flipped, O ^ (1ULL << x1) ^ flipped, NodeCounter, alpha, x2);
+			if (score <= alpha) return score;
+			if (score < bestscore) bestscore = score;
 		}
 
 		//Play on x2
 		if ((P & neighbour[x2]) && (flipped = flip(O, P, x2)))
-			return ZWS_1(P ^ flipped, O ^ (1ULL << x2) ^ flipped, NodeCounter, alpha, x1);
+		{
+			score = ZWS_1(P ^ flipped, O ^ (1ULL << x2) ^ flipped, NodeCounter, alpha, x1);
+			if (score <= alpha) return score;
+			if (score < bestscore) bestscore = score;
+		}
 
-		if (played)
-			return alpha + 1;
+		if (bestscore != 65)
+			return bestscore;
 		else
 			return EvalGameOver<2>(P);
 	}
@@ -703,60 +678,68 @@ namespace Endgame
 		//	std::swap(x1,x3);
 		//else if (QUADRANT_ID(x1) == QUADRANT_ID(x3)) //Play x2 first
 		//	std::swap(x1,x2);
-
+		
+		int score;
+		int bestscore = -65;
 		uint64_t flipped;
-		bool played = false;
 		NodeCounter++;
 
 		//Play on x1
 		if ((O & neighbour[x1]) && (flipped = flip(P, O, x1)))
 		{
-			if (-ZWS_2(O ^ flipped, P ^ (1ULL << x1) ^ flipped, NodeCounter, -alpha-1, x2, x3) > alpha)
-				return alpha+1;
-			played = true;
+			score = -ZWS_2(O ^ flipped, P ^ (1ULL << x1) ^ flipped, NodeCounter, -alpha - 1, x2, x3);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 
 		//Play on x2
 		if ((O & neighbour[x2]) && (flipped = flip(P, O, x2)))
 		{
-			if (-ZWS_2(O ^ flipped, P ^ (1ULL << x2) ^ flipped, NodeCounter, -alpha-1, x1, x3) > alpha)
-				return alpha+1;
-			played = true;
+			score = -ZWS_2(O ^ flipped, P ^ (1ULL << x2) ^ flipped, NodeCounter, -alpha - 1, x1, x3);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 
 		//Play on x3
 		if ((O & neighbour[x3]) && (flipped = flip(P, O, x3)))
-			return -ZWS_2(O ^ flipped, P ^ (1ULL << x3) ^ flipped, NodeCounter, -alpha-1, x1, x2);
+		{
+			score = -ZWS_2(O ^ flipped, P ^ (1ULL << x3) ^ flipped, NodeCounter, -alpha - 1, x1, x2);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
+		}
 
-		if (played)
-			return alpha;
-
+		if (bestscore != -65) return bestscore;
+		bestscore = 65;
 		NodeCounter++;
 
 		//Play on x1
 		if ((P & neighbour[x1]) && (flipped = flip(O, P, x1)))
 		{
-			if (ZWS_2(P ^ flipped, O ^ (1ULL << x1) ^ flipped, NodeCounter, alpha, x2, x3) <= alpha)
-				return alpha;
-			played = true;
+			score = ZWS_2(P ^ flipped, O ^ (1ULL << x1) ^ flipped, NodeCounter, alpha, x2, x3);
+			if (score <= alpha) return score;
+			if (score < bestscore) bestscore = score;
 		}
 
 		//Play on x2
 		if ((P & neighbour[x2]) && (flipped = flip(O, P, x2)))
 		{
-			if (ZWS_2(P ^ flipped, O ^ (1ULL << x2) ^ flipped, NodeCounter, alpha, x1, x3) <= alpha)
-				return alpha;
-			played = true;
+			score = ZWS_2(P ^ flipped, O ^ (1ULL << x2) ^ flipped, NodeCounter, alpha, x1, x3);
+			if (score <= alpha) return score;
+			if (score < bestscore) bestscore = score;
 		}
 
 		//Play on x3
 		if ((P & neighbour[x3]) && (flipped = flip(O, P, x3)))
-			return ZWS_2(P ^ flipped, O ^ (1ULL << x3) ^ flipped, NodeCounter, alpha, x1, x2);
+		{
+			score = ZWS_2(P ^ flipped, O ^ (1ULL << x3) ^ flipped, NodeCounter, alpha, x1, x2);
+			if (score <= alpha) return score;
+			if (score < bestscore) bestscore = score;
+		}
 
-		if (played)
-			return alpha+1;
+		if (bestscore != 65)
+			return bestscore;
 		else
-			return EvalGameOver(P, 3);
+			return EvalGameOver<3>(P);
 	}
 	int ZWS_4(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x1, const unsigned int x2, const unsigned int x3, const unsigned int x4)
 	{
@@ -767,76 +750,84 @@ namespace Endgame
 		assert(x2 < 64);
 		assert(x3 < 64);
 		assert(x4 < 64);
-
+		
+		int score;
+		int bestscore = -65;
 		uint64_t flipped;
-		bool played = false;
-		++NodeCounter;
+		NodeCounter++;
 
 		//Play on x1
 		if ((O & neighbour[x1]) && (flipped = flip(P, O, x1)))
 		{
-			if (-ZWS_3(O ^ flipped, P ^ (1ULL << x1) ^ flipped, NodeCounter, -alpha-1, x2, x3, x4) > alpha)
-				return alpha+1;
-			played = true;
+			score = -ZWS_3(O ^ flipped, P ^ (1ULL << x1) ^ flipped, NodeCounter, -alpha - 1, x2, x3, x4);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 
 		//Play on x2
 		if ((O & neighbour[x2]) && (flipped = flip(P, O, x2)))
 		{
-			if (-ZWS_3(O ^ flipped, P ^ (1ULL << x2) ^ flipped, NodeCounter, -alpha-1, x1, x3, x4) > alpha)
-				return alpha+1;
-			played = true;
+			score = -ZWS_3(O ^ flipped, P ^ (1ULL << x2) ^ flipped, NodeCounter, -alpha - 1, x1, x3, x4);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 
 		//Play on x3
 		if ((O & neighbour[x3]) && (flipped = flip(P, O, x3)))
 		{
-			if (-ZWS_3(O ^ flipped, P ^ (1ULL << x3) ^ flipped, NodeCounter, -alpha-1, x1, x2, x4) > alpha)
-				return alpha+1;
-			played = true;
+			score = -ZWS_3(O ^ flipped, P ^ (1ULL << x3) ^ flipped, NodeCounter, -alpha - 1, x1, x2, x4);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 
 		//Play on x4
 		if ((O & neighbour[x4]) && (flipped = flip(P, O, x4)))
-			return -ZWS_3(O ^ flipped, P ^ (1ULL << x4) ^ flipped, NodeCounter, -alpha-1, x1, x2, x3);
+		{
+			score = -ZWS_3(O ^ flipped, P ^ (1ULL << x4) ^ flipped, NodeCounter, -alpha - 1, x1, x2, x3);
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
+		}
 
-		if (played)
-			return alpha;
-
-		++NodeCounter;
+		if (bestscore != -65) return bestscore;
+		bestscore = 65;
+		NodeCounter++;
 
 		//Play on x1
 		if ((P & neighbour[x1]) && (flipped = flip(O, P, x1)))
 		{
-			if (ZWS_3(P ^ flipped, O ^ (1ULL << x1) ^ flipped, NodeCounter, alpha, x2, x3, x4) <= alpha)
-				return alpha;
-			played = true;
+			score = ZWS_3(P ^ flipped, O ^ (1ULL << x1) ^ flipped, NodeCounter, alpha, x2, x3, x4);
+			if (score <= alpha) return score;
+			if (score < bestscore) bestscore = score;
 		}
 
 		//Play on x2
 		if ((P & neighbour[x2]) && (flipped = flip(O, P, x2)))
 		{
-			if (ZWS_3(P ^ flipped, O ^ (1ULL << x2) ^ flipped, NodeCounter, alpha, x1, x3, x4) <= alpha)
-				return alpha;
-			played = true;
+			score = ZWS_3(P ^ flipped, O ^ (1ULL << x2) ^ flipped, NodeCounter, alpha, x1, x3, x4);
+			if (score <= alpha) return score;
+			if (score < bestscore) bestscore = score;
 		}
 
 		//Play on x3
 		if ((P & neighbour[x3]) && (flipped = flip(O, P, x3)))
 		{
-			if (ZWS_3(P ^ flipped, O ^ (1ULL << x3) ^ flipped, NodeCounter, alpha, x1, x2, x4) <= alpha)
-				return alpha;
-			played = true;
+			score = ZWS_3(P ^ flipped, O ^ (1ULL << x3) ^ flipped, NodeCounter, alpha, x1, x2, x4);
+			if (score <= alpha) return score;
+			if (score < bestscore) bestscore = score;
 		}
 
 		//Play on x4
 		if ((P & neighbour[x4]) && (flipped = flip(O, P, x4)))
-			return ZWS_3(P ^ flipped, O ^ (1ULL << x4) ^ flipped, NodeCounter, alpha, x1, x2, x3);
+		{
+			score = ZWS_3(P ^ flipped, O ^ (1ULL << x4) ^ flipped, NodeCounter, alpha, x1, x2, x3);
+			if (score <= alpha) return score;
+			if (score < bestscore) bestscore = score;
+		}
 
-		if (played)
-			return alpha+1;
+		if (bestscore != 65)
+			return bestscore;
 		else
-			return EvalGameOver(P, 4);
+			return EvalGameOver<4>(P);
 	}
 	int ZWS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha)
 	{
@@ -907,28 +898,29 @@ namespace Endgame
 		assert(-64 <= alpha); assert(alpha <= 64);
 		assert(0 <= empties); assert(empties <= 60); assert(empties == Empties(P, O));
 
-		if (empties == 4) return ZWS_4(P, O, NodeCounter, alpha);
+		if (empties == 3) return ZWS_3(P, O, NodeCounter, alpha);
 
 		int score;
+		int bestscore = -64;
+		unsigned long Move;
 		uint64_t flipped;
 		uint64_t BitBoardPossible = PossibleMoves(P, O);
-		unsigned long Move;
 		NodeCounter++;
 
 		if (!BitBoardPossible){
 			if (HasMoves(O, P))
-				return -ZWS_A(O, P, NodeCounter, -alpha-1, empties);
-			else //Game is over
-				return (EvalGameOver(P, empties) > alpha) ? alpha+1 : alpha; // Fail-Hard
+				return -ZWS_A(O, P, NodeCounter, -alpha - 1, empties);
+			else
+				return EvalGameOver(P, empties);
 		}
-		if (PopCount(BitBoardPossible) == 1)
-		{
-			unsigned long Move = BitScanLSB(BitBoardPossible);
-			uint64_t flipped = flip(P, O, Move);
-			return -ZWS_A(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1, empties-1);
-		}
+		//if (PopCount(BitBoardPossible) == 1)
+		//{
+		//	unsigned long Move = BitScanLSB(BitBoardPossible);
+		//	uint64_t flipped = flip(P, O, Move);
+		//	return -ZWS_A(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1, empties-1);
+		//}
 
-		//if (StabilityCutoff_ZWS(P, O, alpha)) return alpha;
+		//if (StabilityCutoff_ZWS(P, O, alpha, score)) return score;
 		
 		// #......#
 		// ........
@@ -949,8 +941,8 @@ namespace Endgame
 			RemoveLSB(BBTmp);
 			flipped = flip(P, O, Move);
 			score = -ZWS_A(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1, empties-1);
-			if (score > alpha)
-				return alpha + 1;
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 
 		BBTmp = BitBoardPossible &  BBParity & ~PATTERN_FIRST;
@@ -960,8 +952,8 @@ namespace Endgame
 			RemoveLSB(BBTmp);
 			flipped = flip(P, O, Move);
 			score = -ZWS_A(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1, empties-1);
-			if (score > alpha)
-				return alpha + 1;
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
 
 		BBTmp = BitBoardPossible & ~BBParity;
@@ -971,52 +963,85 @@ namespace Endgame
 			RemoveLSB(BBTmp);
 			flipped = flip(P, O, Move);
 			score = -ZWS_A(O ^ flipped, P ^ (1ULL << Move) ^ flipped, NodeCounter, -alpha-1, empties-1);
-			if (score > alpha)
-				return alpha + 1;
+			if (score > alpha) return score;
+			if (score > bestscore) bestscore = score;
 		}
-		return alpha;
+		return bestscore;
 	}
 
-	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta)
+	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter)
 	{
 		assert((P & O) == 0);
 		assert(Empties(P, O) == 0);
 
 		NodeCounter++;
-		return BIND(EvalGameOver<0>(P), alpha, beta);
+		return EvalGameOver<0>(P);
 	}
-	int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta, const unsigned int x, CLine* pline)
+	int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x, CLine* pline)
 	{
 		assert((P & O) == 0);
 		assert(Empties(P, O) == 1);
 		assert(-64 <= alpha); assert(alpha <= 64);
 		assert(x < 64);
 
-		int Score, DiffCount;
-		Score = (PopCount(P) << 1) - 63; // == PopCount(P) - PopCount(O)
+		int score = (PopCount(P) << 1) - 63; // == PopCount(P) - PopCount(O)
+		int diff;
 
 		NodeCounter++;
-		if (DiffCount = count_last_flip(P, x))
+		if (diff = count_last_flip(P, x))
 		{
 			NodeCounter++;
 			if (pline) pline->NewPV(x);
-			return BIND(Score + DiffCount + 1, alpha, beta);
+			return score + diff + 1;
 		}
 		else
 		{
-			if (!pline && (Score < alpha))
-				return alpha;
-			else if (DiffCount = count_last_flip(O, x))
+			//if (!pline && (score + 1 < alpha)) return score + 1;
+
+			if (diff = count_last_flip(O, x))
 			{
 				NodeCounter += 2; // One for passing, one for playing
 				if (pline) pline->NewPV(x);
-				return BIND(Score - DiffCount - 1, alpha, beta);
+				return score - diff - 1;
 			}
 			else
 			{
-				if (pline) pline->NewPV(64);
-				return BIND((Score > 0) ? Score + 1 : Score - 1, alpha, beta);
+				if (pline) pline->NoMoves();
+				return score > 0 ? score + 1 : score - 1;
 			}
+
+			//if (score > 0)
+			//{
+			//	if (!pline && (score + 1 < alpha)) return score + 1;
+
+			//	if (diff = count_last_flip(O, x))
+			//	{
+			//		NodeCounter += 2; // One for passing, one for playing
+			//		if (pline) pline->NewPV(x);
+			//		return score - diff - 1;
+			//	}
+			//	else
+			//	{
+			//		if (pline) pline->NoMoves();
+			//		return score + 1;
+			//	}
+			//}
+			//else
+			//{
+			//	if (!pline && (score - 1 < alpha)) return score - 1;
+
+			//	if (diff = count_last_flip(O, x))
+			//	{
+			//		NodeCounter += 2; // One for passing, one for playing
+			//		if (pline) pline->NewPV(x);
+			//		return score - diff - 1;
+			//	}
+			//	else
+			//	{
+			//		if (pline) pline->NoMoves();
+			//		return score - 1;
+			//	}
+			//}
 		}
 	}
 	int PVS_A(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, int alpha, const int beta, const int empties, CLine* pline)
@@ -1027,21 +1052,20 @@ namespace Endgame
 		assert(alpha <= beta);
 		assert(0 <= empties); assert(empties <= 60); assert(empties == Empties(P, O));
 
-		if (empties == 1) return PVS_1(P, O, NodeCounter, alpha, beta, pline);
+		if (empties == 1) return PVS_1(P, O, NodeCounter, alpha, pline);
 
-		bool SearchPV = true;
+		int score;
+		int bestscore = -65;
 		uint64_t flipped;
 		uint64_t BitBoardPossible = PossibleMoves(P, O);
-		unsigned long Move;
-		int score = -64;
 		NodeCounter++;
 
 		if (!BitBoardPossible){
 			if (HasMoves(O, P))
 				return -PVS_A(O, P, NodeCounter, -beta, -alpha, empties, pline);
-			else { //Game is over
+			else {
 				if (pline) pline->NoMoves();
-				return BIND(EvalGameOver(P, Empties(P, O)), alpha, beta);
+				return EvalGameOver(P, Empties(P, O));
 			}
 		}
 
@@ -1052,11 +1076,8 @@ namespace Endgame
 		for (const auto& mv : mvList)
 		{
 			flipped = flip(P, O, mv);
-			if (SearchPV)
-			{
+			if (bestscore == -65)
 				score = -PVS_A(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, empties-1, line);
-				if (line) pline->NewPV(mv, line);
-			}
 			else
 			{
 				     if (empties == 2) score = -ZWS_1(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1);
@@ -1065,23 +1086,19 @@ namespace Endgame
 				else if (empties == 5) score = -ZWS_4(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1);
 				else                   score = -ZWS_A(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -alpha-1, empties-1);
 
-				if (score > alpha)
-				{
+				if (score > alpha && score < beta)
 					score = -PVS_A(O ^ flipped, P ^ (1ULL << mv) ^ flipped, NodeCounter, -beta, -alpha, empties-1, line);
-					if (line) pline->NewPV(mv, line);
-				}
 			}
-			if (score >= beta) {
-				delete line;
-				return beta;
-			}
-			if (score > alpha) {
-				alpha = score;
-				SearchPV = false;
+			if (score > bestscore)
+			{
+				bestscore = score;
+				if (line) pline->NewPV(mv, line);
+				if (score >= beta) break;
+				if (score > alpha) alpha = score;
 			}
 		}
 
 		delete line;
-		return alpha;
+		return bestscore;
 	}
 }
