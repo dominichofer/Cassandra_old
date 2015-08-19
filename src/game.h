@@ -12,7 +12,7 @@
 #include "selectivity.h"
 
 int ZWS  (const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha,                 const int selectivity, const int depth, const int empties);
-int PVS  (const uint64_t P, const uint64_t O, uint64_t& NodeCounter,       int alpha, const int beta, const int selectivity, const int depth, const int empties, CLine* pline = nullptr);
+int PVS  (const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta, const int selectivity, const int depth, const int empties, CLine* pline = nullptr);
 int Eval (const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int beta, const int selectivity, const int depth, const int empties, CLine* pline = nullptr);
 
 // Use Transposition Table Value
@@ -74,7 +74,7 @@ inline bool StabilityCutoff_ZWS(const uint64_t P, const uint64_t O, const int al
 	};
 	if (alpha >= stability_cutoff_limits[Empties(P, O)]) //Worth checking stability
 	{
-		int value = 64 - 2 * PopCount(StableStones(P, O));
+		int value = 64 - 2 * PopCount(StableStonesPlayer(O, P));
 		if (value <= alpha)
 		{
 			score = value;
@@ -97,7 +97,7 @@ inline bool StabilityCutoff_PVS(const uint64_t P, const uint64_t O, const int al
 	};
 	if (alpha >= stability_cutoff_limits[Empties(P, O)]) //Worth checking stability
 	{
-		int value = 64 - 2 * PopCount(StableStones(P, O));
+		int value = 64 - 2 * PopCount(StableStonesPlayer(O, P));
 		if (value <= alpha)
 		{
 			score = value;
@@ -109,6 +109,8 @@ inline bool StabilityCutoff_PVS(const uint64_t P, const uint64_t O, const int al
 
 inline int EvalGameOver(const uint64_t P, const int empties)
 {
+	assert(empties >= 0); assert(empties <= 64);
+
 	int Diff = (PopCount(P) << 1) + empties - 64;
 	     if (Diff > 0) return Diff + empties;
 	else if (Diff < 0) return Diff - empties;
@@ -136,30 +138,31 @@ template <> inline int EvalGameOver<0>(const uint64_t P) { return (PopCount(P) <
 
 namespace Midgame
 {
-	int ZWS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter);
+	int Eval_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter);
+
 	int ZWS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	int ZWS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	int ZWS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	
-	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter);
 	int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter,       int alpha, const int beta, CLine* pline = nullptr);
 	int PVS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter,       int alpha, const int beta, CLine* pline = nullptr);
-	int PVS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter,       int alpha, const int beta, CLine* pline = nullptr);
 }
 
 namespace Endgame
-{		
-	int ZWS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x);
-	int ZWS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x1, const unsigned int x2);
-	int ZWS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x1, const unsigned int x2, const unsigned int x3);
-	int ZWS_4(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x1, const unsigned int x2, const unsigned int x3, const unsigned int x4);
+{
+	int Eval_0(const uint64_t P, uint64_t& NodeCounter);
+
+	int ZWS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const uint8_t x);
+	int ZWS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const uint8_t x1, const uint8_t x2);
+	int ZWS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, uint8_t x1, uint8_t x2, uint8_t x3);
+	int ZWS_4(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, uint8_t x1, uint8_t x2, uint8_t x3, uint8_t x4);
 	int ZWS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	int ZWS_2(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	int ZWS_3(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	int ZWS_4(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha);
 	int ZWS_A(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int empties);
+	int ZWS_B(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const int empties);
 
-	int PVS_0(const uint64_t P, const uint64_t O, uint64_t& NodeCounter);
 	int PVS_1(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alpha, const unsigned int x, CLine* pline = nullptr);
 	int PVS_A(const uint64_t P, const uint64_t O, uint64_t& NodeCounter,       int alpha, const int beta, const int empties, CLine* pline = nullptr);
 	

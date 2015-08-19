@@ -47,9 +47,10 @@ public:
 		score = DATASET_DEFAULT_score;
 		for (int i = 0; i < 5; i++) PV[i] = DATASET_DEFAULT_PV;
 	}
-
+	
 	CDataset_Position_Score_PV() : P(0), O(0) { Reset(); }
 	CDataset_Position_Score_PV(const uint64_t P, const uint64_t O) : P(P), O(O) { Reset(); }
+	CDataset_Position_Score_PV(const uint64_t P, const uint64_t O, const int8_t depth, const uint8_t selectivity, const int8_t score, const uint8_t PV0, const uint8_t PV1, const uint8_t PV2, const uint8_t PV3, const uint8_t PV4) : P(P), O(O), depth(depth), selectivity(selectivity), score(score) { PV[0] = PV0; PV[1] = PV1; PV[2] = PV2; PV[3] = PV3; PV[4] = PV4; }
 	CDataset_Position_Score_PV(const CPosition & o) : P(o.P), O(o.O) { Reset(); }
 	explicit CDataset_Position_Score_PV(const CDataset_Position_FullScore& o);
 	explicit CDataset_Position_Score_PV(std::string s);

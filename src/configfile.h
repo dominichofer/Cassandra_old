@@ -19,5 +19,5 @@ namespace ConfigFile
 {
 	extern std::map<std::string, std::string> Configurations;
 
-	void Initialize(const std::string& argv0, const std::string& filename);
+	void Initialize(const std::string& filename);
 }

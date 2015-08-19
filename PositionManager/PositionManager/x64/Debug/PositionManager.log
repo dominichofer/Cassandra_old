@@ -1,22 +1,74 @@
-﻿Build started 25.06.2015 11:56:13.
-     1>Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\PositionManager\PositionManager\PositionManager.vcxproj" on node 2 (Build target(s)).
+﻿Build started 14.08.2015 01:32:47.
+     1>Project "C:\Users\dohof_000\Documents\GitHub\Cassandra\PositionManager\PositionManager\PositionManager.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\datamanipulation.cpp
-         datamanipulation.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\positionmanager.cpp
+         positionmanager.cpp
+     1>c:\users\dohof_000\documents\github\cassandra\src\macros_hell.h(208): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>c:\users\dohof_000\documents\github\cassandra\src\hashtable.h(23): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>c:\users\dohof_000\documents\github\cassandra\src\features.h(898): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>c:\users\dohof_000\documents\github\cassandra\src\selectivity.h(37): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>c:\users\dohof_000\documents\github\cassandra\src\selectivity.h(45): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(77): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(100): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(112): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(135): warning C4244: 'return' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>..\..\src\positionmanager.cpp(141): warning C4267: 'initializing' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2297): warning C4996: 'std::_Copy_n': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2278) : see declaration of 'std::_Copy_n'
+                 c:\users\dohof_000\documents\github\cassandra\src\line.h(13) : see reference to function template instantiation '_OutIt std::copy_n<uint8_t*,uint8_t,uint8_t*>(_InIt,_Diff,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=uint8_t *
+         ,            _InIt=uint8_t *
+         ,            _Diff=uint8_t
+                 ]
+     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2715): warning C4996: 'std::_Fill_n': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2701) : see declaration of 'std::_Fill_n'
+                 c:\users\dohof_000\documents\github\cassandra\src\line.h(14) : see reference to function template instantiation '_OutIt std::fill_n<uint8_t*,uint8_t,int>(_OutIt,_Diff,const _Ty &)' being compiled
+                 with
+                 [
+                     _OutIt=uint8_t *
+         ,            _Diff=uint8_t
+         ,            _Ty=int
+                 ]
+     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(95): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+                 ..\..\src\positionmanager.cpp(21) : see reference to function template instantiation 'std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> read_vector<CDataset_Position_Score_PV>(const std::string &,size_t)' being compiled
+                 with
+                 [
+                     _Ty=CDataset_Position_Score_PV
+                 ]
+     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(120): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+                 ..\..\src\positionmanager.cpp(259) : see reference to function template instantiation 'void write_to_file<CDataset_Position_Score_PV>(const std::string &,const std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> &)' being compiled
+                 with
+                 [
+                     _Ty=CDataset_Position_Score_PV
+                 ]
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\PositionManager\x64\Debug\PositionManager.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\PositionManager\x64\Debug\PositionManager.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\PositionManager\x64\Debug\PositionManager.lib" /MACHINE:X64 x64\Debug\datamanipulation.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dohof_000\Documents\GitHub\Cassandra\PositionManager\x64\Debug\PositionManager.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dohof_000\Documents\GitHub\Cassandra\PositionManager\x64\Debug\PositionManager.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dohof_000\Documents\GitHub\Cassandra\PositionManager\x64\Debug\PositionManager.lib" /MACHINE:X64 x64\Debug\configfile.obj
+         x64\Debug\count_last_flip.obj
+         x64\Debug\datamanipulation.obj
+         x64\Debug\features.obj
          x64\Debug\flip_fast.obj
+         x64\Debug\game.obj
          x64\Debug\generatepositions.obj
+         x64\Debug\hashtable.obj
+         x64\Debug\move.obj
          x64\Debug\position.obj
          x64\Debug\positionmanager.obj
          x64\Debug\possiblemoves.obj
          x64\Debug\possiblemoves_avx2.obj
          x64\Debug\possiblemoves_avx512.obj
          x64\Debug\possiblemoves_sse2.obj
+         x64\Debug\screen.obj
+         x64\Debug\search.obj
          x64\Debug\utility.obj
-         PositionManager.vcxproj -> C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\PositionManager\x64\Debug\PositionManager.exe
-     1>Done Building Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\PositionManager\PositionManager\PositionManager.vcxproj" (Build target(s)).
+         PositionManager.vcxproj -> C:\Users\dohof_000\Documents\GitHub\Cassandra\PositionManager\x64\Debug\PositionManager.exe
+     1>Done Building Project "C:\Users\dohof_000\Documents\GitHub\Cassandra\PositionManager\PositionManager\PositionManager.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.66
+Time Elapsed 00:00:01.55

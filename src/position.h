@@ -3,6 +3,7 @@
 #include "possiblemoves.h"
 #include "utility.h"
 #include "macros_hell.h"
+#include <cassert>
 #include <utility>
 
 #define PLAY_STONE_SWAP
@@ -82,6 +83,11 @@ const uint64_t quadrant[16] = {
 	0xFFFFFFFFFFFFFFFFULL  //1111
 };
 
+namespace Stability
+{
+	void Initialize();
+}
+
 uint64_t FlipDiagonal(uint64_t b);
 uint64_t FlipCodiagonal(uint64_t b);
 uint64_t FlipVertical(uint64_t b);
@@ -89,6 +95,7 @@ uint64_t FlipHorizontal(uint64_t b);
 
 std::string board1D(const uint64_t P, const uint64_t O);
 std::string board2D(const uint64_t P, const uint64_t O);
+std::string board2D(const uint64_t P, const uint64_t O, const uint64_t possibleMoves);
 
 inline void ResetPosition(uint64_t & P, uint64_t & O, const bool ETH)
 {
@@ -161,10 +168,12 @@ uint64_t StableStonesFullEdges(const uint64_t P, const uint64_t O);
 uint64_t StableStonesFullEdgesSecondOrder(const uint64_t P, const uint64_t O);
 uint64_t StableStonesTriangles(const uint64_t O);
 uint64_t StableStonesSkyline(const uint64_t O);
-inline uint64_t StableStones(const uint64_t P, const uint64_t O)
-{
-	return StableStonesFullEdges(P, O) | StableStonesFullEdgesSecondOrder(P, O) | StableStonesTriangles(O);
-}
+uint64_t StableEdges(const uint64_t P, const uint64_t O);
+uint64_t StableStonesPlayer(const uint64_t P, const uint64_t O);
+//uint64_t StableStones(const uint64_t P, const uint64_t O);
+//{
+//	return StableStonesFullEdges(P, O) | StableStonesFullEdgesSecondOrder(P, O) | StableStonesTriangles(O);
+//}
 
 FORCE_INLINE uint64_t SMEAR_BITBOARD(uint64_t B)
 {
@@ -182,21 +191,6 @@ inline uint64_t PlayersExposed(const uint64_t P, const uint64_t O) { return SMEA
 inline uint64_t OpponentsExposed(const uint64_t P, const uint64_t O) { return SMEAR_BITBOARD(~(P | O)) & O; } // 13 OPs
 inline uint64_t Exposeds(const uint64_t P, const uint64_t O) { return SMEAR_BITBOARD(~(P | O)) & (P | O); } // 14 OPs
 
-struct CPosition
-{
-	uint64_t P, O;
-	
-	CPosition() : P(0), O(0) {}
-	CPosition(uint64_t P, uint64_t O) : P(P), O(O) {}
-
-	inline bool operator==(const CPosition& other) const { return (this->P == other.P) &&  (this->O == other.O); }
-	inline bool operator!=(const CPosition& other) const { return (this->P != other.P) ||  (this->O != other.O); }
-	inline bool operator<=(const CPosition& other) const { return (this->P <= other.P) || ((this->P == other.P) && (this->O <= other.O)); }
-	inline bool operator>=(const CPosition& other) const { return (this->P >= other.P) || ((this->P == other.P) && (this->O >= other.O)); }
-	inline bool operator< (const CPosition& other) const { return (this->P <  other.P) || ((this->P == other.P) && (this->O <  other.O)); }
-	inline bool operator> (const CPosition& other) const { return (this->P >  other.P) || ((this->P == other.P) && (this->O >  other.O)); }
-};
-
 struct CPositionScore
 {
 	uint64_t P, O;
@@ -204,4 +198,27 @@ struct CPositionScore
 	
 	CPositionScore() : P(0), O(0), score(0) {}
 	CPositionScore(uint64_t P, uint64_t O, int8_t score) : P(P), O(O), score(score) {}
+
+	inline bool operator==(const CPositionScore& other) const { return (this->P == other.P) &&  (this->O == other.O); }
+	inline bool operator!=(const CPositionScore& other) const { return (this->P != other.P) ||  (this->O != other.O); }
+	inline bool operator<=(const CPositionScore& other) const { return (this->P <= other.P) || ((this->P == other.P) && (this->O <= other.O)); }
+	inline bool operator>=(const CPositionScore& other) const { return (this->P >= other.P) || ((this->P == other.P) && (this->O >= other.O)); }
+	inline bool operator< (const CPositionScore& other) const { return (this->P <  other.P) || ((this->P == other.P) && (this->O <  other.O)); }
+	inline bool operator> (const CPositionScore& other) const { return (this->P >  other.P) || ((this->P == other.P) && (this->O >  other.O)); }
+};
+
+struct CPosition
+{
+	uint64_t P, O;
+	
+	CPosition() : P(0), O(0) {}
+	CPosition(uint64_t P, uint64_t O) : P(P), O(O) {}
+	CPosition(const CPositionScore& o) : P(o.P), O(o.O) {}
+
+	inline bool operator==(const CPosition& other) const { return (this->P == other.P) &&  (this->O == other.O); }
+	inline bool operator!=(const CPosition& other) const { return (this->P != other.P) ||  (this->O != other.O); }
+	inline bool operator<=(const CPosition& other) const { return (this->P <= other.P) || ((this->P == other.P) && (this->O <= other.O)); }
+	inline bool operator>=(const CPosition& other) const { return (this->P >= other.P) || ((this->P == other.P) && (this->O >= other.O)); }
+	inline bool operator< (const CPosition& other) const { return (this->P <  other.P) || ((this->P == other.P) && (this->O <  other.O)); }
+	inline bool operator> (const CPosition& other) const { return (this->P >  other.P) || ((this->P == other.P) && (this->O >  other.O)); }
 };

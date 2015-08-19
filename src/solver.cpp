@@ -29,7 +29,7 @@ void TTUsePV(uint64_t P, uint64_t O, int depth, const int selectivity, const int
 	PlayStone(P, O, PV1); depth--;
 
 	if (PV2 == 64) return;
-	UpdateTT(P, O, 0, score, score, score, depth, selectivity, PV2, 64, 64);
+	UpdateTT(P, O, 0, -score, -score, -score, depth, selectivity, PV2, 64, 64);
 	if (!HasMoves(P, O)) std::swap(P, O);
 	PlayStone(P, O, PV2); depth--;
 
@@ -39,7 +39,7 @@ void TTUsePV(uint64_t P, uint64_t O, int depth, const int selectivity, const int
 	PlayStone(P, O, PV3); depth--;
 
 	if (PV4 == 64) return;
-	UpdateTT(P, O, 0, score, score, score, depth, selectivity, PV4, 64, 64);
+	UpdateTT(P, O, 0, -score, -score, -score, depth, selectivity, PV4, 64, 64);
 	if (!HasMoves(P, O)) std::swap(P, O);
 	PlayStone(P, O, PV4); depth--;
 
@@ -48,7 +48,7 @@ void TTUsePV(uint64_t P, uint64_t O, int depth, const int selectivity, const int
 	if (!HasMoves(P, O)) std::swap(P, O);
 	PlayStone(P, O, PV5); depth--;
 	
-	UpdateTT(P, O, 0, score, score, score, depth, selectivity, 64, 64, 64);
+	UpdateTT(P, O, 0, -score, -score, -score, depth, selectivity, 64, 64, 64);
 }
 
 void FForum_Benchmark(const std::string & filename)
@@ -74,32 +74,36 @@ void FForum_Benchmark(const std::string & filename)
 void FForum()
 {
 	verbose = 2;
-	ConfigFile::Initialize("C:\\Cassandra\\solver.exe", "config.ini");
-	CountLastFlip::Initialize();
+	ConfigFile::Initialize("C:\\Cassandra\\config.ini");
 	Features::Initialize();
+	CountLastFlip::Initialize();
+	Stability::Initialize();
 	TT = CHashTable(1024 * 1024 * 1024 / sizeof(CHashTable::NodeType));
-	//TTPV = CHashTable(1024 * 1024 * 1024 / 16 / sizeof(CHashTable::NodeType));
+	TTPV = CHashTable(1024 * 1024 * 1024 / 16 / sizeof(CHashTable::NodeType));
 	omp_set_num_threads(1);
 	FForum_Benchmark("C:\\Cassandra\\pos\\fforum-1-19.obf");
 	FForum_Benchmark("C:\\Cassandra\\pos\\fforum-20-39.obf");
 	FForum_Benchmark("C:\\Cassandra\\pos\\fforum-40-59.obf");
 	FForum_Benchmark("C:\\Cassandra\\pos\\fforum-60-79.obf");
 	TT.print_stats();
-	//TTPV.print_stats();
+	TTPV.print_stats();
 }
 
 void SolveStartPosition()
 {
 	verbose = 3;
-	ConfigFile::Initialize("C:\\Cassandra\\solver.exe", "config.ini");
-	CountLastFlip::Initialize();
+	ConfigFile::Initialize("C:\\Cassandra\\config.ini");
 	Features::Initialize();
+	CountLastFlip::Initialize();
+	Stability::Initialize();
 	TT = CHashTable(1024 * 1024 * 1024 / sizeof(CHashTable::NodeType));
+	TTPV = CHashTable(1024 * 1024 * 1024 / 16 / sizeof(CHashTable::NodeType));
 	omp_set_num_threads(1);
 
 	Screen.Initialize(0, 0);
 	Screen.printHead();
-	CSearch search(0x0000241838240000ULL, 0x006E5A26445A6E00ULL);
+	CSearch search("-----------------O-O--O--XOOOOOO---OO-------O--------O--------O-", -64, 64, 5);
+	//CSearch search;
 	//PlayStone(search.P, search.O, BitScanLSB(PossibleMoves(search.P, search.O)));
 	Screen.printPosition(0, search.P, search.O);
 	search.Evaluate();
@@ -185,6 +189,7 @@ void print_help()
 
 int main(int argc, char* argv[])
 {
+	//// Preheat
 	//int tmp = 4;
 	//printf("Preheating CPU");
 	//for (unsigned int i = 0; i < 100000000; i++)
@@ -201,7 +206,7 @@ int main(int argc, char* argv[])
 	int d = 99;
 	int s = 0;
 	int t = std::thread::hardware_concurrency();
-	uint64_t ram = 1024*1024*1024;
+	uint64_t ram = 1024 * 1024 * 1024;
 	bool b_Test = false;
 	bool b_SkipSolved = true;
 	bool b_Save = true;
@@ -230,12 +235,11 @@ int main(int argc, char* argv[])
 		else if (std::string(argv[i]) == "-p") port = atoi(argv[++i]);
 		else if (std::string(argv[i]) == "-h") { print_help(); return 0; }
 	}	
-
-	ConfigFile::Initialize(argv[0], "config.ini");
-	//ConfigFile::Initialize("C:\\Cassandra\\solver.exe", "config.ini");
-	//{ b_SkipSolved = false; b_Save = false; b_Test = true; }
+	
+	ConfigFile::Initialize("C:\\Cassandra\\config.ini");
 	Features::Initialize();
 	CountLastFlip::Initialize();
+	Stability::Initialize();
 	TT = CHashTable(ram / sizeof(CHashTable::NodeType));
 	TTPV = CHashTable(ram / 8 / sizeof(CHashTable::NodeType));
 	omp_set_num_threads(t);

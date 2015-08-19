@@ -20,8 +20,7 @@ public:
 	};
 
 	CMoveList() {}
-	CMoveList(uint64_t P, uint64_t O, uint64_t& NodeCounter, uint64_t BitBoardPossible, int depth, const CHashTableValueType & ttValue, const bool PVS);
-	CMoveList(uint64_t P, uint64_t O, uint64_t BitBoardPossible, const bool PVS);
+	CMoveList(uint64_t P, uint64_t O, uint64_t& NodeCounter, uint64_t BitBoardPossible, int depth, int alpha, const CHashTableValueType & ttValue, const bool PVS);
 
 	inline std::vector<CMove>::iterator        begin()       { return m_Moves.begin(); }
 	inline std::vector<CMove>::const_iterator cbegin() const { return m_Moves.cbegin(); }
@@ -36,22 +35,4 @@ public:
 
 private:
 	std::vector<CMove> m_Moves;
-};
-
-class CMoveListLight
-{
-public:
-	CMoveListLight(const uint64_t P, const uint64_t O, uint64_t BitBoardPossible);
-
-	inline std::vector<uint8_t>::iterator        begin()       { return m_Moves.begin(); }
-	inline std::vector<uint8_t>::const_iterator cbegin() const { return m_Moves.cbegin(); }
-	inline std::vector<uint8_t>::iterator          end()       { return m_Moves.end(); }
-	inline std::vector<uint8_t>::const_iterator   cend() const { return m_Moves.cend(); }
-	inline std::size_t size() const { return m_Moves.size(); }
-
-	inline uint8_t BestMove() { return m_Moves[0]; }
-	inline uint8_t NextBestMove() { return size() > 1 ? m_Moves[1] : 64; }
-	
-private:
-	std::vector<uint8_t> m_Moves;
 };

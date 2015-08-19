@@ -33,7 +33,6 @@ CDataset_Position_Score_PV::CDataset_Position_Score_PV(std::string s)
 	}
 	depth = DATASET_depth_END;
 	selectivity = DATASET_DEFAULT_selectivity;
-
 }
 
 
@@ -86,19 +85,19 @@ template <> std::vector<CPositionScore> read_vector(const std::string & filename
 	std::string ending = filename.substr(filename.rfind(".") + 1, filename.length());
 	if (!validEnding(ending)) throw "File ending not supported.";
 
-	if (ending.compare(DATASET_ENDING_POSITION_SCORE_PV))
+	if (ending.compare(DATASET_ENDING_POSITION_SCORE_PV) == 0)
 	{
 		std::vector<CDataset_Position_Score_PV> vec_in = read_vector<CDataset_Position_Score_PV>(filename, size);
 		for (const auto& pos : vec_in)
 			vec_out.push_back(static_cast<CPositionScore>(pos));
 	}
-	else if (ending.compare(DATASET_ENDING_POSITION_FULLSCORE))
+	else if (ending.compare(DATASET_ENDING_POSITION_FULLSCORE) == 0)
 	{
 		std::vector<CDataset_Position_FullScore> vec_in = read_vector<CDataset_Position_FullScore>(filename, size);
 		for (const auto& pos : vec_in)
 			vec_out.push_back(static_cast<CPositionScore>(pos));
 	}
-	else if (ending.compare(DATASET_ENDING_POSITION_HR))
+	else if (ending.compare(DATASET_ENDING_POSITION_HR) == 0)
 	{
 		std::vector<CDataset_Position_Score_PV> vec_in = read_hr_vector(filename, size);
 		for (const auto& pos : vec_in)

@@ -47,6 +47,21 @@ public:
 	CSearch(uint64_t P = START_POSITION_P, uint64_t O = START_POSITION_O, int8_t alpha= -64, int8_t beta = 64, int8_t depth = 99, uint8_t selectivity = 0, uint8_t PV_depth = 5)
 		: CSearch(P, O, alpha, beta, depth, selectivity, PV_depth, std::chrono::hours(24 * 365)) {}
 
+	CSearch(const char* pos, int8_t alpha= -64, int8_t beta = 64, int8_t depth = 99, uint8_t selectivity = 0)
+		: NodeCounter(0), alpha(alpha), beta(beta), depth(depth), selectivity(selectivity), score(-128),
+		startTime(std::chrono::high_resolution_clock::now()), PV_line(CLine(5))
+	{
+		std::string s(pos);
+		P = 0;
+		O = 0;
+		for (unsigned int i = 0; i < 64; ++i)
+		{
+				 if (s.substr(i, 1) == "X") P |= 0x8000000000000000ULL >> i;
+			else if (s.substr(i, 1) == "O") O |= 0x8000000000000000ULL >> i;
+		}
+
+	}
+
 	CSearch(const CSearch& o) : CSearch(o.P, o.O, o.alpha, o.beta, o.depth, o.selectivity, o.PV_line.size, o.endTime) {}
 
 
@@ -57,6 +72,7 @@ public:
 	inline std::string GetPV(const int depth) const { return PV_line.GetPV(depth); }
 	inline std::string GetPV(const int StartDepth, const int num) const { return PV_line.GetPV(StartDepth, num); }
 	void print_result(const int number = 0);
+	int Aspiration_Search(uint64_t P, uint64_t O, uint64_t& NodeCounter, int alpha, int beta, int score, int selectivity, int depth, int empties, CLine& PV_line);
 	void Evaluate();
 private:
 	void print_stats(const int8_t depth, const uint8_t selectivity);

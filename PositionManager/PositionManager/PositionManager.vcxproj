@@ -141,23 +141,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\configfile.cpp" />
+    <ClCompile Include="..\..\src\count_last_flip.cpp" />
     <ClCompile Include="..\..\src\datamanipulation.cpp" />
+    <ClCompile Include="..\..\src\features.cpp" />
     <ClCompile Include="..\..\src\flip_fast.cpp" />
+    <ClCompile Include="..\..\src\game.cpp" />
     <ClCompile Include="..\..\src\generatepositions.cpp" />
+    <ClCompile Include="..\..\src\hashtable.cpp" />
+    <ClCompile Include="..\..\src\move.cpp" />
     <ClCompile Include="..\..\src\position.cpp" />
     <ClCompile Include="..\..\src\positionmanager.cpp" />
     <ClCompile Include="..\..\src\possiblemoves.cpp" />
     <ClCompile Include="..\..\src\possiblemoves_avx2.cpp" />
     <ClCompile Include="..\..\src\possiblemoves_avx512.cpp" />
     <ClCompile Include="..\..\src\possiblemoves_sse2.cpp" />
+    <ClCompile Include="..\..\src\screen.cpp" />
+    <ClCompile Include="..\..\src\search.cpp" />
     <ClCompile Include="..\..\src\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\configfile.h" />
+    <ClInclude Include="..\..\src\count_last_flip.h" />
     <ClInclude Include="..\..\src\datamanipulation.h" />
+    <ClInclude Include="..\..\src\features.h" />
     <ClInclude Include="..\..\src\flip_fast.h" />
+    <ClInclude Include="..\..\src\game.h" />
     <ClInclude Include="..\..\src\generatepositions.h" />
+    <ClInclude Include="..\..\src\hashtable.h" />
+    <ClInclude Include="..\..\src\line.h" />
+    <ClInclude Include="..\..\src\move.h" />
     <ClInclude Include="..\..\src\position.h" />
     <ClInclude Include="..\..\src\possiblemoves.h" />
+    <ClInclude Include="..\..\src\screen.h" />
+    <ClInclude Include="..\..\src\search.h" />
     <ClInclude Include="..\..\src\selectivity.h" />
     <ClInclude Include="..\..\src\utility.h" />
   </ItemGroup>

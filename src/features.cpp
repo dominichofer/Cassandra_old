@@ -2,29 +2,29 @@
 
 namespace Features
 {
-	const uint8_t BOXES = 15;
+	const uint8_t BOXES = 16;
 	const uint8_t BoxIndex[61] = {
 		99,         //  0
-		99, 99, 99, //  1,  2,  3
-		99, 99,  0, //  4,  5,  6
-		 0,  0,  0, //  7,  8,  9
-		 1,  1,  1, // 10, 11, 12
-		 2,  2,  2, // 13, 14, 15
-		 3,  3,  3, // 16, 17, 18
-		 4,  4,  4, // 19, 20, 21
-		 5,  5,  5, // 22, 23, 24
-		 6,  6,  6, // 25, 26, 27
-		 7,  7,  7, // 28, 29, 30
-		 8,  8,  8, // 31, 32, 33
-		 9,  9,  9, // 34, 35, 36
-		10, 10, 10, // 37, 38, 39
-		11, 11, 11, // 40, 41, 42
-		12, 12, 12, // 43, 44, 45
-		13, 13, 13, // 46, 47, 48
-		14, 14, 14, // 49, 50, 51
-		14, 14, 14, // 52, 53, 54
-		14, 14, 14, // 55, 56, 57
-		14, 14, 14, // 58, 59, 60
+		 0,  0,  0, //  1,  2,  3
+		 1,  1,  1, //  4,  5,  6
+		 2,  2,  2, //  7,  8,  9
+		 3,  3,  3, // 10, 11, 12
+		 4,  4,  4, // 13, 14, 15
+		 5,  5,  5, // 16, 17, 18
+		 6,  6,  6, // 19, 20, 21
+		 7,  7,  7, // 22, 23, 24
+		 8,  8,  8, // 25, 26, 27
+		 9,  9,  9, // 28, 29, 30
+		10, 10, 10, // 31, 32, 33
+		11, 11, 11, // 34, 35, 36
+		12, 12, 12, // 37, 38, 39
+		13, 13, 13, // 40, 41, 42
+		14, 14, 14, // 43, 44, 45
+		15, 15, 15, // 46, 47, 48
+		15, 15, 15, // 49, 50, 51
+		15, 15, 15, // 52, 53, 54
+		15, 15, 15, // 55, 56, 57
+		15, 15, 15, // 58, 59, 60
 	};
 
 	unsigned int SumPow3[1024];
@@ -84,7 +84,7 @@ namespace Features
 		{
 			s = "weights range " + std::to_string(i);
 			if (ConfigFile::Configurations.count(s) > 0)
-				Filenames.push_back(ConfigFile::Configurations[s]);
+				Filenames.push_back(ConfigFile::Configurations["filepath"] + ConfigFile::Configurations[s]);
 		}
 
 		// Read in weight files
@@ -121,9 +121,11 @@ namespace Features
 	}
 }
 
-int EvaluateFeatures(const uint64_t P, const uint64_t O)
+int EvaluateFeatures(const uint64_t P, const uint64_t O) // OPTIMIZATION: create a function taking "empties" as a variable
 {
-	const uint8_t BoxIndex = Features::BoxIndex[Empties(P, O)];
+	const uint64_t empties = Empties(P, O);
+	if (empties == 0) return (PopCount(P) << 1) - 64;
+	const uint8_t BoxIndex = Features::BoxIndex[empties];
 	float sum = 0;
 	if (PATTERN_L02X ) sum += Features::PatVecL02X [BoxIndex].score(P, O);
 	if (PATTERN_L1   ) sum += Features::PatVecL1   [BoxIndex].score(P, O);

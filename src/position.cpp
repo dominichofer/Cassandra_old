@@ -107,6 +107,28 @@ std::string board2D(const uint64_t P, const uint64_t O)
 	return s.append("  H G F E D C B A  ");
 }
 
+std::string board2D(const uint64_t P, const uint64_t O, const uint64_t possibleMoves)
+{
+	std::string s = "  H G F E D C B A  \n";
+	for (unsigned int i = 0; i < 8; i++)
+	{
+		s.append(std::to_string(8-i));
+		for (unsigned int j = 0; j < 8; j++)
+		{
+			bool b_P = P & (0x8000000000000000ULL >> (i * 8 + j));
+			bool b_O = O & (0x8000000000000000ULL >> (i * 8 + j));
+			bool b_M = possibleMoves & (0x8000000000000000ULL >> (i * 8 + j));
+			     if (b_P && b_O) s.append(" #");
+			else if (b_P)        s.append(" X");
+			else if (b_O)        s.append(" O");
+			else if (b_M)        s.append(" .");
+			else                 s.append(" -");
+		}
+		s.append(" " + std::to_string(8-i) + "\n");
+	}
+	return s.append("  H G F E D C B A  ");
+}
+
 uint64_t StableStonesFullEdges(const uint64_t P, const uint64_t O)
 {
 	uint64_t mask = 0;
@@ -212,3 +234,154 @@ uint64_t StableStonesSkyline(uint64_t O)
 
     return StableStones;
 }
+
+
+
+namespace Stability
+{
+	uint8_t edge_stables[256][256];
+
+	void Initialize()
+	{
+		unsigned long move;
+		unsigned int stables;
+		uint64_t flipped;
+
+		memset(edge_stables, 0, 256 * 256 * sizeof(uint8_t));
+
+		for (unsigned int empty = 0; empty < 9; empty++)
+			for (unsigned int P = 0; P < 256; P++)
+				for (unsigned int O = 0; O < 256; O++)
+				{
+					if (P & O) continue;
+					unsigned int empties = (P | O) ^ 0xFF;
+					if (PopCount(empties) == empty)
+					{
+						stables = 0xFF;
+						while (empties)
+						{
+							move = BitScanLSB(empties); 
+							empties &= empties - 1; // RemoveLSB
+
+							// Player plays
+							flipped = flip(P, O, move) & 0xFF;
+							stables &= edge_stables[P ^ flipped ^ (1 << move)][O ^ flipped] & ~flipped & ~(1 << move);
+
+							// Opponent plays
+							flipped = flip(O, P, move) & 0xFF;
+							stables &= edge_stables[P ^ flipped][O ^ flipped ^ (1 << move)] & ~flipped & ~(1 << move);
+
+							if (stables == 0) continue;
+						}
+						edge_stables[P][O] = stables;
+					}
+				}
+		assert(edge_stables[0x80][0x01] == 0x81);
+		assert(edge_stables[0xC0][0x00] == 0xC0);
+		assert(edge_stables[0x03][0x00] == 0x03);
+		assert(edge_stables[0x00][0xC0] == 0xC0);
+		assert(edge_stables[0x00][0x03] == 0x03);
+		assert(edge_stables[0xC0][0x03] == 0xC3);
+		assert(edge_stables[0xC7][0x28] == 0xC7);
+		assert(edge_stables[0xA8][0x50] == 0xC0);
+		assert(edge_stables[0x16][0x28] == 0x08);
+	}
+	
+	uint64_t FullLineHorizontal(const uint64_t discs)
+	{
+		// 6 x AND, 6 x CMP, 6 x OR
+		uint64_t full = 0;
+		if ((discs & 0x00FF000000000000ULL) == 0x00FF000000000000ULL) full |= 0x00FF000000000000ULL;
+		if ((discs & 0x0000FF0000000000ULL) == 0x0000FF0000000000ULL) full |= 0x0000FF0000000000ULL;
+		if ((discs & 0x000000FF00000000ULL) == 0x000000FF00000000ULL) full |= 0x000000FF00000000ULL;
+		if ((discs & 0x00000000FF000000ULL) == 0x00000000FF000000ULL) full |= 0x00000000FF000000ULL;
+		if ((discs & 0x0000000000FF0000ULL) == 0x0000000000FF0000ULL) full |= 0x0000000000FF0000ULL;
+		if ((discs & 0x000000000000FF00ULL) == 0x000000000000FF00ULL) full |= 0x000000000000FF00ULL;
+		return full;
+	}
+	
+	uint64_t FullLineVertival(const uint64_t discs)
+	{
+		// 6 x AND, 6 x CMP, 6 x OR
+		uint64_t full = 0;
+		if ((discs & 0x4040404040404040ULL) == 0x4040404040404040ULL) full |= 0x4040404040404040ULL;
+		if ((discs & 0x2020202020202020ULL) == 0x2020202020202020ULL) full |= 0x2020202020202020ULL;
+		if ((discs & 0x1010101010101010ULL) == 0x1010101010101010ULL) full |= 0x1010101010101010ULL;
+		if ((discs & 0x0808080808080808ULL) == 0x0808080808080808ULL) full |= 0x0808080808080808ULL;
+		if ((discs & 0x0404040404040404ULL) == 0x0404040404040404ULL) full |= 0x0404040404040404ULL;
+		if ((discs & 0x0202020202020202ULL) == 0x0202020202020202ULL) full |= 0x0202020202020202ULL;
+		return full;
+	}
+	
+	uint64_t FullLineDiagonal(const uint64_t discs)
+	{
+		// 11 x AND, 11 x CMP, 11 x OR
+		uint64_t full = 0;
+		if ((discs & 0x0402010000000000ULL) == 0x0402010000000000ULL) full |= 0x0402010000000000ULL;
+		if ((discs & 0x0804020100000000ULL) == 0x0804020100000000ULL) full |= 0x0804020100000000ULL;
+		if ((discs & 0x1008040201000000ULL) == 0x1008040201000000ULL) full |= 0x1008040201000000ULL;
+		if ((discs & 0x2010080402010000ULL) == 0x2010080402010000ULL) full |= 0x2010080402010000ULL;
+		if ((discs & 0x4020100804020100ULL) == 0x4020100804020100ULL) full |= 0x4020100804020100ULL;
+		if ((discs & 0x8040201008040201ULL) == 0x8040201008040201ULL) full |= 0x8040201008040201ULL;
+		if ((discs & 0x0080402010080402ULL) == 0x0080402010080402ULL) full |= 0x0080402010080402ULL;
+		if ((discs & 0x0000804020100804ULL) == 0x0000804020100804ULL) full |= 0x0000804020100804ULL;
+		if ((discs & 0x0000008040201008ULL) == 0x0000008040201008ULL) full |= 0x0000008040201008ULL;
+		if ((discs & 0x0000000080402010ULL) == 0x0000000080402010ULL) full |= 0x0000000080402010ULL;
+		if ((discs & 0x0000000000804020ULL) == 0x0000000000804020ULL) full |= 0x0000000000804020ULL;
+		return full;
+	}
+	
+	uint64_t FullLineCodiagonal(const uint64_t discs)
+	{
+		// 11 x AND, 11 x CMP, 11 x OR
+		uint64_t full = 0;
+		if ((discs & 0x2040800000000000ULL) == 0x2040800000000000ULL) full |= 0x2040800000000000ULL;
+		if ((discs & 0x1020408000000000ULL) == 0x1020408000000000ULL) full |= 0x1020408000000000ULL;
+		if ((discs & 0x0810204080000000ULL) == 0x0810204080000000ULL) full |= 0x0810204080000000ULL;
+		if ((discs & 0x0408102040800000ULL) == 0x0408102040800000ULL) full |= 0x0408102040800000ULL;
+		if ((discs & 0x0204081020408000ULL) == 0x0204081020408000ULL) full |= 0x0204081020408000ULL;
+		if ((discs & 0x0102040810204080ULL) == 0x0102040810204080ULL) full |= 0x0102040810204080ULL;
+		if ((discs & 0x0001020408102040ULL) == 0x0001020408102040ULL) full |= 0x0001020408102040ULL;
+		if ((discs & 0x0000010204081020ULL) == 0x0000010204081020ULL) full |= 0x0000010204081020ULL;
+		if ((discs & 0x0000000102040810ULL) == 0x0000000102040810ULL) full |= 0x0000000102040810ULL;
+		if ((discs & 0x0000000001020408ULL) == 0x0000000001020408ULL) full |= 0x0000000001020408ULL;
+		if ((discs & 0x0000000000010204ULL) == 0x0000000000010204ULL) full |= 0x0000000000010204ULL;
+		return full;
+	}
+}
+
+uint64_t StableEdges(const uint64_t P, const uint64_t O)
+{
+	return Stability::edge_stables[P & 0xFF][O & 0xFF]
+		| (static_cast<uint64_t>(Stability::edge_stables[P >> 56][O >> 56]) << 56)
+		| PDep(Stability::edge_stables[PExt(P, 0x8080808080808080ULL)][PExt(O, 0x8080808080808080ULL)], 0x8080808080808080ULL)
+		| PDep(Stability::edge_stables[PExt(P, 0x0101010101010101ULL)][PExt(O, 0x0101010101010101ULL)], 0x0101010101010101ULL);
+}
+
+uint64_t StableStonesPlayer(const uint64_t P, const uint64_t O)
+{
+	const uint64_t discs = P | O;
+	uint64_t full_h = Stability::FullLineHorizontal(discs);
+	uint64_t full_v = Stability::FullLineVertival(discs);
+	uint64_t full_d = Stability::FullLineDiagonal(discs);
+	uint64_t full_c = Stability::FullLineCodiagonal(discs);
+	uint64_t new_stables = StableEdges(P, O) & P;
+	new_stables |= full_h & full_v & full_d & full_c & P & 0x007E7E7E7E7E7E00ULL;
+
+	uint64_t stables = 0;
+	while (new_stables & ~stables)
+	{
+		stables |= new_stables;
+		uint64_t stables_h = (stables >> 1) | (stables << 1) | full_h;
+		uint64_t stables_v = (stables >> 8) | (stables << 8) | full_v;
+		uint64_t stables_d = (stables >> 9) | (stables << 9) | full_d;
+		uint64_t stables_c = (stables >> 7) | (stables << 7) | full_c;
+		new_stables = stables_h & stables_v & stables_d & stables_c & P & 0x007E7E7E7E7E7E00ULL;
+	}
+	return stables;
+}
+
+//uint64_t StableStones(const uint64_t P, const uint64_t O)
+//{
+//	return StableStonesPlayer(P, O) | StableStonesPlayer(O, P);
+//}

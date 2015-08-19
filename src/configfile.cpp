@@ -10,22 +10,23 @@ namespace ConfigFile
 {
 	std::map<std::string, std::string> Configurations;
 
-	void Initialize(const std::string& argv0, const std::string& filename)
+	void Initialize(const std::string& filename)
 	{
-
 		#ifdef _WIN32
-			std::string filepath = argv0.substr(0, argv0.rfind("\\") + 1) + filename;
-
+			std::string filepath = filename.substr(0, filename.rfind("\\") + 1);
 		#else
-			std::string filepath = argv0.substr(0, argv0.rfind("/") + 1) + filename;
+			std::string filepath = filename.substr(0, filename.rfind("/") + 1);
 		#endif
 		std::size_t pos;
 		std::string s, key;
 		std::ifstream file;
-		file.open(filepath);
+
+		Configurations["filepath"] = filepath;
+
+		file.open(filename);
 		if(!file)
 		{
-			std::cerr << "ERROR: File '" << filepath << "' could not be opened!" << std::endl;
+			std::cerr << "ERROR: File '" << filename << "' could not be opened!" << std::endl;
 			return;
 		}
 

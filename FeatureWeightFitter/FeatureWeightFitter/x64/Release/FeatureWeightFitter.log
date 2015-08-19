@@ -1,133 +1,28 @@
-﻿Build started 19.06.2015 02:56:09.
-     1>Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\FeatureWeightFitter\FeatureWeightFitter.vcxproj" on node 2 (Build target(s)).
+﻿Build started 14.08.2015 15:25:41.
+     1>Project "C:\Users\dohof_000\Documents\GitHub\Cassandra\FeatureWeightFitter\FeatureWeightFitter\FeatureWeightFitter.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(364,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /GT /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /arch:AVX2 /fp:precise /Zc:wchar_t /Zc:forScope /openmp /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\datamanipulation.cpp ..\..\src\features.cpp ..\..\src\featureweightfitter.cpp ..\..\src\flip_fast.cpp ..\..\src\position.cpp ..\..\src\possiblemoves.cpp ..\..\src\possiblemoves_avx2.cpp ..\..\src\possiblemoves_avx512.cpp ..\..\src\possiblemoves_sse2.cpp ..\..\src\utility.cpp
-         datamanipulation.cpp
-         features.cpp
-     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\features.h(896): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
-     1>..\..\src\features.cpp(51): warning C4244: '+=' : conversion from 'double' to 'int64_t', possible loss of data
-     1>..\..\src\features.cpp(78): warning C4244: '=' : conversion from 'uint64_t' to 'unsigned short', possible loss of data
-     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(600): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(723) : see reference to function template instantiation 'void std::allocator<_Ty>::construct<_Objty,double&>(_Objty *,double &)' being compiled
-                 with
-                 [
-                     _Ty=float
-         ,            _Objty=float
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(723) : see reference to function template instantiation 'void std::allocator<_Ty>::construct<_Objty,double&>(_Objty *,double &)' being compiled
-                 with
-                 [
-                     _Ty=float
-         ,            _Objty=float
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(872) : see reference to function template instantiation 'void std::allocator_traits<_Alloc>::construct<_Ty,double&>(std::allocator<_Ty> &,_Objty *,double &)' being compiled
-                 with
-                 [
-                     _Alloc=std::allocator<float>
-         ,            _Ty=float
-         ,            _Objty=float
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(872) : see reference to function template instantiation 'void std::allocator_traits<_Alloc>::construct<_Ty,double&>(std::allocator<_Ty> &,_Objty *,double &)' being compiled
-                 with
-                 [
-                     _Alloc=std::allocator<float>
-         ,            _Ty=float
-         ,            _Objty=float
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory(378) : see reference to function template instantiation 'void std::_Wrap_alloc<std::allocator<_Ty>>::construct<float,double&>(_Ty *,double &)' being compiled
-                 with
-                 [
-                     _Ty=float
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory(378) : see reference to function template instantiation 'void std::_Wrap_alloc<std::allocator<_Ty>>::construct<float,double&>(_Ty *,double &)' being compiled
-                 with
-                 [
-                     _Ty=float
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory(416) : see reference to function template instantiation '_FwdIt std::_Uninit_copy<_InIt,_FwdIt,std::allocator<_Ty>>(_InIt,_InIt,_FwdIt,std::_Wrap_alloc<std::allocator<_Ty>> &,std::_Nonscalar_ptr_iterator_tag)' being compiled
-                 with
-                 [
-                     _FwdIt=float *
-         ,            _InIt=double *
-         ,            _Ty=float
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory(427) : see reference to function template instantiation '_FwdIt std::_Uninit_copy<double*,_Iter,_Alloc>(_InIt,_InIt,_FwdIt,_Alloc &)' being compiled
-                 with
-                 [
-                     _FwdIt=float *
-         ,            _Iter=float *
-         ,            _Alloc=std::_Wrap_alloc<std::allocator<float>>
-         ,            _InIt=double *
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\vector(1640) : see reference to function template instantiation '_FwdIt std::_Uninitialized_copy<_Iter,float*,std::_Wrap_alloc<std::allocator<_Ty>>>(_InIt,_InIt,_FwdIt,_Alloc &)' being compiled
-                 with
-                 [
-                     _FwdIt=float *
-         ,            _Iter=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
-         ,            _Ty=float
-         ,            _InIt=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
-         ,            _Alloc=std::_Wrap_alloc<std::allocator<float>>
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\vector(789) : see reference to function template instantiation 'float *std::vector<float,std::allocator<_Ty>>::_Ucopy<_Iter>(_Iter,_Iter,float *)' being compiled
-                 with
-                 [
-                     _Ty=float
-         ,            _Iter=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\vector(789) : see reference to function template instantiation 'float *std::vector<float,std::allocator<_Ty>>::_Ucopy<_Iter>(_Iter,_Iter,float *)' being compiled
-                 with
-                 [
-                     _Ty=float
-         ,            _Iter=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\vector(766) : see reference to function template instantiation 'void std::vector<float,std::allocator<_Ty>>::_Construct<_Iter>(_Iter,_Iter,std::forward_iterator_tag)' being compiled
-                 with
-                 [
-                     _Ty=float
-         ,            _Iter=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\vector(766) : see reference to function template instantiation 'void std::vector<float,std::allocator<_Ty>>::_Construct<_Iter>(_Iter,_Iter,std::forward_iterator_tag)' being compiled
-                 with
-                 [
-                     _Ty=float
-         ,            _Iter=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\vector(751) : see reference to function template instantiation 'void std::vector<float,std::allocator<_Ty>>::_Construct<_Iter>(_Iter,_Iter)' being compiled
-                 with
-                 [
-                     _Ty=float
-         ,            _Iter=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\vector(751) : see reference to function template instantiation 'void std::vector<float,std::allocator<_Ty>>::_Construct<_Iter>(_Iter,_Iter)' being compiled
-                 with
-                 [
-                     _Ty=float
-         ,            _Iter=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
-                 ]
-                 ..\..\src\features.cpp(96) : see reference to function template instantiation 'std::vector<float,std::allocator<_Ty>>::vector<std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>,void>(_Iter,_Iter)' being compiled
-                 with
-                 [
-                     _Ty=float
-         ,            _Iter=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
-                 ]
-                 ..\..\src\features.cpp(96) : see reference to function template instantiation 'std::vector<float,std::allocator<_Ty>>::vector<std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>,void>(_Iter,_Iter)' being compiled
-                 with
-                 [
-                     _Ty=float
-         ,            _Iter=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
-                 ]
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /GT /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /arch:AVX2 /fp:precise /Zc:wchar_t /Zc:forScope /openmp /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\featureweightfitter.cpp
          featureweightfitter.cpp
-     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\features.h(896): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>c:\users\dohof_000\documents\github\cassandra\src\macros_hell.h(208): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>c:\users\dohof_000\documents\github\cassandra\src\features.h(898): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
      1>..\..\src\featureweightfitter.cpp(37): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
      1>..\..\src\featureweightfitter.cpp(66): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
      1>..\..\src\featureweightfitter.cpp(67): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
      1>..\..\src\featureweightfitter.cpp(98): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
      1>..\..\src\featureweightfitter.cpp(99): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
-     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\featureweightfitter.h(65): warning C4267: 'argument' : conversion from 'size_t' to 'unsigned int', possible loss of data
-                 c:\users\dohof_000\dropbox\my legacy\cassandra\src\featureweightfitter.h(64) : while compiling class template member function 'void CMatrix_CSR<uint8_t,unsigned int>::endRow(void)'
+     1>c:\users\dohof_000\documents\github\cassandra\src\featureweightfitter.h(65): warning C4267: 'argument' : conversion from 'size_t' to 'unsigned int', possible loss of data
+                 c:\users\dohof_000\documents\github\cassandra\src\featureweightfitter.h(64) : while compiling class template member function 'void CMatrix_CSR<uint8_t,unsigned int>::endRow(void)'
                  ..\..\src\featureweightfitter.cpp(57) : see reference to function template instantiation 'void CMatrix_CSR<uint8_t,unsigned int>::endRow(void)' being compiled
                  ..\..\src\featureweightfitter.cpp(42) : see reference to class template instantiation 'CMatrix_CSR<uint8_t,unsigned int>' being compiled
-     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\featureweightfitter.h(115): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(95): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+                 ..\..\src\featureweightfitter.cpp(8) : see reference to function template instantiation 'std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> read_vector<CDataset_Position_Score_PV>(const std::string &,size_t)' being compiled
+                 with
+                 [
+                     _Ty=CDataset_Position_Score_PV
+                 ]
+     1>c:\users\dohof_000\documents\github\cassandra\src\featureweightfitter.h(115): warning C4018: '<' : signed/unsigned mismatch
                  ..\..\src\featureweightfitter.cpp(71) : see reference to function template instantiation 'std::vector<size_t,std::allocator<_Ty>> CMatrix_CSR<uint8_t,unsigned int>::ATx<size_t>(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
                  with
                  [
@@ -138,7 +33,7 @@
                  [
                      _Ty=size_t
                  ]
-     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\featureweightfitter.h(96): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dohof_000\documents\github\cassandra\src\featureweightfitter.h(96): warning C4018: '<' : signed/unsigned mismatch
                  ..\..\src\featureweightfitter.cpp(135) : see reference to function template instantiation 'std::vector<double,std::allocator<_Ty>> CMatrix_CSR<uint8_t,unsigned int>::operator *<double>(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
                  with
                  [
@@ -149,7 +44,7 @@
                  [
                      _Ty=double
                  ]
-     1>c:\users\dohof_000\dropbox\my legacy\cassandra\src\featureweightfitter.h(142): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dohof_000\documents\github\cassandra\src\featureweightfitter.h(142): warning C4018: '<' : signed/unsigned mismatch
                  ..\..\src\featureweightfitter.cpp(207) : see reference to function template instantiation 'std::vector<double,std::allocator<_Ty>> CMatrix_CSR<uint8_t,unsigned int>::ATAx<double>(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
                  with
                  [
@@ -160,78 +55,16 @@
                  [
                      _Ty=double
                  ]
-         flip_fast.cpp
-     1>..\..\src\flip_fast.cpp(790): warning C4101: 'outflank_d9' : unreferenced local variable
-     1>..\..\src\flip_fast.cpp(790): warning C4101: 'flip_d7' : unreferenced local variable
-     1>..\..\src\flip_fast.cpp(819): warning C4101: 'outflank_d9' : unreferenced local variable
-     1>..\..\src\flip_fast.cpp(819): warning C4101: 'flip_d7' : unreferenced local variable
-     1>..\..\src\flip_fast.cpp(848): warning C4101: 'flip_d7' : unreferenced local variable
-     1>..\..\src\flip_fast.cpp(955): warning C4101: 'flip_d9' : unreferenced local variable
-     1>..\..\src\flip_fast.cpp(991): warning C4101: 'flip_d9' : unreferenced local variable
-     1>..\..\src\flip_fast.cpp(1021): warning C4101: 'flip_d9' : unreferenced local variable
-     1>..\..\src\flip_fast.cpp(1559): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1569): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1583): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1593): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1609): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1634): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1659): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1685): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1710): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1720): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1735): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1749): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1763): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1773): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1787): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1797): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1813): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1838): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1863): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1889): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1914): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1924): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1939): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\flip_fast.cpp(1953): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-         position.cpp
-     1>..\..\src\position.cpp(324): warning C4554: '>>' : check operator precedence for possible error; use parentheses to clarify precedence
-     1>..\..\src\position.cpp(330): warning C4554: '>>' : check operator precedence for possible error; use parentheses to clarify precedence
-         possiblemoves.cpp
-         possiblemoves_avx2.cpp
-         possiblemoves_avx512.cpp
-         possiblemoves_sse2.cpp
-         utility.cpp
-     1>..\..\src\utility.cpp(40): warning C4244: '=' : conversion from '__int64' to 'char', possible loss of data
-     1>..\..\src\utility.cpp(42): warning C4244: '=' : conversion from '__int64' to 'char', possible loss of data
-     1>..\..\src\utility.cpp(43): warning C4244: '=' : conversion from '__int64' to 'char', possible loss of data
-     1>..\..\src\utility.cpp(44): warning C4244: '=' : conversion from '__int64' to 'char', possible loss of data
-     1>..\..\src\utility.cpp(45): warning C4244: '=' : conversion from '__int64' to 'char', possible loss of data
-     1>..\..\src\utility.cpp(59): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(60): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(61): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(62): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(63): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(64): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(65): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(66): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(67): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(68): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(70): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>..\..\src\utility.cpp(87): warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\time.inl(86) : see declaration of 'ctime'
+     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(120): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+                 ..\..\src\featureweightfitter.cpp(252) : see reference to function template instantiation 'void write_to_file<double>(const std::string &,const std::vector<double,std::allocator<_Ty>> &)' being compiled
+                 with
+                 [
+                     _Ty=double
+                 ]
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\x64\Release\FeatureWeightFitter.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\x64\Release\FeatureWeightFitter.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\x64\Release\FeatureWeightFitter.lib" /MACHINE:X64 x64\Release\datamanipulation.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"..\..\bin\FeatureWeightFitter.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"..\..\bin\FeatureWeightFitter.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\..\bin\FeatureWeightFitter.lib" /MACHINE:X64 x64\Release\configfile.obj
+         x64\Release\datamanipulation.obj
          x64\Release\features.obj
          x64\Release\featureweightfitter.obj
          x64\Release\flip_fast.obj
@@ -243,9 +76,9 @@
          x64\Release\utility.obj
          Generating code
          Finished generating code
-         FeatureWeightFitter.vcxproj -> C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\x64\Release\FeatureWeightFitter.exe
-     1>Done Building Project "C:\Users\dohof_000\Dropbox\My Legacy\Cassandra\FeatureWeightFitter\FeatureWeightFitter\FeatureWeightFitter.vcxproj" (Build target(s)).
+         FeatureWeightFitter.vcxproj -> C:\Users\dohof_000\Documents\GitHub\Cassandra\FeatureWeightFitter\FeatureWeightFitter\..\..\bin\FeatureWeightFitter.exe
+     1>Done Building Project "C:\Users\dohof_000\Documents\GitHub\Cassandra\FeatureWeightFitter\FeatureWeightFitter\FeatureWeightFitter.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:05.13
+Time Elapsed 00:00:03.87

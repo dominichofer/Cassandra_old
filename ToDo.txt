@@ -1,0 +1,1 @@
+- std::set.insert() does not require a check std::set.count() first. Fix that.

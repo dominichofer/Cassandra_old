@@ -26,7 +26,6 @@ static const bool PATTERN_B5    = true;
 
 namespace Features
 {
-
 	const int NumberOfPatternWithSymmetrie = 0
 		+ (PATTERN_L02X ? 4 : 0)
 		+ (PATTERN_L1   ? 4 : 0)
@@ -128,7 +127,7 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(                P ,                 O , 0x000000000000020FULL);
+			const int indexA = FullPatternIndex(               P ,                O , 0x000000000000020FULL);
 			const int indexB = FullPatternIndex(FlipHorizontal(P), FlipHorizontal(O), 0x000000000000020FULL);
 			return (indexA > indexB) ? (halfSize*indexB + indexA - (((indexB + 1)*indexB) >> 1)) : (halfSize*indexA + indexB - (((indexA + 1)*indexA) >> 1));
 		}
@@ -249,7 +248,7 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(                P ,                 O , 0x0000000000000F00ULL);
+			const int indexA = FullPatternIndex(               P ,                O , 0x0000000000000F00ULL);
 			const int indexB = FullPatternIndex(FlipHorizontal(P), FlipHorizontal(O), 0x0000000000000F00ULL);
 			return (indexA > indexB) ? (halfSize*indexB + indexA - (((indexB + 1)*indexB) >> 1)) : (halfSize*indexA + indexB - (((indexA + 1)*indexA) >> 1));
 		}
@@ -341,7 +340,7 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(                P ,                 O , 0x00000000000F0000ULL);
+			const int indexA = FullPatternIndex(               P ,                O , 0x00000000000F0000ULL);
 			const int indexB = FullPatternIndex(FlipHorizontal(P), FlipHorizontal(O), 0x00000000000F0000ULL);
 			return (indexA > indexB) ? (halfSize*indexB + indexA - (((indexB + 1)*indexB) >> 1)) : (halfSize*indexA + indexB - (((indexA + 1)*indexA) >> 1));
 		}
@@ -433,7 +432,7 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(                P ,                 O , 0x0000000007000000ULL) + ((                O  & 0x0000000008000000ULL) ? POW_3_3 : 0);
+			const int indexA = FullPatternIndex(               P ,                O , 0x0000000007000000ULL) + ((               O  & 0x0000000008000000ULL) ? POW_3_3 : 0);
 			const int indexB = FullPatternIndex(FlipHorizontal(P), FlipHorizontal(O), 0x0000000007000000ULL) + ((FlipHorizontal(O) & 0x0000000008000000ULL) ? POW_3_3 : 0);
 			return (indexA > indexB) ? (halfSize*indexB + indexA - (((indexB + 1)*indexB) >> 1)) : (halfSize*indexA + indexB - (((indexA + 1)*indexA) >> 1));
 		}
@@ -525,7 +524,7 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(              P ,               O , 0x0000000000000408ULL);
+			const int indexA = FullPatternIndex(             P ,              O , 0x0000000000000408ULL);
 			const int indexB = FullPatternIndex(FlipDiagonal(P), FlipDiagonal(O), 0x0000000000000408ULL);
 			return (indexA > indexB) ? (halfSize*indexB + indexA - (((indexB + 1)*indexB) >> 1)) : (halfSize*indexA + indexB - (((indexA + 1)*indexA) >> 1));
 		}
@@ -616,7 +615,7 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(              P ,               O , 0x0000000000000810ULL);
+			const int indexA = FullPatternIndex(             P ,              O , 0x0000000000000810ULL);
 			const int indexB = FullPatternIndex(FlipDiagonal(P), FlipDiagonal(O), 0x0000000000000810ULL);
 			const int indexD = FullPatternIndex(              P ,               O , 0x0000000000040000ULL);
 			return (indexA > indexB) ? (diagSize*(halfSize*indexB+indexA - (((indexB+1)*indexB) >> 1)) + indexD) : (diagSize*(halfSize*indexA+indexB - (((indexA+1)*indexA) >> 1)) + indexD);
@@ -708,7 +707,7 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(              P ,               O , 0x0000000000081020ULL);
+			const int indexA = FullPatternIndex(             P ,              O , 0x0000000000081020ULL);
 			const int indexB = FullPatternIndex(FlipDiagonal(P), FlipDiagonal(O), 0x0000000000081020ULL);
 			return (indexA > indexB) ? (halfSize*indexB + indexA - (((indexB + 1)*indexB) >> 1)) : (halfSize*indexA + indexB - (((indexA + 1)*indexA) >> 1));
 		}
@@ -800,7 +799,7 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(              P ,               O , 0x0000000000102040ULL);
+			const int indexA = FullPatternIndex(             P ,              O , 0x0000000000102040ULL);
 			const int indexB = FullPatternIndex(FlipDiagonal(P), FlipDiagonal(O), 0x0000000000102040ULL);
 			const int indexD = (O & 0x0000000008000000ULL) ? 1 : 0;
 			return (indexA > indexB) ? (diagSize*(halfSize*indexB+indexA - (((indexB+1)*indexB) >> 1)) + indexD) : (diagSize*(halfSize*indexA+indexB - (((indexA+1)*indexA) >> 1)) + indexD);
@@ -893,9 +892,9 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(              P ,               O , 0x0000000000000002ULL);
+			const int indexA = FullPatternIndex(             P ,              O , 0x0000000000000002ULL);
 			const int indexB = FullPatternIndex(FlipDiagonal(P), FlipDiagonal(O), 0x0000000000000002ULL);
-			const int indexD = FullPatternIndex(              P ,               O , 0x8040200000040201ULL) * 4 + PExt(O, 0x0000001008000000ULL);
+			const int indexD = FullPatternIndex(             P ,              O , 0x8040200000040201ULL) * 4 + PExt(O, 0x0000001008000000ULL);
 			return (indexA > indexB) ? (diagSize*(halfSize*indexB+indexA - (((indexB+1)*indexB) >> 1)) + indexD) : (diagSize*(halfSize*indexA+indexB - (((indexA+1)*indexA) >> 1)) + indexD);
 		}
 		static inline int ReducedPatternIndex1(const uint64_t P, const uint64_t O) { return ReducedPatternIndex0(FlipHorizontal(P), FlipHorizontal(O)); }
@@ -1015,7 +1014,7 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(                P ,                 O , 0x0000000000000C0DULL);
+			const int indexA = FullPatternIndex(               P ,                O , 0x0000000000000C0DULL);
 			const int indexB = FullPatternIndex(FlipHorizontal(P), FlipHorizontal(O), 0x0000000000000C0DULL);
 			return (indexA > indexB) ? (halfSize*indexB + indexA - (((indexB + 1)*indexB) >> 1)) : (halfSize*indexA + indexB - (((indexA + 1)*indexA) >> 1));
 		}
@@ -1138,9 +1137,9 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(              P ,               O , 0x0000000001010100ULL);
+			const int indexA = FullPatternIndex(             P ,              O , 0x0000000001010100ULL);
 			const int indexB = FullPatternIndex(FlipDiagonal(P), FlipDiagonal(O), 0x0000000001010100ULL);
-			const int indexD = FullPatternIndex(              P ,               O , 0x0000000000000201ULL);
+			const int indexD = FullPatternIndex(             P ,              O , 0x0000000000000201ULL);
 			return (indexA > indexB) ? (diagSize*(halfSize*indexB+indexA - (((indexB+1)*indexB) >> 1)) + indexD) : (diagSize*(halfSize*indexA+indexB - (((indexA+1)*indexA) >> 1)) + indexD);
 		}
 		static inline int ReducedPatternIndex1(const uint64_t P, const uint64_t O) { return ReducedPatternIndex0(FlipHorizontal(P), FlipHorizontal(O)); }
@@ -1261,9 +1260,9 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(              P ,               O , 0x0000000101010100ULL);
+			const int indexA = FullPatternIndex(             P ,              O , 0x0000000101010100ULL);
 			const int indexB = FullPatternIndex(FlipDiagonal(P), FlipDiagonal(O), 0x0000000101010100ULL);
-			const int indexD = FullPatternIndex(              P ,               O , 0x0000000000000201ULL);
+			const int indexD = FullPatternIndex(             P ,              O , 0x0000000000000201ULL);
 			return (indexA > indexB) ? (diagSize*(halfSize*indexB+indexA - (((indexB+1)*indexB) >> 1)) + indexD) : (diagSize*(halfSize*indexA+indexB - (((indexA+1)*indexA) >> 1)) + indexD);
 		}
 		static inline int ReducedPatternIndex1(const uint64_t P, const uint64_t O) { return ReducedPatternIndex0(FlipHorizontal(P), FlipHorizontal(O)); }
@@ -1384,9 +1383,9 @@ namespace Features
 
 		static int ReducedPatternIndex0(const uint64_t P, const uint64_t O)
 		{
-			const int indexA = FullPatternIndex(              P ,               O , 0x0000000000030100ULL);
+			const int indexA = FullPatternIndex(             P ,              O , 0x0000000000030100ULL);
 			const int indexB = FullPatternIndex(FlipDiagonal(P), FlipDiagonal(O), 0x0000000000030100ULL);
-			const int indexD = FullPatternIndex(              P ,               O , 0x0000000000040201ULL);
+			const int indexD = FullPatternIndex(             P ,              O , 0x0000000000040201ULL);
 			return (indexA > indexB) ? (diagSize*(halfSize*indexB+indexA - (((indexB+1)*indexB) >> 1)) + indexD) : (diagSize*(halfSize*indexA+indexB - (((indexA+1)*indexA) >> 1)) + indexD);
 		}
 		static inline int ReducedPatternIndex1(const uint64_t P, const uint64_t O) { return ReducedPatternIndex0(FlipHorizontal(P), FlipHorizontal(O)); }
