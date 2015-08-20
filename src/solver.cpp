@@ -189,15 +189,15 @@ void print_help()
 
 int main(int argc, char* argv[])
 {
-	//// Preheat
-	//int tmp = 4;
-	//printf("Preheating CPU");
-	//for (unsigned int i = 0; i < 100000000; i++)
-	//	tmp = (static_cast<int>(std::exp(std::sin(tmp))) * 123456789 + 987) / 101 + 13;
-	//printf(" to %dC.\n", tmp % 100);
+	// Preheat
+	int tmp = 4;
+	printf("Preheating CPU");
+	for (unsigned int i = 0; i < 100000000; i++)
+		tmp = (static_cast<int>(std::exp(std::sin(tmp))) * 123456789 + 987) / 101 + 13;
+	printf(" to %dC.\n", tmp % 100);
 
 	//SolveStartPosition(); return 0;
-	//FForum(); return 0;
+	FForum(); return 0;
 
 	uint64_t NodeCounter = 0;
 	unsigned int index = 0;
@@ -234,7 +234,10 @@ int main(int argc, char* argv[])
 		else if (std::string(argv[i]) == "-ip") IP = std::string(argv[++i]);
 		else if (std::string(argv[i]) == "-p") port = atoi(argv[++i]);
 		else if (std::string(argv[i]) == "-h") { print_help(); return 0; }
-	}	
+	}
+
+	{ b_SkipSolved = false; b_Save = false; b_Test = true; }
+	filename = "C:\\Cassandra\\pos\\play5_e21_1M.psp";
 	
 	ConfigFile::Initialize("C:\\Cassandra\\config.ini");
 	Features::Initialize();

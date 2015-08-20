@@ -1,8 +1,7 @@
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\vc120.pdb
-c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\solver.obj
-c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\game.obj
-c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\search.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\utility.obj
+c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\solver.obj
+c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\search.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\screen.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\possiblemoves_sse2.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\possiblemoves_avx512.obj
@@ -13,15 +12,13 @@ c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\perft_ba
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\move.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\hashtable.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\generatepositions.obj
+c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\game.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\flip_fast.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\features.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\endgame_negamax.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\datamanipulation.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\count_last_flip.obj
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\configfile.obj
-c:\users\dohof_000\documents\github\cassandra\bin\solver.exe
-c:\users\dohof_000\documents\github\cassandra\bin\solver.pdb
-c:\users\dohof_000\documents\github\cassandra\solver\solver\..\..\bin\solver.exe
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\solver.tlog\cl.command.1.tlog
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\solver.tlog\cl.read.1.tlog
 c:\users\dohof_000\documents\github\cassandra\solver\solver\x64\release\solver.tlog\cl.write.1.tlog

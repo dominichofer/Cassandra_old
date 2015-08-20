@@ -104,26 +104,27 @@ int ZWS(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alp
 	if (StabilityCutoff_ZWS(P, O, alpha, score)) return score;
 	if (LookUpTT(P, O, ttValue) && UseTTValue(ttValue, alpha, alpha+1, depth, selectivity, score)) return score;
 	if (MPC(P, O, NodeCounter, alpha, selectivity, depth, empties, score)) return score;
-		
-	CMoveList mvList(P, O, NodeCounter, BitBoardPossible, depth, alpha, ttValue, false);
-	for (const auto& mv : mvList) // ETC
+	
+	CMoveList& mvList = MoveList[empties];
+	mvList.Initialize(P, O, NodeCounter, BitBoardPossible, depth, alpha, ttValue, false);
+	for (CMoveList::CMove* mv = mvList.First(); mv != mvList.m_end; mv = mvList.Next())
 	{
-		if (StabilityCutoff_ZWS(mv.P, mv.O, -alpha - 1, score)) {
-			UpdateTT(P, O, 0, alpha, alpha + 1, -score, depth, NO_SELECTIVITY, mv.move, mvList.BestMove(), mvList.NextBestMove());
+		if (StabilityCutoff_ZWS(mv->P, mv->O, -alpha - 1, score)) {
+			UpdateTT(P, O, 0, alpha, alpha + 1, -score, depth, NO_SELECTIVITY, mv->move, mvList.BestMove(), mvList.NextBestMove());
 			return -score;
 		}
-		if (LookUpTT(mv.P, mv.O, ttValue) && UseTTValue(ttValue, -alpha - 1, -alpha, depth - 1, selectivity, score) && (-score > alpha)) {
-			UpdateTT(P, O, 0, alpha, alpha+1, -score, depth, selectivity, mv.move, mvList.BestMove(), mvList.NextBestMove());
+		if (LookUpTT(mv->P, mv->O, ttValue) && UseTTValue(ttValue, -alpha - 1, -alpha, depth - 1, selectivity, score) && (-score > alpha)) {
+			UpdateTT(P, O, 0, alpha, alpha+1, -score, depth, selectivity, mv->move, mvList.BestMove(), mvList.NextBestMove());
 			return -score;
 		}
 	}
-	for (const auto& mv : mvList)
+	for (CMoveList::CMove* mv = mvList.First(); mv != mvList.m_end; mv = mvList.Next())
 	{
-		score = -ZWS(mv.P, mv.O, NodeCounter, -alpha-1, selectivity, depth-1, empties-1);
+		score = -ZWS(mv->P, mv->O, NodeCounter, -alpha-1, selectivity, depth-1, empties-1);
 		if (score > bestscore)
 		{
 			bestscore = score;
-			BestMove = mv.move;
+			BestMove = mv->move;
 			if (score > alpha) break;
 		}
 	}
@@ -188,22 +189,23 @@ int PVS(const uint64_t P, const uint64_t O, uint64_t& NodeCounter, const int alp
 
 	CLine * line = nullptr;
 	if (pline && pline->size) line = new CLine(pline->size-1);
-	CMoveList mvList(P, O, NodeCounter, BitBoardPossible, depth, alpha, ttValue, true);
-	for (const auto& mv : mvList)
+	CMoveList& mvList = MoveList[empties];
+	mvList.Initialize(P, O, NodeCounter, BitBoardPossible, depth, alpha, ttValue, true);
+	for (CMoveList::CMove* mv = mvList.First(); mv != mvList.m_end; mv = mvList.Next())
 	{
 		if (bestscore == -65)
-			score = -PVS(mv.P, mv.O, NodeCounter, -beta, -lower, selectivity, depth-1, empties-1, line);
+			score = -PVS(mv->P, mv->O, NodeCounter, -beta, -lower, selectivity, depth-1, empties-1, line);
 		else
 		{
-			score = -ZWS(mv.P, mv.O, NodeCounter, -lower-1, selectivity, depth-1, empties-1);
+			score = -ZWS(mv->P, mv->O, NodeCounter, -lower-1, selectivity, depth-1, empties-1);
 			if (score > lower && score < beta)
-				score = -PVS(mv.P, mv.O, NodeCounter, -beta, -lower, selectivity, depth-1, empties-1, line); // OPTIMIZATION: -lower -> -score
+				score = -PVS(mv->P, mv->O, NodeCounter, -beta, -lower, selectivity, depth-1, empties-1, line); // OPTIMIZATION: -lower -> -score
 		}
 		if (score > bestscore)
 		{
 			bestscore = score;
-			BestMove = mv.move;
-			if (line) pline->NewPV(mv.move, line);
+			BestMove = mv->move;
+			if (line) pline->NewPV(mv->move, line);
 			if (score >= beta) break;
 			if (score > lower) lower = score;
 		}
@@ -330,14 +332,15 @@ namespace Midgame
 		if (StabilityCutoff_ZWS(P, O, alpha, score)) return score;
 		if (LookUpTT(P, O, ttValue) && UseTTValue(ttValue, alpha, alpha+1, 3, NO_SELECTIVITY, score)) return score;
 
-		CMoveList mvList(P, O, NodeCounter, BitBoardPossible, 3, alpha, ttValue, false);
-		for (const auto& mv : mvList)
+		CMoveList& mvList = MoveList[Empties(P, O)];
+		mvList.Initialize(P, O, NodeCounter, BitBoardPossible, 3, alpha, ttValue, false);
+		for (CMoveList::CMove* mv = mvList.First(); mv != mvList.m_end; mv = mvList.Next())
 		{
-			score = -ZWS_2(mv.P, mv.O, NodeCounter, -alpha-1);
+			score = -ZWS_2(mv->P, mv->O, NodeCounter, -alpha-1);
 			if (score > bestscore)
 			{
 				bestscore = score;
-				BestMove = mv.move;
+				BestMove = mv->move;
 				if (score > alpha) break;
 			}
 		}
@@ -813,14 +816,15 @@ namespace Endgame
 		if (StabilityCutoff_ZWS(P, O, alpha, score)) return score;
 		if (LookUpTT(P, O, ttValue) && UseTTValue(ttValue, alpha, alpha+1, empties, NO_SELECTIVITY, score)) return score; 
 
-		CMoveList mvList(P, O, NodeCounter, BitBoardPossible, empties, alpha, ttValue, false);
-		for (const auto& mv : mvList)
+		CMoveList& mvList = MoveList[Empties(P, O)];
+		mvList.Initialize(P, O, NodeCounter, BitBoardPossible, empties, alpha, ttValue, false);
+		for (CMoveList::CMove* mv = mvList.First(); mv != mvList.m_end; mv = mvList.Next())
 		{
-			score = -ZWS_B(mv.P, mv.O, NodeCounter, -alpha-1, empties-1);
+			score = -ZWS_B(mv->P, mv->O, NodeCounter, -alpha-1, empties-1);
 			if (score > bestscore)
 			{
 				bestscore = score;
-				BestMove = mv.move;
+				BestMove = mv->move;
 				if (score > alpha) break;
 			}
 		}
@@ -934,22 +938,23 @@ namespace Endgame
 			if (USE_PV_TTCUT && !pline && UseTTValue(ttValue, alpha, beta, empties, NO_SELECTIVITY, score))
 				return score;
 
-		CMoveList mvList(P, O, NodeCounter, BitBoardPossible, empties, alpha, ttValue, true);
-		for (const auto& mv : mvList)
+		CMoveList& mvList = MoveList[Empties(P, O)];
+		mvList.Initialize(P, O, NodeCounter, BitBoardPossible, empties, alpha, ttValue, true);
+		for (CMoveList::CMove* mv = mvList.First(); mv != mvList.m_end; mv = mvList.Next())
 		{
 			if (bestscore == -65)
-				score = -PVS_A(mv.P, mv.O, NodeCounter, -beta, -lower, empties-1, line);
+				score = -PVS_A(mv->P, mv->O, NodeCounter, -beta, -lower, empties-1, line);
 			else
 			{
-				score = -ZWS_A(mv.P, mv.O, NodeCounter, -lower-1, empties-1);
+				score = -ZWS_A(mv->P, mv->O, NodeCounter, -lower-1, empties-1);
 				if (score > lower && score < beta)
-					score = -PVS_A(mv.P, mv.O, NodeCounter, -beta, -lower, empties-1, line);
+					score = -PVS_A(mv->P, mv->O, NodeCounter, -beta, -lower, empties-1, line);
 			}
 			if (score > bestscore)
 			{
 				bestscore = score;
-				BestMove = mv.move;
-				if (line) pline->NewPV(mv.move, line);
+				BestMove = mv->move;
+				if (line) pline->NewPV(mv->move, line);
 				if (score >= beta) break;
 				if (score > lower) lower = score;
 			}

@@ -1,36 +1,36 @@
-﻿Build started 13.08.2015 15:19:28.
+﻿Build started 20.08.2015 22:56:12.
      1>Project "C:\Users\dohof_000\Documents\GitHub\Cassandra\Solver\Solver\Solver.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\datamanipulation.cpp ..\..\src\generatepositions.cpp ..\..\src\search.cpp ..\..\src\solver.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\src\solver.cpp
          solver.cpp
      1>c:\users\dohof_000\documents\github\cassandra\src\macros_hell.h(208): warning C4146: unary minus operator applied to unsigned type, result still unsigned
      1>c:\users\dohof_000\documents\github\cassandra\src\hashtable.h(23): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\features.h(898): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>c:\users\dohof_000\documents\github\cassandra\src\features.h(897): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
      1>c:\users\dohof_000\documents\github\cassandra\src\selectivity.h(37): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
      1>c:\users\dohof_000\documents\github\cassandra\src\selectivity.h(45): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
      1>c:\users\dohof_000\documents\github\cassandra\src\game.h(77): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
      1>c:\users\dohof_000\documents\github\cassandra\src\game.h(100): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(112): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(135): warning C4244: 'return' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(114): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(137): warning C4244: 'return' : conversion from 'uint64_t' to 'int', possible loss of data
      1>..\..\src\solver.cpp(59): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(121): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(127): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(144): warning C4018: '<' : signed/unsigned mismatch
-     1>..\..\src\solver.cpp(270): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(280): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(286): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(302): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(312): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(316): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(332): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(342): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(348): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(125): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(131): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(148): warning C4018: '<' : signed/unsigned mismatch
+     1>..\..\src\solver.cpp(277): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\src\solver.cpp(287): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(293): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(309): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\src\solver.cpp(319): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(323): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(339): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\src\solver.cpp(349): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
+     1>..\..\src\solver.cpp(355): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
      1>c:\users\dohof_000\documents\github\cassandra\src\worker.h(63): warning C4309: 'initializing' : truncation of constant value
                  c:\users\dohof_000\documents\github\cassandra\src\worker.h(61) : while compiling class template member function 'int CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>::ConnectSock(void)'
                  c:\users\dohof_000\documents\github\cassandra\src\worker.h(133) : see reference to function template instantiation 'int CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>::ConnectSock(void)' being compiled
-                 ..\..\src\solver.cpp(118) : see reference to class template instantiation 'CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>' being compiled
+                 ..\..\src\solver.cpp(122) : see reference to class template instantiation 'CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>' being compiled
      1>c:\users\dohof_000\documents\github\cassandra\src\worker.h(64): warning C4244: '=' : conversion from 'SOCKET' to 'int', possible loss of data
      1>c:\users\dohof_000\documents\github\cassandra\src\worker.h(68): warning C4309: 'return' : truncation of constant value
      1>c:\users\dohof_000\documents\github\cassandra\src\worker.h(80): warning C4309: 'return' : truncation of constant value
@@ -52,110 +52,22 @@
          ,            _Diff=uint8_t
          ,            _Ty=int
                  ]
-     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(94): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(95): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-                 ..\..\src\solver.cpp(266) : see reference to function template instantiation 'std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> read_vector<CDataset_Position_Score_PV>(const std::string &,size_t)' being compiled
+                 ..\..\src\solver.cpp(273) : see reference to function template instantiation 'std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> read_vector<CDataset_Position_Score_PV>(const std::string &,size_t)' being compiled
                  with
                  [
                      _Ty=CDataset_Position_Score_PV
                  ]
-     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(119): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(120): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-                 ..\..\src\solver.cpp(291) : see reference to function template instantiation 'void write_to_file<CDataset_Position_Score_PV>(const std::string &,const std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> &)' being compiled
+                 ..\..\src\solver.cpp(298) : see reference to function template instantiation 'void write_to_file<CDataset_Position_Score_PV>(const std::string &,const std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> &)' being compiled
                  with
                  [
                      _Ty=CDataset_Position_Score_PV
                  ]
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-         search.cpp
-     1>c:\users\dohof_000\documents\github\cassandra\src\macros_hell.h(208): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>c:\users\dohof_000\documents\github\cassandra\src\hashtable.h(23): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\features.h(898): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\selectivity.h(37): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>c:\users\dohof_000\documents\github\cassandra\src\selectivity.h(45): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(77): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(100): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(112): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(135): warning C4244: 'return' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>..\..\src\search.cpp(60): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
-     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2297): warning C4996: 'std::_Copy_n': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2278) : see declaration of 'std::_Copy_n'
-                 c:\users\dohof_000\documents\github\cassandra\src\line.h(13) : see reference to function template instantiation '_OutIt std::copy_n<uint8_t*,uint8_t,uint8_t*>(_InIt,_Diff,_OutIt)' being compiled
-                 with
-                 [
-                     _OutIt=uint8_t *
-         ,            _InIt=uint8_t *
-         ,            _Diff=uint8_t
-                 ]
-     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2715): warning C4996: 'std::_Fill_n': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2701) : see declaration of 'std::_Fill_n'
-                 c:\users\dohof_000\documents\github\cassandra\src\line.h(14) : see reference to function template instantiation '_OutIt std::fill_n<uint8_t*,uint8_t,int>(_OutIt,_Diff,const _Ty &)' being compiled
-                 with
-                 [
-                     _OutIt=uint8_t *
-         ,            _Diff=uint8_t
-         ,            _Ty=int
-                 ]
-         datamanipulation.cpp
-     1>c:\users\dohof_000\documents\github\cassandra\src\macros_hell.h(208): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>..\..\src\datamanipulation.cpp(51): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-     1>..\..\src\datamanipulation.cpp(70): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(94): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-                 ..\..\src\datamanipulation.cpp(90) : see reference to function template instantiation 'std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> read_vector<CDataset_Position_Score_PV>(const std::string &,size_t)' being compiled
-                 with
-                 [
-                     _Ty=CDataset_Position_Score_PV
-                 ]
-         Generating Code...
-         Compiling...
-         generatepositions.cpp
-     1>c:\users\dohof_000\documents\github\cassandra\src\macros_hell.h(208): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>c:\users\dohof_000\documents\github\cassandra\src\hashtable.h(23): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\features.h(898): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\selectivity.h(37): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>c:\users\dohof_000\documents\github\cassandra\src\selectivity.h(45): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(77): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(100): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(112): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(135): warning C4244: 'return' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>..\..\src\generatepositions.cpp(64): warning C4244: '=' : conversion from 'unsigned __int64' to 'int', possible loss of data
-     1>..\..\src\generatepositions.cpp(108): warning C4018: '<' : signed/unsigned mismatch
-     1>..\..\src\generatepositions.cpp(122): warning C4244: '=' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>..\..\src\generatepositions.cpp(171): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
-     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2297): warning C4996: 'std::_Copy_n': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2278) : see declaration of 'std::_Copy_n'
-                 c:\users\dohof_000\documents\github\cassandra\src\line.h(13) : see reference to function template instantiation '_OutIt std::copy_n<uint8_t*,uint8_t,uint8_t*>(_InIt,_Diff,_OutIt)' being compiled
-                 with
-                 [
-                     _OutIt=uint8_t *
-         ,            _InIt=uint8_t *
-         ,            _Diff=uint8_t
-                 ]
-     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2715): warning C4996: 'std::_Fill_n': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xutility(2701) : see declaration of 'std::_Fill_n'
-                 c:\users\dohof_000\documents\github\cassandra\src\line.h(14) : see reference to function template instantiation '_OutIt std::fill_n<uint8_t*,uint8_t,int>(_OutIt,_Diff,const _Ty &)' being compiled
-                 with
-                 [
-                     _OutIt=uint8_t *
-         ,            _Diff=uint8_t
-         ,            _Ty=int
-                 ]
-     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(119): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-                 ..\..\src\generatepositions.cpp(43) : see reference to function template instantiation 'void write_to_file<CDataset_Position_Score_PV>(const std::string &,const std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> &)' being compiled
-                 with
-                 [
-                     _Ty=CDataset_Position_Score_PV
-                 ]
-         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dohof_000\Documents\GitHub\Cassandra\Solver\x64\Debug\Solver.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dohof_000\Documents\GitHub\Cassandra\Solver\x64\Debug\Solver.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dohof_000\Documents\GitHub\Cassandra\Solver\x64\Debug\Solver.lib" /MACHINE:X64 x64\Debug\configfile.obj
          x64\Debug\count_last_flip.obj
@@ -182,4 +94,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.68
+Time Elapsed 00:00:01.49
