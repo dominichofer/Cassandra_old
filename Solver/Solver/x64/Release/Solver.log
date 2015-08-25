@@ -1,9 +1,9 @@
-﻿Build started 19.08.2015 03:32:04.
+﻿Build started 25.08.2015 17:49:27.
      1>Project "C:\Users\dohof_000\Documents\GitHub\Cassandra\Solver\Solver\Solver.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(364,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /Oy /GT /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /arch:AVX2 /fp:precise /Zc:wchar_t /Zc:forScope /openmp /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt /D "__core_avx2__" ..\..\src\solver.cpp
-         solver.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /Oy /GT /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /arch:AVX2 /fp:precise /Zc:wchar_t /Zc:forScope /openmp /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt /D "__core_avx2__" ..\..\src\game.cpp
+         game.cpp
      1>c:\users\dohof_000\documents\github\cassandra\src\hashtable.h(23): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
      1>c:\users\dohof_000\documents\github\cassandra\src\features.h(897): warning C4244: 'initializing' : conversion from 'uint64_t' to 'const int', possible loss of data
      1>c:\users\dohof_000\documents\github\cassandra\src\selectivity.h(37): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -14,42 +14,58 @@
      1>c:\users\dohof_000\documents\github\cassandra\src\game.h(100): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
      1>c:\users\dohof_000\documents\github\cassandra\src\game.h(114): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
      1>c:\users\dohof_000\documents\github\cassandra\src\game.h(137): warning C4244: 'return' : conversion from 'uint64_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(59): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(125): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(131): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(148): warning C4018: '<' : signed/unsigned mismatch
-     1>..\..\src\solver.cpp(274): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(284): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(290): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(306): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(316): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(320): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(336): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\..\src\solver.cpp(346): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>..\..\src\solver.cpp(352): warning C4244: 'argument' : conversion from '__int64' to 'const int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\worker.h(63): warning C4309: 'initializing' : truncation of constant value
-                 c:\users\dohof_000\documents\github\cassandra\src\worker.h(61) : while compiling class template member function 'int CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>::ConnectSock(void)'
-                 c:\users\dohof_000\documents\github\cassandra\src\worker.h(133) : see reference to function template instantiation 'int CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>::ConnectSock(void)' being compiled
-                 ..\..\src\solver.cpp(122) : see reference to class template instantiation 'CWorker<CDataset_Position_Score_PV,CDataset_Position_Score_PV>' being compiled
-     1>c:\users\dohof_000\documents\github\cassandra\src\worker.h(64): warning C4244: '=' : conversion from 'SOCKET' to 'int', possible loss of data
-     1>c:\users\dohof_000\documents\github\cassandra\src\worker.h(68): warning C4309: 'return' : truncation of constant value
-     1>c:\users\dohof_000\documents\github\cassandra\src\worker.h(80): warning C4309: 'return' : truncation of constant value
-     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(95): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-                 ..\..\src\solver.cpp(270) : see reference to function template instantiation 'std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> read_vector<CDataset_Position_Score_PV>(const std::string &,size_t)' being compiled
-                 with
-                 [
-                     _Ty=CDataset_Position_Score_PV
-                 ]
-     1>c:\users\dohof_000\documents\github\cassandra\src\datamanipulation.h(120): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-                 ..\..\src\solver.cpp(295) : see reference to function template instantiation 'void write_to_file<CDataset_Position_Score_PV>(const std::string &,const std::vector<CDataset_Position_Score_PV,std::allocator<_Ty>> &)' being compiled
-                 with
-                 [
-                     _Ty=CDataset_Position_Score_PV
-                 ]
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+     1>..\..\src\game.cpp(32): warning C4244: 'initializing' : conversion from 'const double' to 'int', possible loss of data
+     1>..\..\src\game.cpp(89): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(89): warning C4244: 'argument' : conversion from 'const unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(93): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(93): warning C4244: 'argument' : conversion from 'const unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(103): warning C4244: '=' : conversion from 'const unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(109): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(111): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(182): warning C4244: '=' : conversion from 'const unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(183): warning C4244: 'argument' : conversion from 'const unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(191): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(192): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(196): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(197): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(242): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(249): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(273): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(280): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(304): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(317): warning C4244: '=' : conversion from 'const unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(322): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(345): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(353): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(358): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(387): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(398): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(410): warning C4244: '=' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(411): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(438): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>..\..\src\game.cpp(684): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(690): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(691): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(697): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(698): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(699): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(705): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(706): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(707): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(708): warning C4244: 'initializing' : conversion from 'unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(749): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(760): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(800): warning C4244: '=' : conversion from 'const unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(805): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(816): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+     1>..\..\src\game.cpp(901): warning C4244: 'argument' : conversion from 'uint64_t' to 'const int', possible loss of data
+     1>..\..\src\game.cpp(928): warning C4244: '=' : conversion from 'const unsigned long' to 'uint8_t', possible loss of data
+     1>..\..\src\game.cpp(929): warning C4244: 'argument' : conversion from 'const unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(935): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>..\..\src\game.cpp(936): warning C4244: 'argument' : conversion from 'unsigned long' to 'const uint8_t', possible loss of data
+     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(125): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
+                 ..\..\src\game.cpp(515) : see reference to function template instantiation 'int EvalGameOver<2>(const uint64_t)' being compiled
+     1>c:\users\dohof_000\documents\github\cassandra\src\game.h(132): warning C4244: 'initializing' : conversion from 'uint64_t' to 'int', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"..\..\bin\Solver.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"..\..\bin\Solver.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\..\bin\Solver.lib" /MACHINE:X64 x64\Release\configfile.obj
          x64\Release\count_last_flip.obj
@@ -78,4 +94,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:07.25
+Time Elapsed 00:00:06.63

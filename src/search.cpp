@@ -48,7 +48,6 @@ int CSearch::Aspiration_Search(uint64_t P, uint64_t O, uint64_t& NodeCounter, in
 
 void CSearch::Evaluate()
 {
-	const bool ASPIRATION_WINDOW = true;
 	const int empties = Empties(P, O);
 	const int MAX_SELECTIVITY = 6;
 	int D = MIN(static_cast<int>(depth), empties);
@@ -60,17 +59,10 @@ void CSearch::Evaluate()
 			score = Eval(P, O, NodeCounter, alpha, beta, selectivity, empties, empties, &PV_line);
 			print_stats(empties, selectivity);
 		}
-		else if (empties < 21)
+		else if (empties <= 20)
 		{
-			// Initial Eval
-			for (int d = D % 2; d < D % 2 + 4; d += 2)
-			{
-				score = Eval(P, O, NodeCounter, alpha, beta, NO_SELECTIVITY, d, empties, &PV_line);
-				print_stats(d, NO_SELECTIVITY);
-			}
-
 			// Iterative deepening
-			for (int d = D % 2 + 4; d <= D; d += 2)
+			for (int d = D % 2; d <= D; d += 2)
 			{
 				if (empties - d >= 10)
 				{
@@ -80,8 +72,7 @@ void CSearch::Evaluate()
 			}
 
 			// Iterative broadening
-			for (int s : {6, 3, 0})
-				//score = Eval(P, O, NodeCounter, alpha, beta, s, D, empties, &PV_line);
+			for (int s : {6, 0})
 				score = Aspiration_Search(P, O, NodeCounter, alpha, beta, score, s, D, empties, PV_line);
 		}
 		else
@@ -95,20 +86,21 @@ void CSearch::Evaluate()
 
 			// Iterative deepening
 			for (int d = D % 2 + 4; d < D; d += 2)
-			{
 				if (empties - d >= 10)
-				{
 					score = Aspiration_Search(P, O, NodeCounter, alpha, beta, score, MAX_SELECTIVITY, d, empties, PV_line);
-					//score = Eval(P, O, NodeCounter, alpha, beta, MAX_SELECTIVITY, d, empties, &PV_line);
-					//print_stats(d, MAX_SELECTIVITY);
-				}
+
+			if (empties < 30)
+			{
+				// Iterative broadening
+				for (int s : {6, 4, 0})
+					score = Aspiration_Search(P, O, NodeCounter, alpha, beta, score, s, D, empties, PV_line);
 			}
-
-			// Iterative broadening
-			for (int s : {6, 3, 0})
-				//score = Eval(P, O, NodeCounter, alpha, beta, s, D, empties, &PV_line);
-				score = Aspiration_Search(P, O, NodeCounter, alpha, beta, score, s, D, empties, PV_line);
-
+			else
+			{
+				// Iterative broadening
+				for (int s : {6, 4, 3, 2, 1, 0})
+					score = Aspiration_Search(P, O, NodeCounter, alpha, beta, score, s, D, empties, PV_line);
+			}
 		}
 	}
 	else
@@ -140,12 +132,8 @@ void CSearch::Evaluate()
 			}
 
 			// Iterative broadening
-			for (int s = MAX_SELECTIVITY; s >= selectivity; s -= 2)
-			{
-				score = Eval(P, O, NodeCounter, alpha, beta, s, D, empties, &PV_line);
-				print_stats(D, s);
-			}
-
+			for (int s : {6, 3, 0})
+				score = Aspiration_Search(P, O, NodeCounter, alpha, beta, score, s, D, empties, PV_line);
 		}
 	}
 
@@ -165,6 +153,17 @@ void CSearch::Evaluate()
 	//	score = Eval(P, O, NodeCounter, alpha, beta, s, D, empties, &PV_line);
 	//	print_stats(D, s);
 	//}
+
+	endTime = std::chrono::high_resolution_clock::now();
+}
+
+void CSearch::EvaluateDirect()
+{
+	const int empties = Empties(P, O);
+	int D = MIN(static_cast<int>(depth), empties);
+	
+	score = Eval(P, O, NodeCounter, alpha, beta, NO_SELECTIVITY, D, empties, &PV_line);
+	print_stats(D, NO_SELECTIVITY);
 
 	endTime = std::chrono::high_resolution_clock::now();
 }

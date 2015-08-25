@@ -499,7 +499,7 @@ bool ParseFile(const std::string& filename, std::vector<Three>& x, std::vector<d
 		three.d = std::stoi(s.substr(11, 2));
 		x.push_back(three);
 		y.push_back(std::stod(s.substr(16, 5)));
-		var_y.push_back(std::stod(s.substr(24, 8)));
+		var_y.push_back(std::stod(s.substr(24, 14)));
 	}
 
 	fclose(file);
@@ -514,6 +514,7 @@ void print_help()
 		"-o abc.xyz      Output filename.\n" <<
 		"-d 123          Depth small.\n" <<
 		"-D 123          Depth big.\n" <<
+		"-fit            Fit the magic formula.\n" <<
 		"-q              quiet.\n" <<
 		"-h              Display help." << std::endl;
 }
@@ -553,13 +554,13 @@ int main(int argc, char* argv[])
 	uint64_t HeatMap[129*129];
 	uint64_t Histogram[129];
 	std::vector<CDataset_Position_FullScore> vec = read_vector<CDataset_Position_FullScore>(in);
-	int e = Empties(vec[0].P, vec[0].O);
-	int size = e - 5;
+	int empties = Empties(vec[0].P, vec[0].O);
+	int size = empties + 1;
 
 	if (verbose)
 	{
-		printf("  e |  D |  d | sigma |  var  |  R_sq \n");
-		printf("----+----+----+-------+-------+-------\n");
+		printf("  e |  D |  d | sigma |      var       |  R_sq \n");
+		printf("----+----+----+-------+----------------+-------\n");
 	}
 
 	if ((m_d != -1) && (m_D != -1)) // Only print statistics in text
@@ -577,9 +578,10 @@ int main(int argc, char* argv[])
 
 		float R = LinReg.R_sq();
 		float sigma = Stat.StandardDeviation();
-		float tmp = 0.18393972058572116079776188508073 * (Stat.size() - 3) * (Stat.size() - 3) / (Stat.size() - 2) * powf((Stat.size() - 2)/(Stat.size() - 3), Stat.size());
-		float var = sigma * sigma / vec.size() * (vec.size() - 1 - 2 * tmp);
-		printf(" %2u | %2u | %2u | %5.3f | %7.3f | %5.3f \n", e, m_D, m_d, sigma, var, R);
+		float N = Stat.size();
+		float tmp = 1 / (2 * N) + 3 / (8 * N*N) + 3 / (16 * N*N*N) - 3 / (128 * N*N*N*N) - 33 / (256 * N*N*N*N*N);
+		float var = sigma * sigma * tmp;
+		printf(" %2u | %2u | %2u | %5.3f | %12.12f | %5.3f \n", empties, m_D, m_d, sigma, var, R);
 
 		return 0;
 	}
@@ -588,18 +590,15 @@ int main(int argc, char* argv[])
 	const int y_off = 20;
 	CBitmap bmp(133 * size + x_off, 133 * size + y_off);
 	bmp.Clear(255, 255, 255);
-	for (int i = 0; i < size; i++)
+	for (int d = 0; d < size; d++)
 	{
-		int d = (i == size - 1 ? e : i);
-		bmp.DrawNumber("%d", d, 3, 78 + 133 * i, 0, 0, 0);
-		bmp.DrawNumber("%d", d, 78 + 133 * i, 3, 0, 0, 0);
+		bmp.DrawNumber("%d", d, 3, 78 + 133 * d, 0, 0, 0);
+		bmp.DrawNumber("%d", d, 78 + 133 * d, 3, 0, 0, 0);
 	}
 
-	for (int i = 0; i < size; i++)
-		for (int j = 0; j < size; j++)
+	for (int d = 0; d < size; d++)
+		for (int D = 0; D < size; D++)
 		{
-			int d = (i == size-1 ? e : i);
-			int D = (j == size-1 ? e : j);
 			CSimpleLinearRegression<int> LinReg;
 			CRunningStatistic<int> Stat;
 			memset(HeatMap, 0, 129 * 129 * sizeof(uint64_t));
@@ -618,20 +617,21 @@ int main(int argc, char* argv[])
 			float R = LinReg.R_sq();
 			float sigma = Stat.StandardDeviation();
 
-			if ((j > i) && Stat.size())
+			if ((D > d) && Stat.size())
 			{
-				float tmp = 0.18393972058572116079776188508073 * (Stat.size() - 3) * (Stat.size() - 3) / (Stat.size() - 2) * powf((Stat.size() - 2)/(Stat.size() - 3), Stat.size());
-				float var = sigma * sigma / Stat.size() * (Stat.size() - 1 - 2 * tmp);
-				printf(" %2u | %2u | %2u | %5.3f | %7.3f | %5.3f \n", e, D, d, sigma, var, R);
+				float N = Stat.size();
+				float tmp = 1 / (2 * N) + 3 / (8 * N*N) + 3 / (16 * N*N*N) - 3 / (128 * N*N*N*N) - 33 / (256 * N*N*N*N*N);
+				float var = sigma * sigma * tmp;
+				printf(" %2u | %2u | %2u | %5.3f | %12.12f | %5.3f \n", empties, D, d, sigma, var, R);
 			}
 
 			if (d == D)
-				bmp.DrawHistogram(i*133+x_off, j*133+y_off, Histogram);
+				bmp.DrawHistogram(d*133+x_off, D*133+y_off, Histogram);
 			else if (Stat.size())
 			{
-				bmp.DrawHeatmap(i*133+x_off, j*133+y_off, HeatMap);
-				if (!isnan(R)) bmp.DrawNumber("%3.3f", R, i*133+x_off+10, j*133+y_off+100, 255, 255, 255);
-				bmp.DrawNumber("%3.2f", sigma, i*133+x_off+17, j*133+y_off+100, 255, 255, 255);
+				bmp.DrawHeatmap(d*133+x_off, D*133+y_off, HeatMap);
+				if (!isnan(R)) bmp.DrawNumber("%3.3f", R, d*133+x_off+10, D*133+y_off+100, 255, 255, 255);
+				bmp.DrawNumber("%3.2f", sigma, d*133+x_off+17, D*133+y_off+100, 255, 255, 255);
 			}
 		}
 

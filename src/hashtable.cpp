@@ -35,15 +35,13 @@ CTwoNode& CTwoNode::operator=(CTwoNode&& other)
 
 FORCE_INLINE void Upgrade(CHashTableValueType& Value_db, const CHashTableValueType& Value_new)
 {
-	if (Value_new.depth > Value_db.depth)
-		Value_db = Value_new; // Replace
-	else if (Value_new.depth == Value_db.depth && Value_new.selectivity < Value_db.selectivity)
+	if ((Value_new.depth > Value_db.depth) || (Value_new.depth == Value_db.depth && Value_new.selectivity < Value_db.selectivity))
 		Value_db = Value_new; // Replace
 	else if (Value_new.depth == Value_db.depth && Value_new.selectivity == Value_db.selectivity)
 	{
-		Value_db.cost = MAX(Value_db.cost, Value_new.cost);
-		Value_db.alpha = MAX(Value_db.alpha, Value_new.alpha);
-		Value_db.beta  = MIN(Value_db.beta, Value_new.beta);
+		if (Value_new.cost  > Value_db.cost ) Value_db.cost  = Value_new.cost;
+		if (Value_new.alpha > Value_db.alpha) Value_db.alpha = Value_new.alpha;
+		if (Value_new.beta  < Value_db.beta ) Value_db.beta  = Value_new.beta;
 		if (Value_new.PV != 64) Value_db.PV = Value_new.PV;
 		if (Value_new.AV != 64) Value_db.AV = Value_new.AV;
 	}

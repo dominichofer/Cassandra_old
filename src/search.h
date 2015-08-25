@@ -74,6 +74,7 @@ public:
 	void print_result(const int number = 0);
 	int Aspiration_Search(uint64_t P, uint64_t O, uint64_t& NodeCounter, int alpha, int beta, int score, int selectivity, int depth, int empties, CLine& PV_line);
 	void Evaluate();
+	void EvaluateDirect();
 private:
 	void print_stats(const int8_t depth, const uint8_t selectivity);
 };

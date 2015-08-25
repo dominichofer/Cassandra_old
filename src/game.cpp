@@ -6,7 +6,8 @@ const bool USE_PV_TTCUT = true;
 const int A = 8;
 const int B = 12;
 
-inline double sigma(int D, int d, int E) { return (std::exp(-0.1726 * d) + 0.7553) * std::pow(D - d, 0.3205) * (-0.0281 * E + 2.3067); }
+inline double sigma(int D, int d, int E) { return (std::exp(-0.2770 * d) + 1.0295) * std::pow(D - d, 0.3044) * (-0.0276 * E + 2.1746); }
+//inline double sigma(int D, int d, int E) { return (std::exp(-0.1726 * d) + 0.7553) * std::pow(D - d, 0.3205) * (-0.0281 * E + 2.3067); }
 
 bool MPC(uint64_t P, uint64_t O, uint64_t& NodeCounter, int alpha, int selectivity, int depth, int empties, int& value)
 {
@@ -16,52 +17,28 @@ bool MPC(uint64_t P, uint64_t O, uint64_t& NodeCounter, int alpha, int selectivi
 	assert(0 <= empties); assert(empties <= 60); assert(empties == Empties(P, O));
 	assert(depth <= empties);
 
-	//if (selectivity && depth >= 6)
-	//{
-	//	NodeCounter++;
-	//	const int beta = alpha + 1;
-	//	const double t = SelectivityTable[selectivity].T;
-	//	const int zero_eval = EvaluateFeatures(P, O);
-	//	int probcut_depth = (depth == empties) ? depth/2 - 4 : (depth / 5) * 2 + (depth & 1);
-	//	probcut_depth -= 2;
-	//	double probcut_sigma = sigma(depth, probcut_depth, empties);
-	//	int probcut_beta = RoundInt(beta + t * probcut_sigma);
-	//	int probcut_alpha = probcut_beta - 1;
-	//	int score;
-
-	//	if (zero_eval > probcut_beta && probcut_beta <= 64)
-	//	{
-	//		score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, probcut_depth, empties);
-	//		if (score >= probcut_beta) { value = beta; return true; }
-	//	}
-
-	//	probcut_alpha = RoundInt(alpha - t * probcut_sigma);
-	//	if (zero_eval < probcut_alpha && probcut_alpha >= -64)
-	//	{
-	//		score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, probcut_depth, empties);
-	//		if (score <= probcut_alpha) { value = alpha; return true; }
-	//	}
-	//}
 	if (selectivity)
 	{
-		NodeCounter++;
 		const int beta = alpha + 1;
 		const double t = SelectivityTable[selectivity].T;
-		const int zero_eval = EvaluateFeatures(P, O);
+		const int zero_eval = Midgame::Eval_0(P, O, NodeCounter);
 		int probcut_depth = (depth == empties) ? (depth / 4) * 2 - (depth & 1) - 2 : (depth / 4) * 2 + (depth & 1);
+		//int probcut_depth = (depth / 4) * 2 + (depth & 1);
+		if (probcut_depth <= 0) probcut_depth = depth - 2; 
 		double probcut_sigma = sigma(depth, probcut_depth, empties);
 		int probcut_beta = RoundInt(beta + t * probcut_sigma);
 		int probcut_alpha = probcut_beta - 1;
 		int score;
+		int eval_error = t * 0.5 * (sigma(depth, 0, empties) + sigma(depth, probcut_depth, empties));
 
-		if (zero_eval > probcut_beta && probcut_beta <= 64)
+		if (zero_eval >= alpha + 1 - eval_error && probcut_beta <= 64)
 		{
 			score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, probcut_depth, empties);
 			if (score >= probcut_beta) { value = beta; return true; }
 		}
 
 		probcut_alpha = RoundInt(alpha - t * probcut_sigma);
-		if (zero_eval < probcut_alpha && probcut_alpha >= -64)
+		if (zero_eval < alpha + eval_error && probcut_alpha >= -64)
 		{
 			score = ZWS(P, O, NodeCounter, probcut_alpha, NO_SELECTIVITY, probcut_depth, empties);
 			if (score <= probcut_alpha) { value = alpha; return true; }

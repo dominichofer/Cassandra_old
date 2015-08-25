@@ -91,7 +91,7 @@ void CScreen::printResult(const int number, const int depth, const int selectivi
 				else
 				{
 					std::unique_lock<std::mutex> lock(mtx);
-					std::cout << "\r" << ThousandsSeparator(positionCounter.load(std::memory_order_acquire)) << " positions solved in " << time_format(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime));
+					std::cout << "\r" << ThousandsSeparator(positionCounter.load(std::memory_order_acquire)) << " positions solved in             " << time_format(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime));
 					fflush(stdout);
 				}
 				lastPrint = std::chrono::high_resolution_clock::now();

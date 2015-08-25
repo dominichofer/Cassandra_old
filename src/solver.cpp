@@ -197,7 +197,7 @@ int main(int argc, char* argv[])
 	//printf(" to %dC.\n", tmp % 100);
 
 	//SolveStartPosition(); return 0;
-	//FForum(); return 0;
+	FForum(); return 0;
 
 	uint64_t NodeCounter = 0;
 	unsigned int index = 0;
@@ -312,13 +312,30 @@ int main(int argc, char* argv[])
 		{
 			if (user_wants_to_quit.load(std::memory_order_acquire)) continue;
 			if (b_UsePV) TTUsePV(vec[i].P, vec[i].O, vec[i].DeepestDepth(), DATASET_DEFAULT_selectivity, vec[i].DeepestScore(), vec[i].PV[0], vec[i].PV[1], vec[i].PV[2], vec[i].PV[3], vec[i].PV[4]);
-			CSearch search(vec[i].P, vec[i].O, -64, 64, d, NO_SELECTIVITY);
-			Screen.printPosition(i, vec[i].P, vec[i].O);
-			search.Evaluate();
-			vec[i].score[d] = search.score;
-			if (d >= vec[i].DeepestDepth()) for (int j = 0; j < 5; ++j) vec[i].PV[j] = search.PV_line.line[j];
-			search.print_result(i);
-			NodeCounter += search.NodeCounter;
+			if (d == 99) // Solve each depth
+			{
+				CSearch search(vec[i].P, vec[i].O, -64, 64, d, NO_SELECTIVITY);
+				Screen.printPosition(i, vec[i].P, vec[i].O);
+				for (int D = 0; D <= Empties(vec[i].P, vec[i].O); D++)
+				{
+					search.depth = D;
+					search.EvaluateDirect();
+					vec[i].score[D] = search.score;
+				}
+				if (Empties(vec[i].P, vec[i].O) >= vec[i].DeepestDepth()) for (int j = 0; j < 5; ++j) vec[i].PV[j] = search.PV_line.line[j];
+				search.print_result(i);
+				NodeCounter += search.NodeCounter;
+			}
+			else
+				{
+				CSearch search(vec[i].P, vec[i].O, -64, 64, d, NO_SELECTIVITY);
+				Screen.printPosition(i, vec[i].P, vec[i].O);
+				search.Evaluate();
+				vec[i].score[d] = search.score;
+				if (d >= vec[i].DeepestDepth()) for (int j = 0; j < 5; ++j) vec[i].PV[j] = search.PV_line.line[j];
+				search.print_result(i);
+				NodeCounter += search.NodeCounter;
+			}
 		}
 
 		if (b_Save)
