@@ -232,7 +232,12 @@ void Test(const std::string & filename, const int empties)
 	if (ending.compare(DATASET_ENDING_POSITION_SCORE_PV) == 0)
 	{
 		std::vector<CDataset_Position_Score_PV> vec = read_vector<CDataset_Position_Score_PV>(filename);
-		counter = std::count_if(vec.begin(), vec.end(), [=](const CDataset_Position_Score_PV& it){ return ((it.P & it.O) != 0) || (Empties(it.P, it.O) != empties); });
+		for (unsigned int i = 0; i < vec.size(); ++i)
+		{if ((vec[i].P & vec[i].O) != 0) std::cout << "ERROR P & O != 0. index " << i << " " << board1D(vec[i].P, vec[i].O) << std::endl;
+			if (Empties(vec[i].P, vec[i].O) != empties) std::cout << "ERROR Empties(P,O) != empties. index " << i << " " << board1D(vec[i].P, vec[i].O) << std::endl;
+			for (int j = 0; j < 5; ++j)
+				if (vec[i].PV[j] < 64 && ((~(vec[i].P | vec[i].O) & (1ULL << vec[i].PV[j])) != (1ULL << vec[i].PV[j]))) std::cout << "ERROR PV[" << j << "] not playable. index " << i << " " << board1D(vec[i].P, vec[i].O) << std::endl;
+		}
 	}
 	else if (ending.compare(DATASET_ENDING_POSITION_FULLSCORE) == 0)
 	{
