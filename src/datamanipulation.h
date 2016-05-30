@@ -61,7 +61,7 @@ public:
 };
 
 // .pfs
-// 648 Bit = 81 Byte
+// 656 Bit = 82 Byte
 class CDataset_Position_FullScore
 {
 public:
