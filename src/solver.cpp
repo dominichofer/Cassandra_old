@@ -213,6 +213,7 @@ int main(int argc, char* argv[])
 	bool b_UsePV = true;
 	std::string filename;
 	std::string IP = "127.0.0.1";
+	std::string pattern;
 	int port = 0;
 
 	for (int i = 0; i < argc; ++i)
@@ -231,12 +232,19 @@ int main(int argc, char* argv[])
 		else if (std::string(argv[i]) == "-noskip") b_SkipSolved = false;
 		else if (std::string(argv[i]) == "-nosave") b_Save = false;
 		else if (std::string(argv[i]) == "-noPV") b_UsePV = false;
+		else if (std::string(argv[i]) == "-pattern") {
+			++i;
+			while ((i < argc) && (static_cast<char>(*argv[i]) != '-'))
+				pattern.append(std::string(argv[i++])).append(" ");
+			--i;
+		}
 		else if (std::string(argv[i]) == "-ip") IP = std::string(argv[++i]);
 		else if (std::string(argv[i]) == "-p") port = atoi(argv[++i]);
 		else if (std::string(argv[i]) == "-h") { print_help(); return 0; }
 	}	
 	
 	ConfigFile::Initialize("C:\\Cassandra\\config.ini");
+	if (!pattern.empty()) ConfigFile::Configurations["active pattern"] = pattern;
 	Features::Initialize();
 	CountLastFlip::Initialize();
 	Stability::Initialize();

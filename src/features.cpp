@@ -2,53 +2,20 @@
 
 namespace Features
 {
-	const uint8_t BOXES = 16;
-	const uint8_t BoxIndex[61] = {
-		99,         //  0
-		 0,  0,  0, //  1,  2,  3
-		 1,  1,  1, //  4,  5,  6
-		 2,  2,  2, //  7,  8,  9
-		 3,  3,  3, // 10, 11, 12
-		 4,  4,  4, // 13, 14, 15
-		 5,  5,  5, // 16, 17, 18
-		 6,  6,  6, // 19, 20, 21
-		 7,  7,  7, // 22, 23, 24
-		 8,  8,  8, // 25, 26, 27
-		 9,  9,  9, // 28, 29, 30
-		10, 10, 10, // 31, 32, 33
-		11, 11, 11, // 34, 35, 36
-		12, 12, 12, // 37, 38, 39
-		13, 13, 13, // 40, 41, 42
-		14, 14, 14, // 43, 44, 45
-		15, 15, 15, // 46, 47, 48
-		15, 15, 15, // 49, 50, 51
-		15, 15, 15, // 52, 53, 54
-		15, 15, 15, // 55, 56, 57
-		15, 15, 15, // 58, 59, 60
-	};
+	const int BOXES = 16;
 
-	unsigned int SumPow3[1024];
-
-	std::vector<CPattern_L02X > PatVecL02X (BOXES);
-	std::vector<CPattern_L1   > PatVecL1   (BOXES);
-	std::vector<CPattern_L2   > PatVecL2   (BOXES);
-	std::vector<CPattern_L3   > PatVecL3   (BOXES);
-	std::vector<CPattern_D4   > PatVecD4   (BOXES);
-	std::vector<CPattern_D5   > PatVecD5   (BOXES);
-	std::vector<CPattern_D6   > PatVecD6   (BOXES);
-	std::vector<CPattern_D7   > PatVecD7   (BOXES);
-	std::vector<CPattern_Comet> PatVecComet(BOXES);
-	std::vector<CPattern_Eplus> PatVecEplus(BOXES);
-	std::vector<CPattern_C3p1 > PatVecC3p1 (BOXES);
-	std::vector<CPattern_C3p2 > PatVecC3p2 (BOXES);
-	std::vector<CPattern_Q0   > PatVecQ0   (BOXES);
-	std::vector<CPattern_B5   > PatVecB5   (BOXES);
+	unsigned int NumberOfPatternWithSymmetrie;
+	unsigned int ReducedSize;
+	unsigned int NumberOfPattern;
+	unsigned int SumPow3[32768]; // OPTIMIZATION: Replace look-up by small calculation if possible
+	
+	std::vector<std::vector<CPattern*>> PatternVec; //PatternVec[box_index][pattern_index]
 
 	uint64_t sumpow3(uint64_t exp)
 	{
 		int64_t sum = 0;
 		while (exp)	{
-			sum += pow(3LL, BitScanLSB(exp));
+			sum += _Pow_int(3ULL, BitScanLSB(exp));
 			RemoveLSB(exp);
 		}
 		return sum;
@@ -73,13 +40,67 @@ namespace Features
 		}
 	}
 
+	CPattern* NewPattern(const uint64_t Pattern)
+	{
+		if (Pattern == FlipHorizontal(Pattern)) return new CPatternH(Pattern);
+		if (Pattern == FlipDiagonal  (Pattern)) return new CPatternD(Pattern);
+		return new CPattern0(Pattern);
+	}
+
+	std::vector<uint64_t> GetActivePattern()
+	{
+		std::vector<uint64_t> ActivePattern;
+		std::vector<std::string> ActivePatternNames;
+		std::string PatternString = ConfigFile::Configurations["active pattern"];
+		std::string delimiter = " ";
+		std::string token;
+		size_t pos = 0;
+		while ((pos = PatternString.find(delimiter)) != std::string::npos)
+		{
+			token = PatternString.substr(0, pos);
+			ActivePatternNames.push_back(PatternString.substr(0, pos));
+			PatternString.erase(0, pos + delimiter.length());
+		}
+
+		for (auto& it : ActivePatternNames)
+		{
+			std::string s = "pattern " + it;
+			if (ConfigFile::Configurations.count(s) > 0)
+				ActivePattern.push_back(std::stoull(ConfigFile::Configurations[s], 0, 16));
+			else
+				std::cerr << "ERROR: Pattern '" << it << "' not defined." << std::endl;
+		}
+
+		return ActivePattern;
+	}
+
 	void Initialize()
 	{
-		for (int i = 0; i < 1024; i++) SumPow3[i] = sumpow3(i);
+		for (int i = 0; i < 32768; i++) SumPow3[i] = sumpow3(i);
+		
+		std::vector<uint64_t> ActivePattern = GetActivePattern();
+
+		std::cout << std::hex;
+		for (auto& it : ActivePattern)
+			std::cout << "Using Pattern " << it << std::endl;
+		std::cout << std::dec;
+
+		PatternVec.resize(BOXES);
+		for (int i = 0; i < BOXES; ++i)
+			for (auto& it : ActivePattern)
+					PatternVec[i].push_back(NewPattern(it));
+
+		NumberOfPatternWithSymmetrie = 0;
+		for (auto& pat : Features::PatternVec[0]) NumberOfPatternWithSymmetrie += pat->occurrences();
+
+		ReducedSize = 0;
+		for (auto& pat : Features::PatternVec[0]) ReducedSize += pat->ReducedSize();
+
+		NumberOfPattern = Features::PatternVec[0].size();
 
 		// Extract filenames form config file
-		std::vector<std::string> Filenames;
 		std::string s;
+		std::vector<std::string> Filenames;
 		for (int i = 0; i < BOXES; ++i)
 		{
 			s = "weights range " + std::to_string(i);
@@ -97,178 +118,50 @@ namespace Features
 				std::cerr << "ERROR: Weight's file " << Filenames[j] << " size (" << v_float.size() << ") does not match expected size (" << ReducedSize << ")." << std::endl;
 				continue;
 			}
-			if (PATTERN_L02X ) { PatVecL02X [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecL02X [j].ReducedSize); }
-			if (PATTERN_L1   ) { PatVecL1   [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecL1   [j].ReducedSize); }
-			if (PATTERN_L2   ) { PatVecL2   [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecL2   [j].ReducedSize); }
-			if (PATTERN_L3   ) { PatVecL3   [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecL3   [j].ReducedSize); }
-			if (PATTERN_D4   ) { PatVecD4   [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecD4   [j].ReducedSize); }
-			if (PATTERN_D5   ) { PatVecD5   [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecD5   [j].ReducedSize); }
-			if (PATTERN_D6   ) { PatVecD6   [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecD6   [j].ReducedSize); }
-			if (PATTERN_D7   ) { PatVecD7   [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecD7   [j].ReducedSize); }
-			if (PATTERN_Comet) { PatVecComet[j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecComet[j].ReducedSize); }
-			if (PATTERN_Eplus) { PatVecEplus[j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecEplus[j].ReducedSize); }
-			if (PATTERN_C3p1 ) { PatVecC3p1 [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecC3p1 [j].ReducedSize); }
-			if (PATTERN_C3p2 ) { PatVecC3p2 [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecC3p2 [j].ReducedSize); }
-			if (PATTERN_Q0   ) { PatVecQ0   [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecQ0   [j].ReducedSize); }
-			if (PATTERN_B5   ) { PatVecB5   [j].set_weights(v_float); v_float.erase(v_float.begin(), v_float.begin() + PatVecB5   [j].ReducedSize); }
+			for (auto& pat : PatternVec[j])
+			{
+				pat->set_weights(v_float);
+				v_float.erase(v_float.begin(), v_float.begin() + pat->ReducedSize());
+			}
 			if (v_float.size() != 0) std::cerr << "ERROR: filesizes are wrong!" << std::endl;
 		}
-	}
-
-	void Finalize()
-	{
-
 	}
 }
 
 int EvaluateFeatures(const uint64_t P, const uint64_t O) // OPTIMIZATION: create a function taking "empties" as a variable
 {
-	const uint64_t empties = Empties(P, O);
+	const int empties = Empties(P, O);
 	if (empties == 0) return (PopCount(P) << 1) - 64;
-	const uint8_t BoxIndex = Features::BoxIndex[empties];
+	const int BoxIndex = MIN((empties - 1) / 3, Features::BOXES - 1);
 	float sum = 0;
-	if (PATTERN_L02X ) sum += Features::PatVecL02X [BoxIndex].score(P, O);
-	if (PATTERN_L1   ) sum += Features::PatVecL1   [BoxIndex].score(P, O);
-	if (PATTERN_L2   ) sum += Features::PatVecL2   [BoxIndex].score(P, O);
-	if (PATTERN_L3   ) sum += Features::PatVecL3   [BoxIndex].score(P, O);
-	if (PATTERN_D4   ) sum += Features::PatVecD4   [BoxIndex].score(P, O);
-	if (PATTERN_D5   ) sum += Features::PatVecD5   [BoxIndex].score(P, O);
-	if (PATTERN_D6   ) sum += Features::PatVecD6   [BoxIndex].score(P, O);
-	if (PATTERN_D7   ) sum += Features::PatVecD7   [BoxIndex].score(P, O);
-	if (PATTERN_Comet) sum += Features::PatVecComet[BoxIndex].score(P, O);
-	if (PATTERN_Eplus) sum += Features::PatVecEplus[BoxIndex].score(P, O);
-	if (PATTERN_C3p1 ) sum += Features::PatVecC3p1 [BoxIndex].score(P, O);
-	if (PATTERN_C3p2 ) sum += Features::PatVecC3p2 [BoxIndex].score(P, O);
-	if (PATTERN_Q0   ) sum += Features::PatVecQ0   [BoxIndex].score(P, O);
-	if (PATTERN_B5   ) sum += Features::PatVecB5   [BoxIndex].score(P, O);
+	for (auto& pat : Features::PatternVec[BoxIndex])
+		sum += pat->score(P, O);
 	return BIND(RoundInt(sum), -64, 64);
 }
 int EvaluateFeatures(const uint64_t P, const uint64_t O, std::vector<float>& scores)
 {
-	const uint8_t BoxIndex = Features::BoxIndex[Empties(P, O)];
+	const int BoxIndex = MIN(static_cast<int>(Empties(P, O) - 1) / 3, Features::BOXES - 1);
 	scores.clear();
-	if (PATTERN_L02X ) scores.push_back(Features::PatVecL02X [BoxIndex].score(P, O));
-	if (PATTERN_L1   ) scores.push_back(Features::PatVecL1   [BoxIndex].score(P, O));
-	if (PATTERN_L2   ) scores.push_back(Features::PatVecL2   [BoxIndex].score(P, O));
-	if (PATTERN_L3   ) scores.push_back(Features::PatVecL3   [BoxIndex].score(P, O));
-	if (PATTERN_D4   ) scores.push_back(Features::PatVecD4   [BoxIndex].score(P, O));
-	if (PATTERN_D5   ) scores.push_back(Features::PatVecD5   [BoxIndex].score(P, O));
-	if (PATTERN_D6   ) scores.push_back(Features::PatVecD6   [BoxIndex].score(P, O));
-	if (PATTERN_D7   ) scores.push_back(Features::PatVecD7   [BoxIndex].score(P, O));
-	if (PATTERN_Comet) scores.push_back(Features::PatVecComet[BoxIndex].score(P, O));
-	if (PATTERN_Eplus) scores.push_back(Features::PatVecEplus[BoxIndex].score(P, O));
-	if (PATTERN_C3p1 ) scores.push_back(Features::PatVecC3p1 [BoxIndex].score(P, O));
-	if (PATTERN_C3p2 ) scores.push_back(Features::PatVecC3p2 [BoxIndex].score(P, O));
-	if (PATTERN_Q0   ) scores.push_back(Features::PatVecQ0   [BoxIndex].score(P, O));
-	if (PATTERN_B5   ) scores.push_back(Features::PatVecB5   [BoxIndex].score(P, O));
+	for (auto& pat : Features::PatternVec[BoxIndex])
+		scores.push_back(pat->score(P, O));
 	float sum = 0;
 	for (const auto& it : scores) sum += it;
 	return RoundInt(sum);
 }
-int EvaluateFeatures(const uint64_t P, const uint64_t O, const Features::CIndexArray& Indices_P, const Features::CIndexArray& Indices_O)
-{
-	const uint8_t BoxIndex = Features::BoxIndex[Empties(P, O)];
-	float sum = 0;
-	int Offset = 0;
-	auto P_begin = Indices_P.Indices.begin();
-	auto O_begin = Indices_O.Indices.begin();
-	if (PATTERN_L02X ) { sum += Features::PatVecL02X [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_L1   ) { sum += Features::PatVecL1   [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_L2   ) { sum += Features::PatVecL2   [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_L3   ) { sum += Features::PatVecL3   [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D4   ) { sum += Features::PatVecD4   [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D5   ) { sum += Features::PatVecD5   [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D6   ) { sum += Features::PatVecD6   [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D7   ) { sum += Features::PatVecD7   [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_Comet) { sum += Features::PatVecComet[BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_Eplus) { sum += Features::PatVecEplus[BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_C3p1 ) { sum += Features::PatVecC3p1 [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_C3p2 ) { sum += Features::PatVecC3p2 [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_Q0   ) { sum += Features::PatVecQ0   [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_B5   ) { sum += Features::PatVecB5   [BoxIndex].score(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 8; }
-	return RoundInt(sum);
-}
-int EvaluateFeatures(const uint64_t empties, const Features::CIndexArray& Indices_P, const Features::CIndexArray& Indices_O)
-{
-	const uint8_t BoxIndex = Features::BoxIndex[empties];
-	float sum = 0;
-	int Offset = 0;
-	auto P_begin = Indices_P.Indices.begin();
-	auto O_begin = Indices_O.Indices.begin();
-	if (PATTERN_L02X ) { sum += Features::PatVecL02X [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_L1   ) { sum += Features::PatVecL1   [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_L2   ) { sum += Features::PatVecL2   [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_L3   ) { sum += Features::PatVecL3   [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D4   ) { sum += Features::PatVecD4   [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D5   ) { sum += Features::PatVecD5   [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D6   ) { sum += Features::PatVecD6   [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D7   ) { sum += Features::PatVecD7   [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_Comet) { sum += Features::PatVecComet[BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_Eplus) { sum += Features::PatVecEplus[BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_C3p1 ) { sum += Features::PatVecC3p1 [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_C3p2 ) { sum += Features::PatVecC3p2 [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_Q0   ) { sum += Features::PatVecQ0   [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_B5   ) { sum += Features::PatVecB5   [BoxIndex].score(P_begin + Offset, O_begin + Offset); Offset += 8; }
-	return RoundInt(sum);
-}
 
-void UpdateIndexVec(const uint64_t P, const uint64_t O, Features::CIndexArray& Indices_P, Features::CIndexArray& Indices_O)
+void FillConfigurationVec(const uint64_t P, const uint64_t O, std::vector<int>::iterator& it)
+{
+	for (auto& pat : Features::PatternVec[0])
+		pat->FillConfigurationVec(P, O, it);
+}
+void FillConfigurationVecOffsetted(const uint64_t P, const uint64_t O, std::vector<int>::iterator& it)
 {
 	int Offset = 0;
-	auto P_begin = Indices_P.Indices.begin();
-	auto O_begin = Indices_O.Indices.begin();
-	if (PATTERN_L02X ) { Features::CPattern_L02X ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_L1   ) { Features::CPattern_L1   ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_L2   ) { Features::CPattern_L2   ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_L3   ) { Features::CPattern_L3   ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D4   ) { Features::CPattern_D4   ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D5   ) { Features::CPattern_D5   ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D6   ) { Features::CPattern_D6   ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_D7   ) { Features::CPattern_D7   ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_Comet) { Features::CPattern_Comet::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_Eplus) { Features::CPattern_Eplus::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_C3p1 ) { Features::CPattern_C3p1 ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_C3p2 ) { Features::CPattern_C3p2 ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_Q0   ) { Features::CPattern_Q0   ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 4; }
-	if (PATTERN_B5   ) { Features::CPattern_B5   ::UpdateIndexVec(P, O, Indices_P.BitBoard, Indices_O.BitBoard, P_begin + Offset, O_begin + Offset); Offset += 8; }
-}
-
-void FillConfigurationVec(const uint64_t P, const uint64_t O, std::vector<int>& vec)
-{
-	vec.clear();
-	if (PATTERN_L02X ) Features::CPattern_L02X ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_L1   ) Features::CPattern_L1   ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_L2   ) Features::CPattern_L2   ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_L3   ) Features::CPattern_L3   ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_D4   ) Features::CPattern_D4   ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_D5   ) Features::CPattern_D5   ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_D6   ) Features::CPattern_D6   ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_D7   ) Features::CPattern_D7   ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_Comet) Features::CPattern_Comet::FillConfigurationVec(P, O, vec);
-	if (PATTERN_Eplus) Features::CPattern_Eplus::FillConfigurationVec(P, O, vec);
-	if (PATTERN_C3p1 ) Features::CPattern_C3p1 ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_C3p2 ) Features::CPattern_C3p2 ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_Q0   ) Features::CPattern_Q0   ::FillConfigurationVec(P, O, vec);
-	if (PATTERN_B5   ) Features::CPattern_B5   ::FillConfigurationVec(P, O, vec);
-}
-void FillConfigurationVecOffsetted(const uint64_t P, const uint64_t O, std::vector<int>& vec)
-{
-	int Offset = 0;
-	vec.clear();
-	if (PATTERN_L02X ) { Features::CPattern_L02X ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_L02X ::ReducedSize; }
-	if (PATTERN_L1   ) { Features::CPattern_L1   ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_L1   ::ReducedSize; }
-	if (PATTERN_L2   ) { Features::CPattern_L2   ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_L2   ::ReducedSize; }
-	if (PATTERN_L3   ) { Features::CPattern_L3   ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_L3   ::ReducedSize; }
-	if (PATTERN_D4   ) { Features::CPattern_D4   ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_D4   ::ReducedSize; }
-	if (PATTERN_D5   ) { Features::CPattern_D5   ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_D5   ::ReducedSize; }
-	if (PATTERN_D6   ) { Features::CPattern_D6   ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_D6   ::ReducedSize; }
-	if (PATTERN_D7   ) { Features::CPattern_D7   ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_D7   ::ReducedSize; }
-	if (PATTERN_Comet) { Features::CPattern_Comet::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_Comet::ReducedSize; }
-	if (PATTERN_Eplus) { Features::CPattern_Eplus::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_Eplus::ReducedSize; }
-	if (PATTERN_C3p1 ) { Features::CPattern_C3p1 ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_C3p1 ::ReducedSize; }
-	if (PATTERN_C3p2 ) { Features::CPattern_C3p2 ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_C3p2 ::ReducedSize; }
-	if (PATTERN_Q0   ) { Features::CPattern_Q0   ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_Q0   ::ReducedSize; }
-	if (PATTERN_B5   ) { Features::CPattern_B5   ::FillConfigurationVec(P, O, vec, Offset); Offset += Features::CPattern_B5   ::ReducedSize; }
+	for (auto& pat : Features::PatternVec[0])
+	{
+		pat->FillConfigurationVec(P, O, it, Offset); 
+		Offset += pat->ReducedSize();
+	}
 }
 
 //bool Congruent(const uint64_t P1, const uint64_t P2)
