@@ -521,7 +521,8 @@ void print_help()
 
 int main(int argc, char* argv[])
 {
-	std::string in, out;
+	std::vector<std::string> filename_vec;
+	std::string out;
 	int m_d = -1;
 	int m_D = -1;
 	bool verbose = 1;
@@ -529,7 +530,12 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < argc; ++i)
 	{
-		     if (std::string(argv[i]) == "-i") in = std::string(argv[++i]);
+		if (std::string(argv[i]) == "-i") {
+			++i;
+			while ((i < argc) && (static_cast<char>(*argv[i]) != '-'))
+				filename_vec.push_back(std::string(argv[i++]));
+			--i;
+		}
 		else if (std::string(argv[i]) == "-o") out = std::string(argv[++i]);
 		else if (std::string(argv[i]) == "-d") m_d = atoi(argv[++i]);
 		else if (std::string(argv[i]) == "-D") m_D = atoi(argv[++i]);
@@ -546,14 +552,20 @@ int main(int argc, char* argv[])
 	{
 		std::vector<Three> x;
 		std::vector<double> y, var_y;
-		ParseFile(in, x, y, var_y);
+		ParseFile(filename_vec[0], x, y, var_y);
 		std::vector<double> beta = NonLinearLeastSquaresFitter(x, y, var_y);
 		return 0;
 	}
 	
 	uint64_t HeatMap[129*129];
 	uint64_t Histogram[129];
-	std::vector<CDataset_Position_FullScore> vec = read_vector<CDataset_Position_FullScore>(in);
+	std::vector<CDataset_Position_FullScore> vec;
+
+	for (const auto& it : filename_vec)
+	{
+		std::vector<CDataset_Position_FullScore> tmp = read_vector<CDataset_Position_FullScore>(it);
+		vec.insert(vec.end(), tmp.begin(), tmp.end());
+	}
 	int empties = Empties(vec[0].P, vec[0].O);
 	int size = empties + 1;
 
