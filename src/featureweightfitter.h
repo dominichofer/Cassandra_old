@@ -35,19 +35,14 @@ public:
 	std::size_t m() const { return _m; }
 
 	//Numer of nonzero matrix elements
-	std::size_t nnz() const
-	{
-		std::size_t counter = 0;
-		for (const auto& it : data)
-			if (it != 0)
-				counter++;
-		return counter;
-	}
+	std::size_t nnz() const { return std::count_if(data.begin(), data.end(), [](ValueType d){ return d != 0; } ); }
+	//Numer of zero matrix elements
+	std::size_t nz() const { return std::count_if(data.begin(), data.end(), [](ValueType d){ return d == 0; } ); }
 
 	void insert(const SizeType& i, const SizeType& j, const ValueType& entry);
 	void push_back(std::vector<SizeType> Col_Indices, std::vector<ValueType> Data)
 	{
-		for (auto col_index : Col_Indices) ASSERT(col_index <= _m);
+		for (auto col_index : Col_Indices) ASSERT(col_index < _m);
 		data.insert(data.end(), Data.begin(), Data.end());
 		col_indices.insert(col_indices.end(), Col_Indices.begin(), Col_Indices.end());
 		row_starts.push_back(col_indices.size());
@@ -55,8 +50,9 @@ public:
 	}
 	void push_back(const SizeType& col, const ValueType& Data)
 	{
-		ASSERT(col <= _m);
-		if (col > _m) std::cerr << "Col: " << col << ", _m" << _m << std::endl;
+		ASSERT(col < _m);
+
+		//if (col >= _m) std::cerr << "ERROR: Col: " << col << ", _m: " << _m << ", _n: " << _n << std::endl;
 		data.push_back(Data);
 		col_indices.push_back(col);
 	}
@@ -68,7 +64,7 @@ public:
 	void remove_zeros()
 	{
 		int counter = 0;
-		for (std::size_t i = 0; i < n; ++i)
+		for (std::size_t i = 0; i < _n; ++i)
 		{
 			SizeType j = row_starts[i];
 			row_starts[i] -= counter;
@@ -82,9 +78,9 @@ public:
 				col_indices[j - counter] = col_indices[j];
 			}
 		}
-		row_starts[n] -= counter;
-		data.erase(data.begin() + row_starts[n], data.end());
-		col_indices.erase(col_indices.begin() + row_starts[n], col_indices.end());
+		row_starts[_n] -= counter;
+		data.erase(data.begin() + row_starts[_n], data.end());
+		col_indices.erase(col_indices.begin() + row_starts[_n], col_indices.end());
 	}
 
 	template <class T>
@@ -156,6 +152,29 @@ public:
 		}
 		return result;
 		//return ATx(this->operator*(x));
+	}
+
+	void write_to_file(const std::string & filename)
+	{
+		FILE* file = fopen(filename.c_str(), "wb");
+		if (!file){
+			std::cerr << "ERROR: File '" << filename << "' could not be opened!" << std::endl;
+			throw "File could not be opened.";
+			return;
+		}
+		
+		const std::size_t vec1size = data.size();
+		const std::size_t vec2size = row_starts.size();
+
+		fwrite(&_n      , sizeof(std::size_t), 1, file);
+		fwrite(&_m      , sizeof(std::size_t), 1, file);
+		fwrite(&vec1size, sizeof(std::size_t), 1, file);
+		fwrite(&vec2size, sizeof(std::size_t), 1, file);
+		fwrite(&data       [0], sizeof(ValueType), vec1size, file);
+		fwrite(&col_indices[0], sizeof(SizeType ), vec1size, file);
+		fwrite(&row_starts [0], sizeof(SizeType ), vec2size, file);
+
+		fclose(file);
 	}
 };
 

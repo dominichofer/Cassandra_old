@@ -2,93 +2,106 @@
 
 typedef CMatrix_CSR<uint8_t, unsigned int> Matrix;
 
-std::vector<CPositionScore> read_vector_next_pos(const std::string& filename)
-{
-	std::vector<CPositionScore> out;
-	std::vector<CDataset_Position_Score_PV> in = read_vector<CDataset_Position_Score_PV>(filename);
-	for (auto& pos : in)
-	{
-		out.push_back(static_cast<CPositionScore>(pos));
-		if (pos.PV[0] == 64)
-			std::swap(pos.P, pos.O);
-		else
-			PlayStone(pos.P, pos.O, pos.PV[0]);
-		pos.score = -pos.score;
-		out.push_back(static_cast<CPositionScore>(pos));
-	}
-	return out;
-}
-
 void Load_Data(const std::vector<std::string>& Filenames, Matrix& A, std::vector<double>& scores, const bool next)
 {
-	std::vector<CPositionScore> M;
-	std::vector<CPositionScore> tmp;
+	std::vector<CDataset_Position_Score_PV> in;
+	std::vector<CPositionScore> in2;
 
-	// Load files into a position-score-matrix
-	for (const auto& filename : Filenames) {
-		if (next)
-			tmp = read_vector_next_pos(filename);
-		else
-			tmp = read_vector<CPositionScore>(filename);
-		M.insert(M.end(), tmp.begin(), tmp.end());
+	// Load all files into "in"
+	for (const auto& filename : Filenames)
+	{
+		std::vector<CDataset_Position_Score_PV> tmp = read_vector<CDataset_Position_Score_PV>(filename);
+		in.insert(in.end(), tmp.begin(), tmp.end());
 	}
-	tmp.clear();
 	
-	const int size = M.size();
+	// Transform all positions
+	for (auto& pos : in) in2.push_back(static_cast<CPositionScore>(pos));
+
+	// Generate and transform PV-next-positions
+	if (next)
+	{
+		for (int i = 0; i < in.size(); ++i)
+		{
+			PlayStone(in[i].P, in[i].O, in[i].PV[0]);
+			in[i].score = -in[i].score;
+			in2.push_back(static_cast<CPositionScore>(in[i]));
+		}
+	}
+
+	in.clear(); // Free memory
+	
+	const std::size_t size = in2.size();
 
 	#pragma omp parallel
 	{
-		std::vector<int> Indices;
+		std::vector<int> indices(Features::NumberOfPatternWithSymmetrie);
 		std::map<Matrix::size_type, Matrix::value_type> map;
-		
-		#pragma omp for nowait schedule(static, 1024)
+
+		#pragma omp for schedule(static, 1024)
 		for (int i = 0; i < size; ++i)
 		{
+			FillConfigurationVecOffsetted(in2[i].P, in2[i].O, indices.begin());
+			
 			map.clear();
-			FillConfigurationVecOffsetted(M[i].P, M[i].O, Indices);
-
-			for (const auto & it : Indices)
-				map[it]++;
+			for (const auto& it : indices) map[it]++;
 
 			#pragma omp critical
 			{
-				for (const auto& it : map)
-					A.push_back(it.first, it.second);
+				for (const auto& it : map) A.push_back(it.first, it.second);
 				A.endRow();
-				scores.push_back(M[i].score);
+				scores.push_back(in2[i].score);
 			}
 		}
 	}
 }
 
-std::size_t Calc_and_Remove_Active_Configurations(Matrix& A, const unsigned int Threshold)
+std::size_t Filter_non_Active_Configurations(Matrix& A, const std::size_t Threshold)
 {
 	const int size1 = A.n();
 	const int size2 = A.m();
-	std::vector<std::size_t> ones(size1);
-	for (auto& it : ones) it = 1;
-
-	std::vector<std::size_t> Counters = A.ATx(ones);
-
-	std::vector<bool> ColumnSieve(size2);
+	std::vector<std::size_t> Counter(size2);
 	std::size_t ActiveCounter = 0;
-	for (int i = 0; i < size2; ++i)
+
+	#pragma omp parallel
 	{
-		if (Counters[i] >= Threshold)
-			ActiveCounter++;
-		ColumnSieve[i] = (Counters[i] > 0 && Counters[i] < Threshold);
+		std::vector<std::size_t> local_Counter(size2);
+
+		#pragma omp for nowait schedule(static, 1024)
+		for (long long i = 0; i < size1; ++i)
+		{
+			for (Matrix::size_type j = A.row_starts[i]; j < A.row_starts[i + 1]; ++j)
+				local_Counter[A.col_indices[j]] += A.data[j];
+		}
+
+		#pragma omp critical
+		{
+			for (std::size_t i = 0; i < size2; ++i)
+				Counter[i] += local_Counter[i];
+		}
+
+		#pragma omp barrier
+		
+		// Set Zero
+		#pragma omp for schedule(static, 1024)
+		for (long long i = 0; i < size1; ++i)
+		{
+			for (Matrix::size_type j = A.row_starts[i]; j < A.row_starts[i + 1]; ++j)
+				if (Counter[A.col_indices[j]] < Threshold)
+					A.data[j] = 0;
+		}
 	}
 
-	// Set Zero
-	#pragma omp parallel for schedule(static, 1024)
-	for (int i = 0; i < size1; ++i)
-	{
-		for (Matrix::size_type j = A.row_starts[i]; j < A.row_starts[i + 1]; ++j)
-			if (ColumnSieve[A.data[j]])
-				A.data[j] = 0;
-	}
+	//std::map<unsigned int, unsigned int> HMap;
+	//for (int i = 0; i < size2; ++i) HMap[Counter[i]]++;
+
+	//for (auto it : HMap)
+	//	std::cout << "Penis: " << it.first << "   " << it.second << std::endl;
 
 	//A.remove_zeros();
+	
+	for (int i = 0; i < size2; ++i)
+		if (Counter[i] >= Threshold)
+			ActiveCounter++;
 
 	return ActiveCounter;
 }
@@ -114,13 +127,18 @@ std::vector<double> JacobiPreconditioner(const Matrix& A)
 			for (std::size_t i = 0; i < size2; ++i)
 				C[i] += local_C[i];
 		}
-	}
 
-	for (int i = 0; i < size2; ++i)
-		if (C[i] == 0)
-			C[i] = 1.0;
-		else
-			C[i] = 1.0 / C[i];
+		#pragma omp barrier
+
+		#pragma omp for schedule(static, 1024)
+		for (int i = 0; i < size2; ++i)
+		{
+			if (C[i] == 0)
+				C[i] = 1.0;
+			else
+				C[i] = 1.0 / C[i];
+		}
+	}
 
 	return C;
 }
@@ -158,15 +176,14 @@ void SolveInRAM(const std::vector<std::string>& FileNames, const std::string& fi
 	const double tol = 1;
 
 	printf_s("Matrices:\n");
-	for (const auto& it : FileNames)
-		printf_s("\t%s\n", it.c_str());
+	for (const auto& it : FileNames) printf_s("\t%s\n", it.c_str());
 
 	printf_s("Using starting vector: ");
-	if (file_start_x.empty()){
+	if (file_start_x.empty()) {
 		printf_s("no\n");
 		x = std::vector<double>(Features::ReducedSize);
 	}
-	else{
+	else {
 		printf_s("%s\n", file_start_x.c_str());
 		x = read_vector<double>(file_start_x);
 	}
@@ -182,19 +199,32 @@ void SolveInRAM(const std::vector<std::string>& FileNames, const std::string& fi
 	Load_Data(FileNames, A, scores, next);
 	endTime = std::chrono::high_resolution_clock::now();
 	printf_s("done!\t\t\t %14s\n", time_format(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime)).c_str());
-	
-	printf_s("Number of positions: %s\n", ThousandsSeparator(A.n()).c_str());
-	printf_s("Number of non-zeros: %s\n", ThousandsSeparator(A.nnz()).c_str());
+
+	printf_s("Writing matrix to file...");
+	startTime = std::chrono::high_resolution_clock::now();
+	A.write_to_file("tmp.csr");
+	std::vector<float> b(scores.size());
+	for (std::size_t i = 0; i < scores.size(); i++) b[i] = scores[i];
+	write_to_file("tmp.vec", b);
+	endTime = std::chrono::high_resolution_clock::now();
+	printf_s("done!\t\t\t %14s\n", time_format(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime)).c_str());
+	return;
 
 	printf_s("Calculating active configurations...");
 	startTime = std::chrono::high_resolution_clock::now();
-	const std::size_t Number_of_Active_Configurations = Calc_and_Remove_Active_Configurations(A, Threshold);
+	const std::size_t Number_of_Active_Configurations = Filter_non_Active_Configurations(A, Threshold);
 	endTime = std::chrono::high_resolution_clock::now();
 	printf_s("done!\t %14s\n", time_format(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime)).c_str());
 
-	printf_s("Configurations: %d\n", Features::ReducedSize);
+	printf_s("Number of Pattern: %d\n", Features::NumberOfPattern);
+	printf_s("Number of Pattern with symmetrie: %d\n", Features::NumberOfPatternWithSymmetrie);
+	printf_s("Configurations: %d\n", Features::ReducedSize); 
 	printf_s("Active configurations: %d\n", Number_of_Active_Configurations);
 	printf_s("Active percentage: %.2f%%\n\n", Number_of_Active_Configurations * 100.0 / Features::ReducedSize);
+	
+	printf_s("Number of positions: %s\n", ThousandsSeparator(A.n()).c_str());
+	printf_s("Number of non-zeros: %s\n", ThousandsSeparator(A.nnz()).c_str());
+	printf_s("Number of zeros: %s\n", ThousandsSeparator(A.nz()).c_str());
 
 	printf_s("Calculating preconditioner...");
 	startTime = std::chrono::high_resolution_clock::now();
@@ -204,18 +234,22 @@ void SolveInRAM(const std::vector<std::string>& FileNames, const std::string& fi
 		
 	printf_s("Calculating vectors r_0, h_0, d_0...");
 	startTime = std::chrono::high_resolution_clock::now();
-	r = A.ATx(scores) - A.ATAx(x);
-	for (int i = 0; i < Features::ReducedSize; ++i) h[i] = C[i] * r[i];
+	r = A.ATx(scores - A * x);
+	for (unsigned int i = 0; i < Features::ReducedSize; ++i) h[i] = C[i] * r[i];
 	d = h;
 	endTime = std::chrono::high_resolution_clock::now();
 	printf_s("done!\t\t %14s\n\n", time_format(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime)).c_str());
 
-	printf_s(" it | norm(res) | avg(abs(err)) |  avg(err)  |  stdev(err)  |       time      \n");
-	printf_s("----+-----------+---------------+------------+--------------+-----------------\n");
+	//printf_s(" it | norm(res) | avg(abs(err)) |  avg(err)  |  stdev(err)  |       time      \n");
+	//printf_s("----+-----------+---------------+------------+--------------+-----------------\n");
+
+	printf_s(" it |  norm(err)  |  norm(res)  | norm(err - res) \n");
+	printf_s("----+-------------+-------------+-----------------\n");
 	
 	res = norm(r);
 	DoStatsMuSigma(A, x, scores, mu, sigma, avg_abs_err);
-	printf_s("%4d| %.2e |  %.4e  | % .2e | % .4e |\n", 0, res, avg_abs_err, mu, sigma);
+	//printf_s("%4d| %.2e |  %.4e  | % .2e | % .4e |\n", 0, res, avg_abs_err, mu, sigma);
+	printf_s("%4d %.3e %.3e %.3e\n", 0, norm(A*x - scores), norm(A.ATAx(x) - A.ATx(scores)), norm(r));
 
 	for (unsigned int k = 1; k <= Iterations; ++k)
 	{
@@ -230,20 +264,20 @@ void SolveInRAM(const std::vector<std::string>& FileNames, const std::string& fi
 		d = h + beta * d;
 		res = norm(r);
 
-		if (k % 10 == 0)
-		{
-			DoStatsMuSigma(A, x, scores, mu, sigma, avg_abs_err);
+		//if (k % 10 == 0)
+		//{
+		//	DoStatsMuSigma(A, x, scores, mu, sigma, avg_abs_err);
+		//	endTime = std::chrono::high_resolution_clock::now();
+		//	//printf_s(" it | norm(res) | avg(abs(err)) |  avg(err)  |  stdev(err)  |      time     \n");
+		//	printf_s("%4d| %.2e |  %.4e  | % .2e | % .4e | %14s\n", k, res, avg_abs_err, mu, sigma, time_format(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime)).c_str());
+		//}
+		//else
+		//{
 			endTime = std::chrono::high_resolution_clock::now();
 			//printf_s(" it | norm(res) | avg(abs(err)) |  avg(err)  |  stdev(err)  |      time     \n");
-			printf_s("%4d| %.2e |  %.4e  | % .2e | % .4e | %14s\n", k, res, avg_abs_err, mu, sigma, time_format(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime)).c_str());
-		}
-		else
-		{
-			endTime = std::chrono::high_resolution_clock::now();
-			//printf_s(" it | norm(res) | avg(abs(err)) |  avg(err)  |  stdev(err)  |      time     \n");
-			printf_s("%4d| %.2e |               |            |              | %14s\n", k, res, time_format(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime)).c_str());
-		}
-
+			printf_s("%4d %.3e %.3e %.3e\n", k, norm(A*x - scores), norm(A.ATAx(x) - A.ATx(scores)), norm(r));
+			//printf_s("%4d| %.2e |               |            |              | %14s\n", k, norm(A*x-scores), time_format(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime)).c_str());
+		//}
 		if (res < tol) break;
 	}
 	printf_s("\nConjugate gradient method terminated!\n");
@@ -271,6 +305,7 @@ int main(int argc, char* argv[])
 	std::vector<std::string> filename_vec;
 	std::string file_start_x;
 	std::string file_end_x;
+	std::string pattern;
 	int Iterations = 100;
 	bool next = false;
 
@@ -287,13 +322,19 @@ int main(int argc, char* argv[])
 		else if (std::string(argv[i]) == "-iterations") Iterations = atoi(argv[++i]);
 		else if (std::string(argv[i]) == "-n") Threshold = atoi(argv[++i]);
 		else if (std::string(argv[i]) == "-next") next = true;
+		else if (std::string(argv[i]) == "-pattern") {
+			++i;
+			while ((i < argc) && (static_cast<char>(*argv[i]) != '-'))
+				pattern.append(std::string(argv[i++])).append(" ");
+			--i;
+		}
 		else if (std::string(argv[i]) == "-h") { Print_help(); return 0; }
 	}
 	
-	//ConfigFile::Initialize(argv[0], std::string("ProjectBrutus.ini"));
+	ConfigFile::Initialize("C:\\Cassandra\\config.ini");
+	if (!pattern.empty()) ConfigFile::Configurations["active pattern"] = pattern;
 	Features::Initialize();
 	
-
 	//filename_vec.push_back(std::string("C:\\Cassandra\\pos\\rnd_e6_1M.psp"));
 	//filename_vec.push_back(std::string("C:\\Cassandra\\pos\\rnd_e7_1M.psp"));
 	//filename_vec.push_back(std::string("C:\\Cassandra\\pos\\rnd_e8_1M.psp"));
@@ -305,6 +346,5 @@ int main(int argc, char* argv[])
 	if (filename_vec.size())
 		SolveInRAM(filename_vec, file_start_x, file_end_x, Iterations, Threshold, next);
 
-	Features::Finalize();
 	return 0;
 }
