@@ -17,6 +17,16 @@ namespace Features
 		
 	extern unsigned int SumPow3[32768];
 
+	inline int Pow_int(int base, unsigned int exp)
+	{
+		if (exp == 0)
+			return base;
+		if (exp % 2 == 0)
+			return Pow_int(base * base, exp / 2);
+		else
+			return base * Pow_int(base, exp - 1);
+	}
+
 	inline unsigned int FullPatternIndex(const uint64_t P, const uint64_t O, const uint64_t mask)
 	{ 
 		assert(PopCount(mask) <= 15);
@@ -70,8 +80,8 @@ namespace Features
 			PatternC(FlipCodiagonal(Pattern)),
 			PatternV(FlipVertical(Pattern)),
 			PatternD(FlipDiagonal(Pattern)),
-			m_FullSize(_Pow_int(3, PopCount(Pattern))),
-			halfSize(_Pow_int(3, PopCount(Pattern & HALF & ~MID)) * _Pow_int(2, PopCount(Pattern & HALF & MID))),
+			m_FullSize(Pow_int(3, PopCount(Pattern))),
+			halfSize(Pow_int(3, PopCount(Pattern & HALF & ~MID)) * Pow_int(2, PopCount(Pattern & HALF & MID))),
 			m_ReducedSize(halfSize * (halfSize + 1) / 2)
 		{
 			assert(Pattern == FlipHorizontal(Pattern));
@@ -137,9 +147,9 @@ namespace Features
 			PatternH(FlipHorizontal(Pattern)),
 			PatternC(FlipCodiagonal(Pattern)),
 			PatternV(FlipVertical(Pattern)),
-			m_FullSize(_Pow_int(3, PopCount(Pattern))),
-			halfSize(_Pow_int(3, PopCount(Pattern & HALF & ~MID)) * _Pow_int(2, PopCount(Pattern & HALF & MID))),
-			diagSize(_Pow_int(3, PopCount(Pattern & DIAG & ~MID)) * _Pow_int(2, PopCount(Pattern & DIAG & MID))),
+			m_FullSize(Pow_int(3, PopCount(Pattern))),
+			halfSize(Pow_int(3, PopCount(Pattern & HALF & ~MID)) * Pow_int(2, PopCount(Pattern & HALF & MID))),
+			diagSize(Pow_int(3, PopCount(Pattern & DIAG & ~MID)) * Pow_int(2, PopCount(Pattern & DIAG & MID))),
 			m_ReducedSize(diagSize * halfSize * (halfSize + 1) / 2)
 		{
 			assert(Pattern == FlipDiagonal(Pattern));
@@ -201,8 +211,8 @@ namespace Features
 			PatternHV(FlipVertical(FlipHorizontal(Pattern))),
 			PatternHD(FlipDiagonal(FlipHorizontal(Pattern))),
 			PatternHC(FlipCodiagonal(FlipHorizontal(Pattern))),
-			m_FullSize(_Pow_int(3, PopCount(Pattern))),
-			m_ReducedSize(_Pow_int(3, PopCount(Pattern & ~MID)) * _Pow_int(2, PopCount(Pattern & MID)))
+			m_FullSize(Pow_int(3, PopCount(Pattern))),
+			m_ReducedSize(Pow_int(3, PopCount(Pattern & ~MID)) * Pow_int(2, PopCount(Pattern & MID)))
 		{
 			//Initialize weights
 			m_weights.resize(8);

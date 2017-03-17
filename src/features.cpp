@@ -15,7 +15,7 @@ namespace Features
 	{
 		int64_t sum = 0;
 		while (exp)	{
-			sum += _Pow_int(3ULL, BitScanLSB(exp));
+			sum += Pow_int(3ULL, BitScanLSB(exp));
 			RemoveLSB(exp);
 		}
 		return sum;

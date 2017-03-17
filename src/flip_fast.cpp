@@ -1955,7 +1955,7 @@ namespace Flip_Fast
 		return flipped;
 	}
 
-	uint64_t flip_H8(const uint64_t P, const uint64_t O)
+	uint64_t flip_pass(const uint64_t P, const uint64_t O)
 	{
 		return 0;
 	}
